@@ -1,0 +1,32 @@
+# Keep the Docker build context small — exclude the same heavy/private dirs the
+# .gitignore excludes (so a local `docker build` doesn't copy 2 GB of PDFs).
+test_pdf/
+Test_pdf/
+dashboard/Test_pdf/
+Reference_only/
+demo/
+*.pdf
+uploads/
+
+dashboard/node_modules/
+dashboard/_build-temp.jsx
+**/__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+
+recents.db
+*.sqlite
+*.sqlite3
+
+.git/
+.gitignore
+.claude/
+.vscode/
+.idea/
+.env
+.env.*
+venv/
+.venv/
+.DS_Store
+Thumbs.db
