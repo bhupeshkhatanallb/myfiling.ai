@@ -41,6 +41,7 @@ def init_db() -> None:
             """
             CREATE TABLE IF NOT EXISTS recent_filings (
                 id            INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id       INTEGER,
                 analysis_id   TEXT    NOT NULL,
                 file_name     TEXT    NOT NULL,
                 court_id      TEXT,
@@ -52,15 +53,24 @@ def init_db() -> None:
             );
             """
         )
+        # Migrate older DBs that pre-date per-user scoping: add user_id if missing.
+        cols = {r["name"] for r in conn.execute("PRAGMA table_info(recent_filings);")}
+        if "user_id" not in cols:
+            conn.execute("ALTER TABLE recent_filings ADD COLUMN user_id INTEGER;")
         conn.execute(
             "CREATE INDEX IF NOT EXISTS idx_recent_created "
             "ON recent_filings (created_at DESC);"
+        )
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_recent_user "
+            "ON recent_filings (user_id, created_at DESC);"
         )
         conn.commit()
 
 
 def add_recent(
     *,
+    user_id: Optional[int],
     analysis_id: str,
     file_name: str,
     court_id: Optional[str],
@@ -71,20 +81,25 @@ def add_recent(
     session: Dict[str, Any],
 ) -> None:
     """
-    Insert a completed analysis. De-dupes by file_name (a re-analysis of the same
-    file replaces the older entry), then trims the table to MAX_RECENTS.
+    Insert a completed analysis for ``user_id``. De-dupes by (user, file_name) so
+    a re-analysis of the same file replaces the older entry, then trims that
+    user's history to MAX_RECENTS.
     """
     created_at = created_at or datetime.now(timezone.utc).isoformat()
     with _connect() as conn:
-        conn.execute("DELETE FROM recent_filings WHERE file_name = ?;", (file_name,))
+        conn.execute(
+            "DELETE FROM recent_filings WHERE file_name = ? AND user_id IS ?;",
+            (file_name, user_id),
+        )
         conn.execute(
             """
             INSERT INTO recent_filings
-                (analysis_id, file_name, court_id, court_label, case_type_id,
-                 score, created_at, session_json)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+                (user_id, analysis_id, file_name, court_id, court_label,
+                 case_type_id, score, created_at, session_json)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
             """,
             (
+                user_id,
                 analysis_id,
                 file_name,
                 court_id,
@@ -95,33 +110,35 @@ def add_recent(
                 json.dumps(session),
             ),
         )
-        # Trim anything beyond the newest MAX_RECENTS rows.
+        # Trim anything beyond this user's newest MAX_RECENTS rows.
         conn.execute(
             """
             DELETE FROM recent_filings
-            WHERE id NOT IN (
+            WHERE user_id IS ? AND id NOT IN (
                 SELECT id FROM recent_filings
+                WHERE user_id IS ?
                 ORDER BY created_at DESC, id DESC
                 LIMIT ?
             );
             """,
-            (MAX_RECENTS,),
+            (user_id, user_id, MAX_RECENTS),
         )
         conn.commit()
 
 
-def list_recents(limit: int = MAX_RECENTS) -> List[Dict[str, Any]]:
-    """Return recent filings, newest first, in the shape the sidebar expects."""
+def list_recents(user_id: Optional[int], limit: int = MAX_RECENTS) -> List[Dict[str, Any]]:
+    """Return a user's recent filings, newest first, in the sidebar's shape."""
     with _connect() as conn:
         rows = conn.execute(
             """
             SELECT analysis_id, file_name, court_id, court_label, case_type_id,
                    score, created_at, session_json
             FROM recent_filings
+            WHERE user_id IS ?
             ORDER BY created_at DESC, id DESC
             LIMIT ?;
             """,
-            (limit,),
+            (user_id, limit),
         ).fetchall()
 
     out: List[Dict[str, Any]] = []
@@ -145,7 +162,8 @@ def list_recents(limit: int = MAX_RECENTS) -> List[Dict[str, Any]]:
     return out
 
 
-def clear_recents() -> None:
+def clear_recents(user_id: Optional[int]) -> None:
+    """Delete a single user's recent filings."""
     with _connect() as conn:
-        conn.execute("DELETE FROM recent_filings;")
+        conn.execute("DELETE FROM recent_filings WHERE user_id IS ?;", (user_id,))
         conn.commit()

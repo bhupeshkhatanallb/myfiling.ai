@@ -21,11 +21,13 @@ import logging
 import tempfile
 from pathlib import Path
 from datetime import datetime, timezone
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi import (
+    FastAPI, UploadFile, File, Form, HTTPException, Request, Response, Cookie, Body,
+)
 from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -46,6 +48,7 @@ from pipeline import DetectorEngine  # noqa: E402  (import after sys.path tweak)
 from pipeline.processor import DocumentProcessor  # noqa: E402
 
 import recents_db  # noqa: E402  — SQLite-backed recent-filings store
+import auth_db      # noqa: E402  — SQLite-backed users + sessions
 
 logging.basicConfig(
     level=logging.INFO,
@@ -72,9 +75,10 @@ _ANALYZE_SEM = _asyncio.Semaphore(_ANALYZE_CONCURRENCY)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: ensure the recents SQLite store exists.
+    # Startup: ensure the SQLite stores (recents + users/sessions) exist.
     recents_db.init_db()
-    logger.info("Recent-filings DB ready at %s", recents_db.DB_PATH)
+    auth_db.init_db()
+    logger.info("DB ready at %s (recents + auth)", recents_db.DB_PATH)
     yield
     # Shutdown: nothing to tear down (connections are per-call).
 
@@ -85,6 +89,104 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
+
+
+# --------------------------------------------------------------------------- #
+# Authentication — email/password accounts with server-side sessions.
+# Cookie is HttpOnly + SameSite=Lax; Secure is auto-on when served over HTTPS.
+# --------------------------------------------------------------------------- #
+_COOKIE_SECURE = os.environ.get("COOKIE_SECURE", "auto").lower()
+
+
+def _set_session_cookie(response: Response, token: str, *, secure: bool) -> None:
+    response.set_cookie(
+        key=auth_db.SESSION_COOKIE,
+        value=token,
+        max_age=auth_db.SESSION_MAX_AGE,
+        httponly=True,
+        samesite="lax",
+        secure=secure,
+        path="/",
+    )
+
+
+def _cookie_secure(request: Request) -> bool:
+    if _COOKIE_SECURE in ("1", "true", "yes", "on"):
+        return True
+    if _COOKIE_SECURE in ("0", "false", "no", "off"):
+        return False
+    # auto: secure when the request arrived over https (incl. behind a proxy).
+    if request.url.scheme == "https":
+        return True
+    return request.headers.get("x-forwarded-proto", "").lower() == "https"
+
+
+def current_user(request: Request) -> Optional[Dict[str, Any]]:
+    """Resolve the logged-in user from the session cookie, or None."""
+    token = request.cookies.get(auth_db.SESSION_COOKIE)
+    return auth_db.user_for_token(token)
+
+
+def require_user(request: Request) -> Dict[str, Any]:
+    """Like current_user but raises 401 when not authenticated (for gated routes)."""
+    user = current_user(request)
+    if user is None:
+        raise HTTPException(status_code=401, detail={
+            "title": "Please sign in",
+            "details": "Log in or create an account to analyse filings.",
+        })
+    return user
+
+
+@app.post("/api/auth/signup")
+async def auth_signup(request: Request, response: Response,
+                      payload: Dict[str, Any] = Body(...)) -> Dict[str, Any]:
+    """Create an account and start a session (quick: email + password [+ name])."""
+    try:
+        user = auth_db.create_user(
+            email=str(payload.get("email", "")),
+            password=str(payload.get("password", "")),
+            name=(payload.get("name") or None),
+        )
+    except auth_db.AuthError as e:
+        raise HTTPException(status_code=400, detail={"title": "Could not sign up",
+                                                     "details": str(e)})
+    token = auth_db.create_session(user["id"])
+    _set_session_cookie(response, token, secure=_cookie_secure(request))
+    return {"user": {"email": user["email"], "name": user.get("name")}}
+
+
+@app.post("/api/auth/login")
+async def auth_login(request: Request, response: Response,
+                     payload: Dict[str, Any] = Body(...)) -> Dict[str, Any]:
+    """Authenticate and start a session."""
+    try:
+        user = auth_db.authenticate(
+            email=str(payload.get("email", "")),
+            password=str(payload.get("password", "")),
+        )
+    except auth_db.AuthError as e:
+        raise HTTPException(status_code=401, detail={"title": "Could not log in",
+                                                     "details": str(e)})
+    token = auth_db.create_session(user["id"])
+    _set_session_cookie(response, token, secure=_cookie_secure(request))
+    return {"user": {"email": user["email"], "name": user.get("name")}}
+
+
+@app.post("/api/auth/logout")
+async def auth_logout(request: Request, response: Response) -> Dict[str, Any]:
+    auth_db.destroy_session(request.cookies.get(auth_db.SESSION_COOKIE))
+    response.delete_cookie(auth_db.SESSION_COOKIE, path="/")
+    return {"status": "ok"}
+
+
+@app.get("/api/auth/me")
+async def auth_me(request: Request) -> Dict[str, Any]:
+    """Return the current user (or null) so the UI knows whether to show login."""
+    user = current_user(request)
+    if user is None:
+        return {"user": None}
+    return {"user": {"email": user["email"], "name": user.get("name")}}
 
 
 # --------------------------------------------------------------------------- #
@@ -288,15 +390,19 @@ async def health() -> Dict[str, Any]:
 
 
 @app.get("/api/recents")
-async def get_recents() -> Dict[str, Any]:
-    """List recent filings (server-side, newest first)."""
-    return {"recents": recents_db.list_recents()}
+async def get_recents(request: Request) -> Dict[str, Any]:
+    """List the logged-in user's recent filings (newest first)."""
+    user = current_user(request)
+    if user is None:
+        return {"recents": []}
+    return {"recents": recents_db.list_recents(user["id"])}
 
 
 @app.delete("/api/recents")
-async def delete_recents() -> Dict[str, Any]:
-    """Clear all recent filings."""
-    recents_db.clear_recents()
+async def delete_recents(request: Request) -> Dict[str, Any]:
+    """Clear the logged-in user's recent filings."""
+    user = require_user(request)
+    recents_db.clear_recents(user["id"])
     return {"status": "ok", "recents": []}
 
 
@@ -332,10 +438,11 @@ def _finalize_results(results: Dict[str, Any], *, filename: str, contents_len: i
     }
 
 
-def _persist_recent(payload: Dict[str, Any]) -> None:
-    """Record a completed analysis as a recent filing (best-effort)."""
+def _persist_recent(payload: Dict[str, Any], user_id: Optional[int]) -> None:
+    """Record a completed analysis as a recent filing for ``user_id`` (best-effort)."""
     try:
         recents_db.add_recent(
+            user_id=user_id,
             analysis_id=payload["analysis_id"],
             file_name=payload["file_name"],
             court_id=payload["court_id"],
@@ -382,11 +489,13 @@ def _validate_upload(court_id: str, filename: str, contents: bytes) -> None:
 
 @app.post("/api/analyze")
 async def analyze_filing(
+    request: Request,
     file: UploadFile = File(...),
     court_id: str = Form(...),
     case_type_id: str = Form(...),
 ):
     """Run the pipeline on an uploaded PDF and return defects + score (non-streaming)."""
+    user = require_user(request)
     filename = file.filename or "upload.pdf"
     contents = await file.read()
     _validate_upload(court_id, filename, contents)
@@ -415,7 +524,7 @@ async def analyze_filing(
                     len(payload["defects"]), payload["summary"].get("critical_count", 0),
                     payload["score"], payload["confidence"],
                     payload["stats"]["ocr_used"], payload["stats"]["ocr_pages"])
-        _persist_recent(payload)
+        _persist_recent(payload, user["id"])
         return JSONResponse(payload)
 
     except HTTPException:
@@ -448,6 +557,7 @@ def _sse(event: str, data: Any) -> str:
 
 @app.post("/api/analyze/stream")
 async def analyze_filing_stream(
+    request: Request,
     file: UploadFile = File(...),
     court_id: str = Form(...),
     case_type_id: str = Form(...),
@@ -459,6 +569,7 @@ async def analyze_filing_stream(
     a detector finds it), ``result`` (final payload + score), ``error``, ``done``.
     The dashboard renders defects live and transitions to the report on ``result``.
     """
+    user = require_user(request)
     filename = file.filename or "upload.pdf"
     contents = await file.read()
     _validate_upload(court_id, filename, contents)
@@ -495,7 +606,7 @@ async def analyze_filing_stream(
                         payload = _finalize_results(
                             final_report, filename=filename, contents_len=len(contents),
                             court_id=court_id, case_type_id=case_type_id)
-                        _persist_recent(payload)
+                        _persist_recent(payload, user["id"])
                         logger.info("Stream done: %d defects (%d critical), score=%d",
                                     len(payload["defects"]),
                                     payload["summary"].get("critical_count", 0),

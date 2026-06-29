@@ -20,6 +20,7 @@ const filesToConcat = [
   'src/components/gauge/Gauge.jsx',
   'src/components/chrome/chrome.jsx',
   'src/components/overlays/Overlays.jsx',
+  'src/components/screens/AuthScreen.jsx',
   'src/components/screens/UploadScreen.jsx',
   'src/components/screens/ResultsScreen.jsx',
   'src/components/screens/AllScreens.jsx',

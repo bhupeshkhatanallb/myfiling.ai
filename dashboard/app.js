@@ -1,13 +1,13 @@
 "use strict";
 
-function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
-function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
 function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
-function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
-function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
+function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
+function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
+function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
+function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
 function _toArray(r) { return _arrayWithHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableRest(); }
 function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
@@ -998,11 +998,24 @@ window.Gauge = Gauge;
 // Header + Sidebar navigation
 var _React = React,
   useState = _React.useState;
+function _userInitials(user) {
+  if (!user) return "?";
+  var src = user.name && user.name.trim() || user.email || "";
+  var parts = src.replace(/@.*/, "").split(/[\s._-]+/).filter(Boolean);
+  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+  return (src.slice(0, 2) || "?").toUpperCase();
+}
 function Header(_ref) {
   var screen = _ref.screen,
     onHome = _ref.onHome,
     navActive = _ref.navActive,
-    onNavClick = _ref.onNavClick;
+    onNavClick = _ref.onNavClick,
+    user = _ref.user,
+    onLogout = _ref.onLogout;
+  var _useState = useState(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    menuOpen = _useState2[0],
+    setMenuOpen = _useState2[1];
   var items = [{
     label: "Dashboard",
     key: "dashboard"
@@ -1016,6 +1029,7 @@ function Header(_ref) {
     label: "Help",
     key: "help"
   }];
+  var displayName = user ? user.name && user.name.trim() || user.email : "";
   return /*#__PURE__*/React.createElement("header", {
     className: "header"
   }, /*#__PURE__*/React.createElement("button", {
@@ -1042,9 +1056,33 @@ function Header(_ref) {
   }), /*#__PURE__*/React.createElement("span", {
     className: "header__kbd"
   }, "\u2318K")), /*#__PURE__*/React.createElement("div", {
+    className: "header__user"
+  }, /*#__PURE__*/React.createElement("button", {
     className: "header__avatar",
-    title: "A. Raghavan, AOR"
-  }, "AR")));
+    title: displayName,
+    onClick: function onClick() {
+      return setMenuOpen(function (v) {
+        return !v;
+      });
+    }
+  }, _userInitials(user)), menuOpen && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "header__menu-backdrop",
+    onClick: function onClick() {
+      return setMenuOpen(false);
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "header__menu"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "header__menu-name"
+  }, displayName), user && user.email && /*#__PURE__*/React.createElement("div", {
+    className: "header__menu-sub"
+  }, user.email), /*#__PURE__*/React.createElement("button", {
+    className: "header__menu-item",
+    onClick: function onClick() {
+      setMenuOpen(false);
+      onLogout && onLogout();
+    }
+  }, "Log out"))))));
 }
 function Sidebar(_ref13) {
   var recents = _ref13.recents,
@@ -1326,15 +1364,298 @@ window.AnalysingOverlay = AnalysingOverlay;
 window.ErrorScreen = ErrorScreen;
 window.Toast = Toast;
 
-// upload.jsx — Screen 1: Upload & Court Selection
+// AuthScreen.jsx — login / signup gate. Shown before the app when logged out.
+
 var _React3 = React,
-  useStateU = _React3.useState,
-  useRefU = _React3.useRef,
-  useEffectU = _React3.useEffect;
-function UploadScreen(_ref17) {
+  useStateAuth = _React3.useState;
+
+// --- auth API helpers (cookie-based sessions) -------------------------------
+function apiMe() {
+  return _apiMe.apply(this, arguments);
+}
+function _apiMe() {
+  _apiMe = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
+    var res, data, _t5;
+    return _regenerator().w(function (_context4) {
+      while (1) switch (_context4.p = _context4.n) {
+        case 0:
+          _context4.p = 0;
+          _context4.n = 1;
+          return fetch("/api/auth/me", {
+            credentials: "same-origin"
+          });
+        case 1:
+          res = _context4.v;
+          if (res.ok) {
+            _context4.n = 2;
+            break;
+          }
+          return _context4.a(2, null);
+        case 2:
+          _context4.n = 3;
+          return res.json();
+        case 3:
+          data = _context4.v;
+          return _context4.a(2, data.user || null);
+        case 4:
+          _context4.p = 4;
+          _t5 = _context4.v;
+          return _context4.a(2, null);
+      }
+    }, _callee4, null, [[0, 4]]);
+  }));
+  return _apiMe.apply(this, arguments);
+}
+function apiAuth(_x, _x2) {
+  return _apiAuth.apply(this, arguments);
+}
+function _apiAuth() {
+  _apiAuth = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(path, body) {
+    var res, data, detail, _t6;
+    return _regenerator().w(function (_context5) {
+      while (1) switch (_context5.p = _context5.n) {
+        case 0:
+          _context5.n = 1;
+          return fetch(path, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            credentials: "same-origin",
+            body: JSON.stringify(body)
+          });
+        case 1:
+          res = _context5.v;
+          data = {};
+          _context5.p = 2;
+          _context5.n = 3;
+          return res.json();
+        case 3:
+          data = _context5.v;
+          _context5.n = 5;
+          break;
+        case 4:
+          _context5.p = 4;
+          _t6 = _context5.v;
+        case 5:
+          if (res.ok) {
+            _context5.n = 6;
+            break;
+          }
+          detail = data && data.detail ? data.detail : {};
+          throw new Error(detail.details || detail.title || "Something went wrong. Please try again.");
+        case 6:
+          return _context5.a(2, data.user || null);
+      }
+    }, _callee5, null, [[2, 4]]);
+  }));
+  return _apiAuth.apply(this, arguments);
+}
+function apiLogout() {
+  return _apiLogout.apply(this, arguments);
+}
+function _apiLogout() {
+  _apiLogout = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6() {
+    var _t7;
+    return _regenerator().w(function (_context6) {
+      while (1) switch (_context6.p = _context6.n) {
+        case 0:
+          _context6.p = 0;
+          _context6.n = 1;
+          return fetch("/api/auth/logout", {
+            method: "POST",
+            credentials: "same-origin"
+          });
+        case 1:
+          _context6.n = 3;
+          break;
+        case 2:
+          _context6.p = 2;
+          _t7 = _context6.v;
+        case 3:
+          return _context6.a(2);
+      }
+    }, _callee6, null, [[0, 2]]);
+  }));
+  return _apiLogout.apply(this, arguments);
+}
+function AuthScreen(_ref17) {
+  var onAuthed = _ref17.onAuthed;
+  var _useStateAuth = useStateAuth("login"),
+    _useStateAuth2 = _slicedToArray(_useStateAuth, 2),
+    mode = _useStateAuth2[0],
+    setMode = _useStateAuth2[1]; // "login" | "signup"
+  var _useStateAuth3 = useStateAuth(""),
+    _useStateAuth4 = _slicedToArray(_useStateAuth3, 2),
+    name = _useStateAuth4[0],
+    setName = _useStateAuth4[1];
+  var _useStateAuth5 = useStateAuth(""),
+    _useStateAuth6 = _slicedToArray(_useStateAuth5, 2),
+    email = _useStateAuth6[0],
+    setEmail = _useStateAuth6[1];
+  var _useStateAuth7 = useStateAuth(""),
+    _useStateAuth8 = _slicedToArray(_useStateAuth7, 2),
+    password = _useStateAuth8[0],
+    setPassword = _useStateAuth8[1];
+  var _useStateAuth9 = useStateAuth(false),
+    _useStateAuth0 = _slicedToArray(_useStateAuth9, 2),
+    busy = _useStateAuth0[0],
+    setBusy = _useStateAuth0[1];
+  var _useStateAuth1 = useStateAuth(null),
+    _useStateAuth10 = _slicedToArray(_useStateAuth1, 2),
+    err = _useStateAuth10[0],
+    setErr = _useStateAuth10[1];
+  var isSignup = mode === "signup";
+  var submit = /*#__PURE__*/function () {
+    var _ref18 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
+      var path, body, user, _t;
+      return _regenerator().w(function (_context) {
+        while (1) switch (_context.p = _context.n) {
+          case 0:
+            e.preventDefault();
+            setErr(null);
+            if (!(!email.trim() || !password)) {
+              _context.n = 1;
+              break;
+            }
+            setErr("Please enter your email and password.");
+            return _context.a(2);
+          case 1:
+            if (!(isSignup && password.length < 6)) {
+              _context.n = 2;
+              break;
+            }
+            setErr("Password must be at least 6 characters.");
+            return _context.a(2);
+          case 2:
+            setBusy(true);
+            _context.p = 3;
+            path = isSignup ? "/api/auth/signup" : "/api/auth/login";
+            body = isSignup ? {
+              name: name.trim(),
+              email: email.trim(),
+              password: password
+            } : {
+              email: email.trim(),
+              password: password
+            };
+            _context.n = 4;
+            return apiAuth(path, body);
+          case 4:
+            user = _context.v;
+            onAuthed(user);
+            _context.n = 6;
+            break;
+          case 5:
+            _context.p = 5;
+            _t = _context.v;
+            setErr(_t.message);
+          case 6:
+            _context.p = 6;
+            setBusy(false);
+            return _context.f(6);
+          case 7:
+            return _context.a(2);
+        }
+      }, _callee, null, [[3, 5, 6, 7]]);
+    }));
+    return function submit(_x3) {
+      return _ref18.apply(this, arguments);
+    };
+  }();
+  return /*#__PURE__*/React.createElement("div", {
+    className: "auth"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "auth__card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "auth__brand"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "auth__logo"
+  }, "myfiling", /*#__PURE__*/React.createElement("span", {
+    className: "auth__logo-dot"
+  }, ".ai")), /*#__PURE__*/React.createElement("p", {
+    className: "auth__tagline"
+  }, "Catch filing defects before submission.")), /*#__PURE__*/React.createElement("div", {
+    className: "auth__tabs"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "auth__tab" + (!isSignup ? " auth__tab--active" : ""),
+    onClick: function onClick() {
+      setMode("login");
+      setErr(null);
+    },
+    type: "button"
+  }, "Log in"), /*#__PURE__*/React.createElement("button", {
+    className: "auth__tab" + (isSignup ? " auth__tab--active" : ""),
+    onClick: function onClick() {
+      setMode("signup");
+      setErr(null);
+    },
+    type: "button"
+  }, "Sign up")), /*#__PURE__*/React.createElement("form", {
+    className: "auth__form",
+    onSubmit: submit
+  }, isSignup && /*#__PURE__*/React.createElement("label", {
+    className: "auth__field"
+  }, /*#__PURE__*/React.createElement("span", null, "Name ", /*#__PURE__*/React.createElement("em", null, "(optional)")), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    value: name,
+    autoComplete: "name",
+    onChange: function onChange(e) {
+      return setName(e.target.value);
+    },
+    placeholder: "Your name"
+  })), /*#__PURE__*/React.createElement("label", {
+    className: "auth__field"
+  }, /*#__PURE__*/React.createElement("span", null, "Email"), /*#__PURE__*/React.createElement("input", {
+    type: "email",
+    value: email,
+    autoComplete: "email",
+    required: true,
+    onChange: function onChange(e) {
+      return setEmail(e.target.value);
+    },
+    placeholder: "you@example.com"
+  })), /*#__PURE__*/React.createElement("label", {
+    className: "auth__field"
+  }, /*#__PURE__*/React.createElement("span", null, "Password"), /*#__PURE__*/React.createElement("input", {
+    type: "password",
+    value: password,
+    required: true,
+    autoComplete: isSignup ? "new-password" : "current-password",
+    onChange: function onChange(e) {
+      return setPassword(e.target.value);
+    },
+    placeholder: isSignup ? "At least 6 characters" : "Your password"
+  })), err && /*#__PURE__*/React.createElement("div", {
+    className: "auth__error"
+  }, err), /*#__PURE__*/React.createElement("button", {
+    className: "auth__submit",
+    type: "submit",
+    disabled: busy
+  }, busy ? "Please wait…" : isSignup ? "Create account" : "Log in")), /*#__PURE__*/React.createElement("p", {
+    className: "auth__switch"
+  }, isSignup ? "Already have an account? " : "New here? ", /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "auth__link",
+    onClick: function onClick() {
+      setMode(isSignup ? "login" : "signup");
+      setErr(null);
+    }
+  }, isSignup ? "Log in" : "Create a free account"))));
+}
+window.AuthScreen = AuthScreen;
+window.apiMe = apiMe;
+window.apiLogout = apiLogout;
+
+// upload.jsx — Screen 1: Upload & Court Selection
+var _React4 = React,
+  useStateU = _React4.useState,
+  useRefU = _React4.useRef,
+  useEffectU = _React4.useEffect;
+function UploadScreen(_ref19) {
   var _COURTS$find;
-  var onAnalyse = _ref17.onAnalyse,
-    onError = _ref17.onError;
+  var onAnalyse = _ref19.onAnalyse,
+    onError = _ref19.onError;
   var _window$FC_DATA2 = window.FC_DATA,
     COURTS = _window$FC_DATA2.COURTS,
     CASE_TYPES = _window$FC_DATA2.CASE_TYPES,
@@ -1412,13 +1733,13 @@ function UploadScreen(_ref17) {
     className: "upload__title"
   }, "Catch filing defects ", /*#__PURE__*/React.createElement("em", null, "before submission.")), /*#__PURE__*/React.createElement("p", {
     className: "upload__sub"
-  }, "myfiling.ai checks your PDF against the Delhi High Court's formatting and registry-filing requirements \u2014 paper size, margins, type, pagination, index, court fee, vakalatnama, limitation, certified copy and affidavit. Get a filing-readiness score and a defect checklist in seconds."), /*#__PURE__*/React.createElement("div", {
+  }, "myfiling.ai checks your PDF against the court's formatting and registry-filing requirements \u2014 paper size, margins, type, pagination, index, court fee, vakalatnama, limitation, certified copy and affidavit. Get a filing-readiness score and a defect checklist in seconds."), /*#__PURE__*/React.createElement("div", {
     className: "upload__trust"
   }, /*#__PURE__*/React.createElement("span", {
     className: "upload__trust-item"
   }, /*#__PURE__*/React.createElement(Ico.Check, {
     size: 13
-  }), " Delhi High Court rules engine"), /*#__PURE__*/React.createElement("span", {
+  }), " Court rules engine"), /*#__PURE__*/React.createElement("span", {
     className: "upload__trust-item"
   }, /*#__PURE__*/React.createElement(Ico.Check, {
     size: 13
@@ -1616,10 +1937,10 @@ function UploadScreen(_ref17) {
 window.UploadScreen = UploadScreen;
 
 // results.jsx — Screen 2: Results Dashboard
-var _React4 = React,
-  useStateR = _React4.useState,
-  useMemoR = _React4.useMemo,
-  useEffectR = _React4.useEffect;
+var _React5 = React,
+  useStateR = _React5.useState,
+  useMemoR = _React5.useMemo,
+  useEffectR = _React5.useEffect;
 var SEV_LABEL = {
   critical: "Critical",
   minor: "Minor",
@@ -1678,13 +1999,13 @@ var EVIDENCE_LABELS = {
   off_spec: "Off-spec",
   first_page: "First page"
 };
-function EvidenceChips(_ref18) {
-  var evidence = _ref18.evidence;
+function EvidenceChips(_ref20) {
+  var evidence = _ref20.evidence;
   if (!evidence || _typeof(evidence) !== "object") return null;
-  var entries = Object.entries(evidence).filter(function (_ref19) {
-    var _ref20 = _slicedToArray(_ref19, 2),
-      k = _ref20[0],
-      v = _ref20[1];
+  var entries = Object.entries(evidence).filter(function (_ref21) {
+    var _ref22 = _slicedToArray(_ref21, 2),
+      k = _ref22[0],
+      v = _ref22[1];
     return v != null && _typeof(v) !== "object";
   });
   if (!entries.length) return null;
@@ -1696,10 +2017,10 @@ function EvidenceChips(_ref18) {
   };
   return /*#__PURE__*/React.createElement("div", {
     className: "defect__evidence"
-  }, entries.map(function (_ref21) {
-    var _ref22 = _slicedToArray(_ref21, 2),
-      k = _ref22[0],
-      v = _ref22[1];
+  }, entries.map(function (_ref23) {
+    var _ref24 = _slicedToArray(_ref23, 2),
+      k = _ref24[0],
+      v = _ref24[1];
     return /*#__PURE__*/React.createElement("span", {
       className: "evidence-chip",
       key: k
@@ -1710,14 +2031,14 @@ function EvidenceChips(_ref18) {
     }, fmt(k, v)));
   }));
 }
-function DefectCard(_ref23) {
-  var defect = _ref23.defect,
-    open = _ref23.open,
-    onToggle = _ref23.onToggle,
-    fixed = _ref23.fixed,
-    onToggleFixed = _ref23.onToggleFixed,
-    fileUrl = _ref23.fileUrl,
-    onViewPage = _ref23.onViewPage;
+function DefectCard(_ref25) {
+  var defect = _ref25.defect,
+    open = _ref25.open,
+    onToggle = _ref25.onToggle,
+    fixed = _ref25.fixed,
+    onToggleFixed = _ref25.onToggleFixed,
+    fileUrl = _ref25.fileUrl,
+    onViewPage = _ref25.onViewPage;
   var conf = defect.confidence;
   var confTier = confidenceTier(conf);
   return /*#__PURE__*/React.createElement("div", {
@@ -1791,11 +2112,11 @@ function DefectCard(_ref23) {
     }
   }), fixed ? "Fixed ✓" : "Mark Fixed"))));
 }
-function ResultsScreen(_ref24) {
-  var session = _ref24.session,
-    onBack = _ref24.onBack,
-    onDownload = _ref24.onDownload,
-    onShare = _ref24.onShare;
+function ResultsScreen(_ref26) {
+  var session = _ref26.session,
+    onBack = _ref26.onBack,
+    onDownload = _ref26.onDownload,
+    onShare = _ref26.onShare;
   var _useStateR = useStateR("all"),
     _useStateR2 = _slicedToArray(_useStateR, 2),
     filter = _useStateR2[0],
@@ -2008,9 +2329,9 @@ function ResultsScreen(_ref24) {
     // Measured formatting metrics from the detector engine. Shown only when
     // at least one value is available (text-based, scrutinisable filing).
     var m = stats.margins_cm || {};
-    var rows = [["Paper size", stats.paper_size], ["Font family", stats.font_family ? titleCaseFamily(stats.font_family) : null], ["Body font", stats.body_font_pt != null ? stats.body_font_pt + " pt" : null], ["Line spacing", stats.line_spacing_ratio != null ? stats.line_spacing_ratio + "×" : null], ["Margins (L/R/T/B)", m.left != null ? "".concat(m.left, "/").concat(m.right, "/").concat(m.top, "/").concat(m.bottom, " cm") : stats.left_margin_cm != null ? stats.left_margin_cm + " cm (L)" : null]].filter(function (_ref25) {
-      var _ref26 = _slicedToArray(_ref25, 2),
-        v = _ref26[1];
+    var rows = [["Paper size", stats.paper_size], ["Font family", stats.font_family ? titleCaseFamily(stats.font_family) : null], ["Body font", stats.body_font_pt != null ? stats.body_font_pt + " pt" : null], ["Line spacing", stats.line_spacing_ratio != null ? stats.line_spacing_ratio + "×" : null], ["Margins (L/R/T/B)", m.left != null ? "".concat(m.left, "/").concat(m.right, "/").concat(m.top, "/").concat(m.bottom, " cm") : stats.left_margin_cm != null ? stats.left_margin_cm + " cm (L)" : null]].filter(function (_ref27) {
+      var _ref28 = _slicedToArray(_ref27, 2),
+        v = _ref28[1];
       return v != null && v !== "";
     });
     if (!rows.length) return null;
@@ -2018,10 +2339,10 @@ function ResultsScreen(_ref24) {
       className: "metrics-panel"
     }, /*#__PURE__*/React.createElement("div", {
       className: "metrics-panel__title"
-    }, "Measured formatting"), rows.map(function (_ref27) {
-      var _ref28 = _slicedToArray(_ref27, 2),
-        k = _ref28[0],
-        v = _ref28[1];
+    }, "Measured formatting"), rows.map(function (_ref29) {
+      var _ref30 = _slicedToArray(_ref29, 2),
+        k = _ref30[0],
+        v = _ref30[1];
       return /*#__PURE__*/React.createElement("div", {
         className: "summary__detail-row",
         key: k
@@ -2098,31 +2419,45 @@ window.ResultsScreen = ResultsScreen;
 
 // screens.jsx — Additional screens: History, Court Rules, Help
 
-var _React5 = React,
-  useStateS = _React5.useState,
-  useMemoS = _React5.useMemo;
+var _React6 = React,
+  useStateS = _React6.useState,
+  useMemoS = _React6.useMemo;
 
 // ============================================================================
 // HISTORY SCREEN
 // ============================================================================
 
-function HistoryScreen(_ref29) {
-  var onSelect = _ref29.onSelect;
-  var RECENT = window.FC_DATA.RECENT;
+function _historyWhen(iso) {
+  if (!iso) return "";
+  var d = new Date(iso);
+  if (isNaN(d.getTime())) return "";
+  var mins = Math.round((Date.now() - d.getTime()) / 60000);
+  if (mins < 1) return "Just now";
+  if (mins < 60) return mins + "m ago";
+  var hrs = Math.round(mins / 60);
+  if (hrs < 24) return hrs + "h ago";
+  var days = Math.round(hrs / 24);
+  if (days < 30) return days + "d ago";
+  return d.toLocaleDateString();
+}
+function HistoryScreen(_ref31) {
+  var recents = _ref31.recents,
+    onOpen = _ref31.onOpen,
+    onUpload = _ref31.onUpload;
+  var list = Array.isArray(recents) ? recents : [];
   var _useStateS = useStateS("all"),
     _useStateS2 = _slicedToArray(_useStateS, 2),
     filterScore = _useStateS2[0],
     setFilterScore = _useStateS2[1];
   var filtered = useMemoS(function () {
-    if (filterScore === "all") return RECENT;
-    if (filterScore === "pass") return RECENT.filter(function (r) {
-      return r.score >= 71;
+    if (filterScore === "pass") return list.filter(function (r) {
+      return (r.score || 0) >= 71;
     });
-    if (filterScore === "risk") return RECENT.filter(function (r) {
-      return r.score < 71;
+    if (filterScore === "risk") return list.filter(function (r) {
+      return (r.score || 0) < 71;
     });
-    return RECENT;
-  }, [filterScore]);
+    return list;
+  }, [filterScore, list]);
   return /*#__PURE__*/React.createElement("div", {
     className: "screen-content"
   }, /*#__PURE__*/React.createElement("div", {
@@ -2134,27 +2469,29 @@ function HistoryScreen(_ref29) {
     onClick: function onClick() {
       return setFilterScore("all");
     }
-  }, "All (", RECENT.length, ")"), /*#__PURE__*/React.createElement("button", {
+  }, "All (", list.length, ")"), /*#__PURE__*/React.createElement("button", {
     className: "filter-pill" + (filterScore === "pass" ? " filter-pill--active" : ""),
     onClick: function onClick() {
       return setFilterScore("pass");
     }
-  }, "Likely to Pass (", RECENT.filter(function (r) {
-    return r.score >= 71;
+  }, "Likely to Pass (", list.filter(function (r) {
+    return (r.score || 0) >= 71;
   }).length, ")"), /*#__PURE__*/React.createElement("button", {
     className: "filter-pill" + (filterScore === "risk" ? " filter-pill--active" : ""),
     onClick: function onClick() {
       return setFilterScore("risk");
     }
-  }, "Needs Work (", RECENT.filter(function (r) {
-    return r.score < 71;
+  }, "Needs Work (", list.filter(function (r) {
+    return (r.score || 0) < 71;
   }).length, ")")), /*#__PURE__*/React.createElement("div", {
     className: "history-list"
   }, filtered.map(function (filing, i) {
-    var band = filing.score >= 71 ? "g" : filing.score >= 41 ? "a" : "r";
-    var label = filing.score >= 71 ? "Likely to pass" : filing.score >= 41 ? "Moderate risk" : "High risk";
+    var score = filing.score || 0;
+    var band = score >= 71 ? "g" : score >= 41 ? "a" : "r";
+    var label = score >= 71 ? "Likely to pass" : score >= 41 ? "Moderate risk" : "High risk";
+    var when = filing.when || _historyWhen(filing.createdAt);
     return /*#__PURE__*/React.createElement("div", {
-      key: i,
+      key: filing.analysisId || i,
       className: "history-card"
     }, /*#__PURE__*/React.createElement("div", {
       className: "history-card__left"
@@ -2168,7 +2505,7 @@ function HistoryScreen(_ref29) {
       className: "history-card__name"
     }, filing.name), /*#__PURE__*/React.createElement("div", {
       className: "history-card__meta"
-    }, /*#__PURE__*/React.createElement("span", null, filing.court), /*#__PURE__*/React.createElement("span", null, "\xB7"), /*#__PURE__*/React.createElement("span", null, filing.when)))), /*#__PURE__*/React.createElement("div", {
+    }, filing.court && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", null, filing.court), /*#__PURE__*/React.createElement("span", null, "\xB7")), /*#__PURE__*/React.createElement("span", null, when)))), /*#__PURE__*/React.createElement("div", {
       className: "history-card__right"
     }, /*#__PURE__*/React.createElement("div", {
       className: "history-card__score-badge"
@@ -2176,28 +2513,31 @@ function HistoryScreen(_ref29) {
       className: "score-badge score-badge--" + band
     }, /*#__PURE__*/React.createElement("span", {
       className: "score-badge__num"
-    }, filing.score, "%"), /*#__PURE__*/React.createElement("span", {
+    }, score, "%"), /*#__PURE__*/React.createElement("span", {
       className: "score-badge__label"
     }, label))), /*#__PURE__*/React.createElement("button", {
       className: "btn btn--ghost btn--sm",
       onClick: function onClick() {
-        return onSelect({
-          file: {
-            name: filing.name,
-            size: "3.4 MB"
-          },
-          court: window.FC_DATA.COURTS[0],
-          caseType: window.FC_DATA.CASE_TYPES[0]
-        });
-      }
-    }, "Review")));
+        return onOpen && onOpen(filing);
+      },
+      disabled: !filing.session,
+      title: filing.session ? "View the saved report" : "Report not available"
+    }, "View report")));
   })), filtered.length === 0 && /*#__PURE__*/React.createElement("div", {
     className: "empty-state"
   }, /*#__PURE__*/React.createElement("div", {
     className: "empty-state__icon"
   }, /*#__PURE__*/React.createElement(Ico.FilePdf, {
     size: 48
-  })), /*#__PURE__*/React.createElement("h3", null, "No filings yet"), /*#__PURE__*/React.createElement("p", null, "Start by uploading your first filing for analysis")));
+  })), /*#__PURE__*/React.createElement("h3", null, "No filings yet"), /*#__PURE__*/React.createElement("p", null, "Start by uploading your first filing for analysis"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn--primary",
+    onClick: function onClick() {
+      return onUpload && onUpload();
+    },
+    style: {
+      marginTop: 16
+    }
+  }, "Upload a filing")));
 }
 
 // ============================================================================
@@ -2326,8 +2666,8 @@ function CourtRulesScreen() {
 // HELP SCREEN
 // ============================================================================
 
-function HelpScreen(_ref30) {
-  var onHome = _ref30.onHome;
+function HelpScreen(_ref32) {
+  var onHome = _ref32.onHome;
   var _useStateS5 = useStateS("getting-started"),
     _useStateS6 = _slicedToArray(_useStateS5, 2),
     activeTab = _useStateS6[0],
@@ -2365,7 +2705,7 @@ function HelpScreen(_ref30) {
     className: "help-section"
   }, /*#__PURE__*/React.createElement("h3", null, "Step 1: Upload Your Filing"), /*#__PURE__*/React.createElement("p", null, "Drag and drop your PDF filing onto the upload area, or click to browse your computer. The file must be a text-based PDF (not scanned images).")), /*#__PURE__*/React.createElement("div", {
     className: "help-section"
-  }, /*#__PURE__*/React.createElement("h3", null, "Step 2: Select Court & Case Type"), /*#__PURE__*/React.createElement("p", null, "Choose the court where you're filing (Supreme Court, Delhi High Court, etc.) and the case type (Writ Petition, SLP, etc.). This ensures we apply the right rules.")), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("h3", null, "Step 2: Select Court & Case Type"), /*#__PURE__*/React.createElement("p", null, "Choose the court where you're filing and the case type (Writ Petition, SLP, etc.). This ensures we apply the right rules.")), /*#__PURE__*/React.createElement("div", {
     className: "help-section"
   }, /*#__PURE__*/React.createElement("h3", null, "Step 3: Review Your Analysis"), /*#__PURE__*/React.createElement("p", null, "We scan your document and identify defects. Each defect shows the page number, severity level, and the court rule it violates.")), /*#__PURE__*/React.createElement("div", {
     className: "help-section"
@@ -2377,7 +2717,7 @@ function HelpScreen(_ref30) {
     className: "faq-item"
   }, /*#__PURE__*/React.createElement("h3", null, "Does the tool guarantee my filing will pass?"), /*#__PURE__*/React.createElement("p", null, "No. The Filing Readiness Score is indicative only \u2014 it reflects formatting and registry-filing requirements, not the legal merit of your matter, and registry scrutiny involves human discretion we can't fully automate. Always have a qualified advocate review your filing before submission.")), /*#__PURE__*/React.createElement("div", {
     className: "faq-item"
-  }, /*#__PURE__*/React.createElement("h3", null, "What courts do you cover?"), /*#__PURE__*/React.createElement("p", null, "We currently analyze filings for the Delhi High Court. Support for the Supreme Court and other High Courts is coming soon \u2014 we're expanding coverage based on user demand.")), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("h3", null, "What courts do you cover?"), /*#__PURE__*/React.createElement("p", null, "We're rolling out support court by court \u2014 select your court at upload to see what's currently available. We're expanding coverage based on user demand.")), /*#__PURE__*/React.createElement("div", {
     className: "faq-item"
   }, /*#__PURE__*/React.createElement("h3", null, "How accurate is the analysis?"), /*#__PURE__*/React.createElement("p", null, "Our rules are based on official court guidelines. However, rules change periodically. We update our database quarterly. Always verify critical requirements with the court.")), /*#__PURE__*/React.createElement("div", {
     className: "faq-item"
@@ -2396,7 +2736,7 @@ function HelpScreen(_ref30) {
     style: {
       marginTop: 0
     }
-  }, "How myfiling.ai Works"), /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, "myfiling.ai checks your filings"), " against the Delhi High Court's formatting and registry-filing requirements (paper, margins, type, pagination, index, court fee, vakalatnama, limitation, certified copy, affidavit). The Filing Readiness Score helps you understand your filing's registry-compliance level. This is a ", /*#__PURE__*/React.createElement("strong", null, "tool to catch common defects early"), " and save time on your drafting workflow \u2014 not a substitute for legal review."), /*#__PURE__*/React.createElement("p", {
+  }, "How myfiling.ai Works"), /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, "myfiling.ai checks your filings"), " against the court's formatting and registry-filing requirements (paper, margins, type, pagination, index, court fee, vakalatnama, limitation, certified copy, affidavit). The Filing Readiness Score helps you understand your filing's registry-compliance level. This is a ", /*#__PURE__*/React.createElement("strong", null, "tool to catch common defects early"), " and save time on your drafting workflow \u2014 not a substitute for legal review."), /*#__PURE__*/React.createElement("p", {
     style: {
       marginBottom: 0
     }
@@ -3058,9 +3398,9 @@ function createFileObject(file) {
 }
 ;
 // app.jsx — root App, ties screens together
-var _React6 = React,
-  useStateA = _React6.useState,
-  useEffectA = _React6.useEffect;
+var _React7 = React,
+  useStateA = _React7.useState,
+  useEffectA = _React7.useEffect;
 
 // --- Recent filings: server-side (SQLite via /api/recents) ------------------
 // The backend records each completed analysis in SQLite and returns the full
@@ -3070,33 +3410,35 @@ function fetchRecents() {
   return _fetchRecents.apply(this, arguments);
 }
 function _fetchRecents() {
-  _fetchRecents = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
-    var res, data, _t4;
-    return _regenerator().w(function (_context2) {
-      while (1) switch (_context2.p = _context2.n) {
+  _fetchRecents = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7() {
+    var res, data, _t8;
+    return _regenerator().w(function (_context7) {
+      while (1) switch (_context7.p = _context7.n) {
         case 0:
-          _context2.p = 0;
-          _context2.n = 1;
-          return fetch("/api/recents");
+          _context7.p = 0;
+          _context7.n = 1;
+          return fetch("/api/recents", {
+            credentials: "same-origin"
+          });
         case 1:
-          res = _context2.v;
+          res = _context7.v;
           if (res.ok) {
-            _context2.n = 2;
+            _context7.n = 2;
             break;
           }
-          return _context2.a(2, []);
+          return _context7.a(2, []);
         case 2:
-          _context2.n = 3;
+          _context7.n = 3;
           return res.json();
         case 3:
-          data = _context2.v;
-          return _context2.a(2, Array.isArray(data.recents) ? data.recents : []);
+          data = _context7.v;
+          return _context7.a(2, Array.isArray(data.recents) ? data.recents : []);
         case 4:
-          _context2.p = 4;
-          _t4 = _context2.v;
-          return _context2.a(2, []);
+          _context7.p = 4;
+          _t8 = _context7.v;
+          return _context7.a(2, []);
       }
-    }, _callee2, null, [[0, 4]]);
+    }, _callee7, null, [[0, 4]]);
   }));
   return _fetchRecents.apply(this, arguments);
 }
@@ -3143,10 +3485,53 @@ function App() {
     recents = _useStateA10[0],
     setRecents = _useStateA10[1];
 
-  // Load recent filings from the server on startup.
+  // Auth gate: `user` is null when logged out; `authChecked` flips true once the
+  // initial /api/auth/me has resolved (so we don't flash the login screen).
+  var _useStateA11 = useStateA(null),
+    _useStateA12 = _slicedToArray(_useStateA11, 2),
+    user = _useStateA12[0],
+    setUser = _useStateA12[1];
+  var _useStateA13 = useStateA(false),
+    _useStateA14 = _slicedToArray(_useStateA13, 2),
+    authChecked = _useStateA14[0],
+    setAuthChecked = _useStateA14[1];
+
+  // On startup, check whether there's an existing session, then load recents.
   useEffectA(function () {
-    fetchRecents().then(setRecents);
+    window.apiMe().then(function (u) {
+      setUser(u);
+      setAuthChecked(true);
+      if (u) fetchRecents().then(setRecents);
+    });
   }, []);
+  var onAuthed = function onAuthed(u) {
+    setUser(u);
+    setScreen("upload");
+    setNavActive("dashboard");
+    fetchRecents().then(setRecents);
+  };
+  var onLogout = /*#__PURE__*/function () {
+    var _ref33 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
+      return _regenerator().w(function (_context2) {
+        while (1) switch (_context2.n) {
+          case 0:
+            _context2.n = 1;
+            return window.apiLogout();
+          case 1:
+            setUser(null);
+            setRecents([]);
+            setSession(null);
+            setScreen("upload");
+            setNavActive("dashboard");
+          case 2:
+            return _context2.a(2);
+        }
+      }, _callee2);
+    }));
+    return function onLogout() {
+      return _ref33.apply(this, arguments);
+    };
+  }();
 
   // Re-pull the list from the server (called after an analysis records one).
   var refreshRecents = function refreshRecents() {
@@ -3155,23 +3540,23 @@ function App() {
 
   // Live defects streamed from the backend during an in-flight analysis. The
   // AnalysingOverlay reads these to show findings appearing in real time.
-  var _useStateA11 = useStateA([]),
-    _useStateA12 = _slicedToArray(_useStateA11, 2),
-    liveDefects = _useStateA12[0],
-    setLiveDefects = _useStateA12[1];
-  var _useStateA13 = useStateA(null),
-    _useStateA14 = _slicedToArray(_useStateA13, 2),
-    liveProgress = _useStateA14[0],
-    setLiveProgress = _useStateA14[1];
+  var _useStateA15 = useStateA([]),
+    _useStateA16 = _slicedToArray(_useStateA15, 2),
+    liveDefects = _useStateA16[0],
+    setLiveDefects = _useStateA16[1];
+  var _useStateA17 = useStateA(null),
+    _useStateA18 = _slicedToArray(_useStateA17, 2),
+    liveProgress = _useStateA18[0],
+    setLiveProgress = _useStateA18[1];
 
   // Run the REAL analysis by STREAMING from the backend (Server-Sent Events over
   // a POST/fetch ReadableStream). Defects render live as each detector finds them;
   // the final `result` frame carries the score + full payload.
   var startAnalyse = /*#__PURE__*/function () {
-    var _ref31 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(payload) {
-      var raw, form, fileUrl, finishWithResult, res, detail, body, reader, decoder, buffer, errored, handleFrame, _yield$reader$read, value, done, sep, frame, _t, _t2, _t3;
-      return _regenerator().w(function (_context) {
-        while (1) switch (_context.p = _context.n) {
+    var _ref34 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(payload) {
+      var raw, form, fileUrl, finishWithResult, res, detail, body, reader, decoder, buffer, errored, handleFrame, _yield$reader$read, value, done, sep, frame, _t2, _t3, _t4;
+      return _regenerator().w(function (_context3) {
+        while (1) switch (_context3.p = _context3.n) {
           case 0:
             setScreen("analysing");
             setNavActive("dashboard");
@@ -3182,14 +3567,14 @@ function App() {
             setLiveProgress(null);
             raw = payload.file && payload.file.raw;
             if (raw) {
-              _context.n = 1;
+              _context3.n = 1;
               break;
             }
             showError({
               title: "No file to analyse",
               details: "Please choose a PDF file before running analysis."
             });
-            return _context.a(2);
+            return _context3.a(2);
           case 1:
             form = new FormData();
             form.append("file", raw, payload.file.name);
@@ -3218,36 +3603,37 @@ function App() {
               setNavActive("dashboard");
               refreshRecents();
             };
-            _context.p = 2;
-            _context.n = 3;
+            _context3.p = 2;
+            _context3.n = 3;
             return fetch("/api/analyze/stream", {
               method: "POST",
-              body: form
+              body: form,
+              credentials: "same-origin"
             });
           case 3:
-            res = _context.v;
+            res = _context3.v;
             if (!(!res.ok || !res.body)) {
-              _context.n = 8;
+              _context3.n = 8;
               break;
             }
             detail = {
               title: "Analysis failed",
               details: "Server returned ".concat(res.status, ".")
             };
-            _context.p = 4;
-            _context.n = 5;
+            _context3.p = 4;
+            _context3.n = 5;
             return res.json();
           case 5:
-            body = _context.v;
+            body = _context3.v;
             if (body && body.detail) detail = body.detail;
-            _context.n = 7;
+            _context3.n = 7;
             break;
           case 6:
-            _context.p = 6;
-            _t = _context.v;
+            _context3.p = 6;
+            _t2 = _context3.v;
           case 7:
             showError(detail);
-            return _context.a(2);
+            return _context3.a(2);
           case 8:
             // Parse the SSE byte stream frame-by-frame (event: <type>\ndata: <json>\n\n).
             reader = res.body.getReader();
@@ -3295,20 +3681,20 @@ function App() {
             }; // eslint-disable-next-line no-constant-condition
           case 9:
             if (!true) {
-              _context.n = 17;
+              _context3.n = 17;
               break;
             }
-            _context.n = 10;
+            _context3.n = 10;
             return reader.read();
           case 10:
-            _yield$reader$read = _context.v;
+            _yield$reader$read = _context3.v;
             value = _yield$reader$read.value;
             done = _yield$reader$read.done;
             if (!done) {
-              _context.n = 11;
+              _context3.n = 11;
               break;
             }
-            return _context.a(3, 17);
+            return _context3.a(3, 17);
           case 11:
             buffer += decoder.decode(value, {
               stream: true
@@ -3320,40 +3706,40 @@ function App() {
               handleFrame(frame);
             }
             if (!errored) {
-              _context.n = 16;
+              _context3.n = 16;
               break;
             }
-            _context.p = 12;
-            _context.n = 13;
+            _context3.p = 12;
+            _context3.n = 13;
             return reader.cancel();
           case 13:
-            _context.n = 15;
+            _context3.n = 15;
             break;
           case 14:
-            _context.p = 14;
-            _t2 = _context.v;
+            _context3.p = 14;
+            _t3 = _context3.v;
           case 15:
-            return _context.a(2);
+            return _context3.a(2);
           case 16:
-            _context.n = 9;
+            _context3.n = 9;
             break;
           case 17:
-            _context.n = 19;
+            _context3.n = 19;
             break;
           case 18:
-            _context.p = 18;
-            _t3 = _context.v;
+            _context3.p = 18;
+            _t4 = _context3.v;
             showError({
               title: "Could not reach the analysis service",
               details: "The backend did not respond. Make sure the server is running, then retry."
             });
           case 19:
-            return _context.a(2);
+            return _context3.a(2);
         }
-      }, _callee, null, [[12, 14], [4, 6], [2, 18]]);
+      }, _callee3, null, [[12, 14], [4, 6], [2, 18]]);
     }));
-    return function startAnalyse(_x) {
-      return _ref31.apply(this, arguments);
+    return function startAnalyse(_x4) {
+      return _ref34.apply(this, arguments);
     };
   }();
   var showError = function showError(msg) {
@@ -3373,12 +3759,28 @@ function App() {
   useEffectA(function () {
     document.documentElement.style.setProperty("--sidebar-w", t.showSidebar ? "260px" : "0px");
   }, [t.showSidebar]);
+
+  // Until the initial auth check resolves, render nothing (avoids a login flash).
+  if (!authChecked) {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "auth-loading"
+    });
+  }
+
+  // Logged out -> show the login / signup gate; the rest of the app is hidden.
+  if (!user) {
+    return /*#__PURE__*/React.createElement(AuthScreen, {
+      onAuthed: onAuthed
+    });
+  }
   return /*#__PURE__*/React.createElement("div", {
     className: "app" + (t.showSidebar ? "" : " app--no-sidebar")
   }, /*#__PURE__*/React.createElement(Header, {
     screen: screen,
     onHome: goHome,
     navActive: navActive,
+    user: user,
+    onLogout: onLogout,
     onNavClick: function onNavClick(name) {
       if (name === "dashboard") goHome();else goToScreen(name, name);
     }
@@ -3415,9 +3817,16 @@ function App() {
     message: errorMsg,
     onRetry: goHome
   }), screen === "history" && /*#__PURE__*/React.createElement(HistoryScreen, {
-    onSelect: function onSelect(filing) {
-      startAnalyse(filing);
-    }
+    recents: recents,
+    onOpen: function onOpen(entry) {
+      // Open the cached report (the original PDF is not retained).
+      if (entry && entry.session) {
+        setSession(entry.session);
+        setScreen("results");
+        setNavActive("dashboard");
+      }
+    },
+    onUpload: goHome
   }), screen === "rules" && /*#__PURE__*/React.createElement(CourtRulesScreen, null), screen === "help" && /*#__PURE__*/React.createElement(HelpScreen, {
     onHome: goHome
   })), screen === "analysing" && session && /*#__PURE__*/React.createElement(AnalysingOverlay, {

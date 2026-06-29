@@ -6,16 +6,29 @@ const { useState: useStateS, useMemo: useMemoS } = React;
 // HISTORY SCREEN
 // ============================================================================
 
-function HistoryScreen({ onSelect }) {
-  const { RECENT } = window.FC_DATA;
+function _historyWhen(iso) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return "";
+  const mins = Math.round((Date.now() - d.getTime()) / 60000);
+  if (mins < 1) return "Just now";
+  if (mins < 60) return mins + "m ago";
+  const hrs = Math.round(mins / 60);
+  if (hrs < 24) return hrs + "h ago";
+  const days = Math.round(hrs / 24);
+  if (days < 30) return days + "d ago";
+  return d.toLocaleDateString();
+}
+
+function HistoryScreen({ recents, onOpen, onUpload }) {
+  const list = Array.isArray(recents) ? recents : [];
   const [filterScore, setFilterScore] = useStateS("all");
 
   const filtered = useMemoS(() => {
-    if (filterScore === "all") return RECENT;
-    if (filterScore === "pass") return RECENT.filter(r => r.score >= 71);
-    if (filterScore === "risk") return RECENT.filter(r => r.score < 71);
-    return RECENT;
-  }, [filterScore]);
+    if (filterScore === "pass") return list.filter(r => (r.score || 0) >= 71);
+    if (filterScore === "risk") return list.filter(r => (r.score || 0) < 71);
+    return list;
+  }, [filterScore, list]);
 
   return (
     <div className="screen-content">
@@ -29,55 +42,54 @@ function HistoryScreen({ onSelect }) {
           className={"filter-pill" + (filterScore === "all" ? " filter-pill--active" : "")}
           onClick={() => setFilterScore("all")}
         >
-          All ({RECENT.length})
+          All ({list.length})
         </button>
         <button
           className={"filter-pill" + (filterScore === "pass" ? " filter-pill--active" : "")}
           onClick={() => setFilterScore("pass")}
         >
-          Likely to Pass ({RECENT.filter(r => r.score >= 71).length})
+          Likely to Pass ({list.filter(r => (r.score || 0) >= 71).length})
         </button>
         <button
           className={"filter-pill" + (filterScore === "risk" ? " filter-pill--active" : "")}
           onClick={() => setFilterScore("risk")}
         >
-          Needs Work ({RECENT.filter(r => r.score < 71).length})
+          Needs Work ({list.filter(r => (r.score || 0) < 71).length})
         </button>
       </div>
 
       <div className="history-list">
         {filtered.map((filing, i) => {
-          const band = filing.score >= 71 ? "g" : filing.score >= 41 ? "a" : "r";
-          const label = filing.score >= 71 ? "Likely to pass" : filing.score >= 41 ? "Moderate risk" : "High risk";
+          const score = filing.score || 0;
+          const band = score >= 71 ? "g" : score >= 41 ? "a" : "r";
+          const label = score >= 71 ? "Likely to pass" : score >= 41 ? "Moderate risk" : "High risk";
+          const when = filing.when || _historyWhen(filing.createdAt);
           return (
-            <div key={i} className="history-card">
+            <div key={filing.analysisId || i} className="history-card">
               <div className="history-card__left">
                 <div className="history-card__icon"><Ico.FilePdf size={16} /></div>
                 <div className="history-card__info">
                   <div className="history-card__name">{filing.name}</div>
                   <div className="history-card__meta">
-                    <span>{filing.court}</span>
-                    <span>·</span>
-                    <span>{filing.when}</span>
+                    {filing.court && (<><span>{filing.court}</span><span>·</span></>)}
+                    <span>{when}</span>
                   </div>
                 </div>
               </div>
               <div className="history-card__right">
                 <div className="history-card__score-badge">
                   <div className={"score-badge score-badge--" + band}>
-                    <span className="score-badge__num">{filing.score}%</span>
+                    <span className="score-badge__num">{score}%</span>
                     <span className="score-badge__label">{label}</span>
                   </div>
                 </div>
                 <button
                   className="btn btn--ghost btn--sm"
-                  onClick={() => onSelect({
-                    file: { name: filing.name, size: "3.4 MB" },
-                    court: window.FC_DATA.COURTS[0],
-                    caseType: window.FC_DATA.CASE_TYPES[0],
-                  })}
+                  onClick={() => onOpen && onOpen(filing)}
+                  disabled={!filing.session}
+                  title={filing.session ? "View the saved report" : "Report not available"}
                 >
-                  Review
+                  View report
                 </button>
               </div>
             </div>
@@ -90,6 +102,10 @@ function HistoryScreen({ onSelect }) {
           <div className="empty-state__icon"><Ico.FilePdf size={48} /></div>
           <h3>No filings yet</h3>
           <p>Start by uploading your first filing for analysis</p>
+          <button className="btn btn--primary" onClick={() => onUpload && onUpload()}
+                  style={{ marginTop: 16 }}>
+            Upload a filing
+          </button>
         </div>
       )}
     </div>
@@ -246,7 +262,7 @@ function HelpScreen({ onHome }) {
 
             <div className="help-section">
               <h3>Step 2: Select Court & Case Type</h3>
-              <p>Choose the court where you're filing (Supreme Court, Delhi High Court, etc.) and the case type (Writ Petition, SLP, etc.). This ensures we apply the right rules.</p>
+              <p>Choose the court where you're filing and the case type (Writ Petition, SLP, etc.). This ensures we apply the right rules.</p>
             </div>
 
             <div className="help-section">
@@ -282,7 +298,7 @@ function HelpScreen({ onHome }) {
 
             <div className="faq-item">
               <h3>What courts do you cover?</h3>
-              <p>We currently analyze filings for the Delhi High Court. Support for the Supreme Court and other High Courts is coming soon — we're expanding coverage based on user demand.</p>
+              <p>We're rolling out support court by court — select your court at upload to see what's currently available. We're expanding coverage based on user demand.</p>
             </div>
 
             <div className="faq-item">
@@ -308,7 +324,7 @@ function HelpScreen({ onHome }) {
 
             <div className="terms-section" style={{background: "var(--blue-50)", padding: 16, borderRadius: "var(--radius-md)", border: "1px solid #D6E1FB", marginBottom: 24}}>
               <h3 style={{marginTop: 0}}>How myfiling.ai Works</h3>
-              <p><strong>myfiling.ai checks your filings</strong> against the Delhi High Court's formatting and registry-filing requirements (paper, margins, type, pagination, index, court fee, vakalatnama, limitation, certified copy, affidavit). The Filing Readiness Score helps you understand your filing's registry-compliance level. This is a <strong>tool to catch common defects early</strong> and save time on your drafting workflow — not a substitute for legal review.</p>
+              <p><strong>myfiling.ai checks your filings</strong> against the court's formatting and registry-filing requirements (paper, margins, type, pagination, index, court fee, vakalatnama, limitation, certified copy, affidavit). The Filing Readiness Score helps you understand your filing's registry-compliance level. This is a <strong>tool to catch common defects early</strong> and save time on your drafting workflow — not a substitute for legal review.</p>
               <p style={{marginBottom: 0}}><strong>Important:</strong> While highly accurate, we recommend having your advocate review the final filing before submission, as with any important legal document.</p>
             </div>
 

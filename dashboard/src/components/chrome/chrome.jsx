@@ -1,13 +1,23 @@
 // Header + Sidebar navigation
 const { useState } = React;
 
-function Header({ screen, onHome, navActive, onNavClick }) {
+function _userInitials(user) {
+  if (!user) return "?";
+  const src = (user.name && user.name.trim()) || user.email || "";
+  const parts = src.replace(/@.*/, "").split(/[\s._-]+/).filter(Boolean);
+  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+  return (src.slice(0, 2) || "?").toUpperCase();
+}
+
+function Header({ screen, onHome, navActive, onNavClick, user, onLogout }) {
+  const [menuOpen, setMenuOpen] = useState(false);
   const items = [
     { label: "Dashboard", key: "dashboard" },
     { label: "History", key: "history" },
     { label: "Court Rules", key: "rules" },
     { label: "Help", key: "help" }
   ];
+  const displayName = user ? ((user.name && user.name.trim()) || user.email) : "";
   return (
     <header className="header">
       <button className="header__logo" onClick={onHome}>
@@ -31,7 +41,32 @@ function Header({ screen, onHome, navActive, onNavClick }) {
           <input placeholder="Search filings, rules, defects…" />
           <span className="header__kbd">⌘K</span>
         </div>
-        <div className="header__avatar" title="A. Raghavan, AOR">AR</div>
+        <div className="header__user">
+          <button
+            className="header__avatar"
+            title={displayName}
+            onClick={() => setMenuOpen((v) => !v)}
+          >
+            {_userInitials(user)}
+          </button>
+          {menuOpen && (
+            <>
+              <div className="header__menu-backdrop" onClick={() => setMenuOpen(false)} />
+              <div className="header__menu">
+                <div className="header__menu-name">{displayName}</div>
+                {user && user.email && (
+                  <div className="header__menu-sub">{user.email}</div>
+                )}
+                <button
+                  className="header__menu-item"
+                  onClick={() => { setMenuOpen(false); onLogout && onLogout(); }}
+                >
+                  Log out
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </header>
   );

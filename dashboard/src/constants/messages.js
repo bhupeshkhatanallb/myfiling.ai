@@ -3,7 +3,7 @@
 const MESSAGES = {
   UPLOAD: {
     TITLE: "Catch filing defects before submission.",
-    SUBTITLE: "myfiling.ai checks your PDF against the Delhi High Court's formatting and registry-filing requirements — paper size, margins, type, pagination, index, court fee, vakalatnama, limitation, certified copy and affidavit. Get a filing-readiness score and a defect checklist in seconds.",
+    SUBTITLE: "myfiling.ai checks your PDF against the court's formatting and registry-filing requirements — paper size, margins, type, pagination, index, court fee, vakalatnama, limitation, certified copy and affidavit. Get a filing-readiness score and a defect checklist in seconds.",
     DROPZONE_TITLE: "Drag your filing PDF here or click to browse",
     DROPZONE_SUB: "Cover page, index, synopsis, body and annexures — all in one PDF.",
     READY_TITLE: "Ready to analyse",

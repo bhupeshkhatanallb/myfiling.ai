@@ -55,13 +55,13 @@ function UploadScreen({ onAnalyse, onError }) {
           Catch filing defects <em>before submission.</em>
         </h1>
         <p className="upload__sub">
-          myfiling.ai checks your PDF against the Delhi High Court's formatting and
+          myfiling.ai checks your PDF against the court's formatting and
           registry-filing requirements — paper size, margins, type, pagination, index,
           court fee, vakalatnama, limitation, certified copy and affidavit. Get a
           filing-readiness score and a defect checklist in seconds.
         </p>
         <div className="upload__trust">
-          <span className="upload__trust-item"><Ico.Check size={13} /> Delhi High Court rules engine</span>
+          <span className="upload__trust-item"><Ico.Check size={13} /> Court rules engine</span>
           <span className="upload__trust-item"><Ico.Check size={13} /> Documents never stored</span>
           <span className="upload__trust-item"><Ico.Check size={13} /> Results in seconds</span>
         </div>

@@ -7,7 +7,7 @@ const { useState: useStateA, useEffect: useEffectA } = React;
 // just fetches the list; it no longer stores anything in the browser.
 async function fetchRecents() {
   try {
-    const res = await fetch("/api/recents");
+    const res = await fetch("/api/recents", { credentials: "same-origin" });
     if (!res.ok) return [];
     const data = await res.json();
     return Array.isArray(data.recents) ? data.recents : [];
@@ -40,10 +40,35 @@ function App() {
   const [navActive, setNavActive] = useStateA("dashboard");
   const [recents, setRecents] = useStateA([]);
 
-  // Load recent filings from the server on startup.
+  // Auth gate: `user` is null when logged out; `authChecked` flips true once the
+  // initial /api/auth/me has resolved (so we don't flash the login screen).
+  const [user, setUser] = useStateA(null);
+  const [authChecked, setAuthChecked] = useStateA(false);
+
+  // On startup, check whether there's an existing session, then load recents.
   useEffectA(() => {
-    fetchRecents().then(setRecents);
+    window.apiMe().then((u) => {
+      setUser(u);
+      setAuthChecked(true);
+      if (u) fetchRecents().then(setRecents);
+    });
   }, []);
+
+  const onAuthed = (u) => {
+    setUser(u);
+    setScreen("upload");
+    setNavActive("dashboard");
+    fetchRecents().then(setRecents);
+  };
+
+  const onLogout = async () => {
+    await window.apiLogout();
+    setUser(null);
+    setRecents([]);
+    setSession(null);
+    setScreen("upload");
+    setNavActive("dashboard");
+  };
 
   // Re-pull the list from the server (called after an analysis records one).
   const refreshRecents = () => { fetchRecents().then(setRecents); };
@@ -98,7 +123,9 @@ function App() {
     };
 
     try {
-      const res = await fetch("/api/analyze/stream", { method: "POST", body: form });
+      const res = await fetch("/api/analyze/stream", {
+        method: "POST", body: form, credentials: "same-origin",
+      });
       if (!res.ok || !res.body) {
         let detail = { title: "Analysis failed", details: `Server returned ${res.status}.` };
         try {
@@ -179,12 +206,24 @@ function App() {
     );
   }, [t.showSidebar]);
 
+  // Until the initial auth check resolves, render nothing (avoids a login flash).
+  if (!authChecked) {
+    return <div className="auth-loading" />;
+  }
+
+  // Logged out -> show the login / signup gate; the rest of the app is hidden.
+  if (!user) {
+    return <AuthScreen onAuthed={onAuthed} />;
+  }
+
   return (
     <div className={"app" + (t.showSidebar ? "" : " app--no-sidebar")}>
       <Header
         screen={screen}
         onHome={goHome}
         navActive={navActive}
+        user={user}
+        onLogout={onLogout}
         onNavClick={(name) => {
           if (name === "dashboard") goHome();
           else goToScreen(name, name);
@@ -226,9 +265,18 @@ function App() {
           <ErrorScreen message={errorMsg} onRetry={goHome} />
         )}
         {screen === "history" && (
-          <HistoryScreen onSelect={(filing) => {
-            startAnalyse(filing);
-          }} />
+          <HistoryScreen
+            recents={recents}
+            onOpen={(entry) => {
+              // Open the cached report (the original PDF is not retained).
+              if (entry && entry.session) {
+                setSession(entry.session);
+                setScreen("results");
+                setNavActive("dashboard");
+              }
+            }}
+            onUpload={goHome}
+          />
         )}
         {screen === "rules" && (
           <CourtRulesScreen />
