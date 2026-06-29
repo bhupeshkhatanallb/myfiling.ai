@@ -8,6 +8,8 @@
 
 Keep PARTS 1–3 as-is (they are stable project context). Only edit PART 4 each time.
 
+> **Last synced with the codebase:** 2026-06 (after the pipeline rebuild, court switch to Delhi High Court, court-neutral copy, login/auth, and the Render/Hugging Face deploys). If the code has drifted again, tell Claude to re-verify file paths before relying on PART 2.
+
 ---
 
 ## PART 0 — INSTRUCTIONS TO CHATGPT (read first)
@@ -17,9 +19,9 @@ You are a prompt engineer. Below is the full context of my software project (`my
 Your output prompt must:
 - Restate the goal clearly and unambiguously in your own words.
 - Reference the **exact file paths** from PART 2 that are likely involved.
-- Respect every constraint in PART 3 (especially: never hand-edit build artifacts; rebuild after editing `dashboard/src`).
+- Respect every constraint in PART 3 (especially: never hand-edit build artifacts; rebuild after editing `dashboard/src`; keep detector ↔ server in agreement).
 - Break the work into a short ordered task list.
-- Tell Claude to verify its work (run the build / detector tests) and report what it changed.
+- Tell Claude to verify its work (run the build / `python test_pipeline.py` / `python regression_pipeline.py`) and report what it changed.
 - Ask Claude to confirm scope or surface blockers **before** large or destructive changes, and to flag anything ambiguous rather than guessing.
 - NOT include explanations to me — output **only** the final prompt for Claude, inside one code block.
 
@@ -30,73 +32,103 @@ If my PART 4 request is ambiguous or missing detail, first list the clarifying q
 ## PART 1 — PROJECT OVERVIEW
 
 - **Name:** myfiling.ai
-- **What it does:** Analyzes Indian legal-filing PDFs (Supreme Court & High Courts) for formatting/structure compliance defects, scores "scrutiny pass probability," and shows results in a web dashboard.
-- **Primary target court (live):** Supreme Court of India. Other courts (Delhi, Bombay, Calcutta, Madras HC, NCLT, etc.) exist in the UI but are marked `comingSoon` / disabled.
+- **What it does:** Analyzes Indian legal-filing PDFs for formatting / structure / filing-requirement defects, gives a "filing-readiness score," and shows a defect checklist in a web dashboard. Designed for advocates' clerks / AoR offices to catch defects **before** the Registry objects to a filing.
+- **Live court (which rules are enforced):** **Delhi High Court** (`dhc`). The detector spec it enforces (A4/Legal paper, Times New Roman, 14 pt, 1.5 spacing, 4/4/2/2 cm margins, etc.) is shared across courts, so the engine is largely court-agnostic. Other courts exist in the UI as `comingSoon`. **User-facing copy is deliberately court-NEUTRAL** ("the court", not "Delhi High Court") so it reads correctly as more courts launch — do not reintroduce a specific court name into marketing/help copy.
+- **Auth:** the app is **login-gated**. Users sign up (email + password) and each user's history is private to them.
 - **Repo root:** `d:\data\2026\legal\legal-v1`
-- **OS / shell:** Windows 11, PowerShell. Python + Node both available.
-- **Run the full app:** `python server.py` (FastAPI; serves dashboard at `/`, exposes `POST /api/analyze` and `GET /api/health`).
+- **OS / shell:** Windows 11, PowerShell (a Bash tool is also available). Python 3.8 locally; the deploy containers use Python 3.11. Node is available for the dashboard build.
+- **Run the full app locally:** `python server.py` → FastAPI serves the dashboard at `/` and the API under `/api/*` on `http://localhost:8000`.
+- **Deployed via:** Hugging Face Spaces (Docker, 16 GB free) and/or Render (free 512 MB tier). Both build from the GitHub repo `bhupeshkhatanallb/myfiling.ai`.
 
 ---
 
 ## PART 2 — ARCHITECTURE & KEY FILES
 
-### Backend — detector engine (Python)
-- `detector/src/detectors/detector_engine.py` — orchestrator; parses the PDF **once** into a shared `DocumentModel`, runs all detectors (in parallel) and aggregates results.
-- `detector/src/detectors/document_model.py` — single-pass PDF model shared by all detectors; includes a scanned/garbled "cannot scrutinize" gate.
-- Detectors:
-  - `detector/src/detectors/index_format_detector.py` — Index vs actual page references.
-  - `detector/src/detectors/page_numbering_detector.py` — consecutive page numbers (top-right corner per corpus).
-  - `detector/src/detectors/section_order_detector.py` — paper-book section arrangement.
-  - `detector/src/detectors/format_detectors.py` — `PaperSizeDetector`, `MarginDetector`, `FontSizeDetector`, `LineSpacingDetector` (thresholds tuned against the `test_pdf` corpus to avoid false positives).
-  - `detector/src/detectors/base_detector.py` — shared base class.
-- `detector/src/parsers/pdf_parser.py` — PDF text/geometry extraction.
-- Tests / harnesses (repo root): `test_detectors.py`, `test_detector_logic.py`, `integration_test.py`, `regression.py`, `run_detectors.py`, `make_test_pdf.py`.
+### Backend — detector PIPELINE (Python)  ← this was fully rebuilt; the old `detector/src/detectors/` engine no longer exists
+The engine is the **`detector/src/pipeline/`** package. It parses the PDF **in chunks** (default 8–50 pages) and streams findings in real time. Detectors **self-register** via a decorator and are grouped by `kind` ("page" | "conditional" | "validator").
+
+- `detector/src/pipeline/reader.py` — `ChunkReader`: opens the PDF once (pdfplumber), yields `RawPage`s in chunks (bounded memory). `max_pages` cap supported.
+- `detector/src/pipeline/builder.py` — `build_context()`: drives the chunked parse → builds `PageMetadata` per page → runs extractors → returns the shared `DocumentContext`. Honors `max_pages` / `enable_ocr`.
+- `detector/src/pipeline/model.py` — `PageMetadata` (single source of truth for one page) + `DocumentContext` (shared, cached doc-level signals: scan/garble gating, dominant body metrics, paper distribution, per-page margin/quality signals). `classify_paper()` lives here.
+- `detector/src/pipeline/metrics.py` — pure geometry/typography measurement (line aggregation, **block-based margin measurement**, per-page left/right margin defect signals, OCR-garble signals).
+- `detector/src/pipeline/registry.py` — `@register` decorator + `detectors_of_kind(kind)`. Adding a detector = one decorated class.
+- `detector/src/pipeline/base.py` — `Detector` base class, `DetectorResult`, `DefectSink` (enforces the **20-defects-per-detector cap** + streaming callback).
+- `detector/src/pipeline/engine.py` — synchronous `DetectorEngine` facade (`run_all()`); used by harnesses + the non-streaming endpoint.
+- `detector/src/pipeline/processor.py` — async `DocumentProcessor.stream()`: drives the pipeline and yields live `progress` / `defect` / `summary` events for SSE. Accepts `max_pages` / `enable_ocr`.
+- `detector/src/pipeline/aggregate.py` — builds the final report dict from detector results.
+- `detector/src/pipeline/quality.py` — image-quality pass: per-page **DPI** + **blur** measurement (renders scan pages at a low DPI; memory-frugal int16 Laplacian). Env knobs: `QUALITY_RENDER_DPI`, `QUALITY_MAX_PAGES`.
+- `detector/src/pipeline/ocr.py` — **optional** Tesseract OCR (gracefully skipped if the binary is absent; OFF in deploys).
+- `detector/src/pipeline/gates.py` — capability gates (geometry / typography / text) for graceful "could not verify".
+- `detector/src/pipeline/feature_flags.py` — runtime switches. **Pagination/written-folio checks are currently DISABLED** here (`PAGINATION_CHECKS_ENABLED = False`, folio detection unreliable); re-enable via flag or `ENABLE_PAGINATION_CHECKS=1`.
+- Extractors: `detector/src/pipeline/extractors/{index.py, page_meta.py, page_numbering.py, bookmarks.py}`.
+- Detectors (each `@register`, grouped by `kind`):
+  - `detectors/page/formatting.py` — `PaperSizeDetector` (A4 **or** Legal), `MarginDetector` (per-page left/right narrow-margin findings), `FontFamilyDetector`, `BodyFontSizeDetector`, `LineSpacingDetector`, `QuotationBlockDetector`.
+  - `detectors/page/structure.py` — `IndexFormatDetector`, `SectionOrderDetector`.
+  - `detectors/page/page_numbering.py` — `PageNumberingDetector` (gated off by the pagination flag).
+  - `detectors/page/quality_checks.py` — `ScanQualityDetector` (low-DPI + blurred/illegible pages).
+  - `detectors/page/text_layer.py` — `TextLayerDetector` (no-text-layer + per-page distorted/garbled OCR text).
+  - `detectors/filing/requirements.py` — court-fee / vakalatnama / affidavit / limitation / certified-copy "will-bounce" checks.
+  - `detectors/conditional/sections.py` — checks that run only on identified section pages.
+  - `validators/{index_validator.py, bookmark_validator.py}` — cross-page validation after all pages are analyzed.
+- **Test / regression harnesses (repo root):** `python test_pipeline.py` (unit), `python regression_pipeline.py` (runs the engine over the `test_pdf/` corpus). The corpus (`test_pdf/`, ~1.4 GB) and the `Reference_only/` codebase are **gitignored** — local only.
 
 ### Server / API (Python, FastAPI)
-- `server.py` — production entry point. Imports `DetectorEngine` directly (single source of truth). Key gotchas:
-  - `calculate_score()` here mirrors the detector scoring; keep them in agreement.
-  - `_normalize_defect()` translates detector fields → frontend contract: detectors emit `{id,page,severity,title,description,remediation,source_detector}`; the UI expects `{id,page,severity,title,desc,rule,fix}`.
-  - `ENABLED_COURTS = {"sc"}` and `MAX_UPLOAD_BYTES = 50MB`.
-- `recents_db.py` — SQLite store for recent filings.
-- `api/app/routes/analysis.py`, `api/app/routes/health.py` — route modules.
-- `shared/python/constants.py` — court codes, case-type codes, defect IDs, score bands, scoring penalties, upload limits.
-- `shared/python/models.py` — shared data models.
+- `server.py` — production entry point. Serves the dashboard (static mount at `/`) and the API. Imports the pipeline directly (single source of truth). Key points:
+  - Endpoints: `POST /api/analyze`, `POST /api/analyze/stream` (SSE, the one the UI uses), `GET /api/health`, `GET/DELETE /api/recents`, and auth: `POST /api/auth/{signup,login,logout}`, `GET /api/auth/me`.
+  - **Analyze + recents endpoints require login** (`require_user`); per-user data via the session cookie.
+  - `calculate_score()` mirrors the detector scoring — keep them in agreement.
+  - `_normalize_defect()` translates detector fields → the frontend contract (detectors emit `{id,page,severity,title,description,remediation,source_detector,evidence}`; the UI expects `{id,page,severity,title,desc,rule,fix,evidence}`).
+  - `DETECTOR_RULE_LABEL` / `DETECTOR_CHECK_NAME` map detector names → the rule citation + check name shown in the UI.
+  - `ENABLED_COURTS = {"dhc"}`, `MAX_UPLOAD_BYTES = 50 MB`.
+  - **Memory/resource env knobs** (for small instances): `MAX_ANALYZE_PAGES`, `ANALYZE_CONCURRENCY` (1 = serial), `ENABLE_OCR`, `QUALITY_RENDER_DPI`, `QUALITY_MAX_PAGES`, `PARSE_CHUNK_SIZE`, `RECENTS_DB_PATH`, `COOKIE_SECURE`.
+- `auth_db.py` — SQLite users + sessions. **Stdlib PBKDF2** password hashing (no bcrypt/passlib), opaque session tokens in an HttpOnly cookie. Shares the SQLite file with recents by default.
+- `recents_db.py` — SQLite recent-filings store, **scoped per `user_id`** (a user only sees their own history).
+- `api/app/routes/analysis.py`, `api/app/routes/health.py` — older route modules (the live server is `server.py`; treat `api/` as secondary).
+- `shared/python/constants.py`, `shared/python/models.py` — shared codes / models.
 
 ### Frontend — production dashboard (React via Babel, no bundler)
 - **Source of truth is `dashboard/src/`** (JSX + JS). The served files `dashboard/app.js` and `dashboard/styles.css` are **BUILD ARTIFACTS — do not edit by hand.**
-- Build: `cd dashboard && node build.js` (or `npm run build`). It concatenates `src/**` → Babel-compiles to `app.js`, **and** syncs `src/styles/app.css` → `styles.css`.
+- Build: `cd dashboard && node build.js` (or `npm run build`). It concatenates `src/**` (order defined in `build.js`'s `filesToConcat`) → Babel-compiles to `app.js`, **and** syncs `src/styles/app.css` → `styles.css`.
 - `dashboard/index.html` loads root `app.js` + `styles.css`.
 - Key source files:
-  - `dashboard/src/app.jsx` — root app.
-  - `dashboard/src/components/screens/UploadScreen.jsx`, `ResultsScreen.jsx`, `AllScreens.jsx` (History, **Court Rules**, Help).
-  - `dashboard/src/components/{gauge,icons,chrome,overlays,tweaks}/...`
-  - `dashboard/src/data/courts.js` — court list (`enabled`/`comingSoon` flags; only `sc` is enabled).
+  - `dashboard/src/app.jsx` — root app; holds auth/session state, **gates the whole app behind `AuthScreen` when logged out**, screen routing, and the SSE analyze flow (`/api/analyze/stream`).
+  - `dashboard/src/components/screens/AuthScreen.jsx` — login / signup gate (+ `apiMe` / `apiLogout` helpers).
+  - `dashboard/src/components/screens/UploadScreen.jsx`, `ResultsScreen.jsx`, `AllScreens.jsx` (History, **Court Rules**, Help). **History tab reads live per-user recents** and opens the cached report.
+  - `dashboard/src/components/chrome/chrome.jsx` — Header (nav tabs + **user menu / logout**) and Sidebar (recent uploads, fixed-height scrollable).
+  - `dashboard/src/components/{gauge,icons,overlays,tweaks}/...`
+  - `dashboard/src/data/courts.js` — court list (`enabled`/`comingSoon`; **`dhc` is enabled, `sc` is comingSoon**; active court listed first so `COURTS[0]` is enabled).
   - `dashboard/src/data/case-types.js`, `dashboard/src/data/defects.js`.
-  - `dashboard/src/data/sample-files.js` — exports `SAMPLE_FILES`, `RECENT`, `COURT_RULES` (the detailed court rules library powering the Court Rules screen; each court has `source`, `categories[].rules[].{text,auto}`, derived `count`).
-  - `dashboard/src/utils/score-calculator.js`, `defect-filter.js`, `file-handler.js`.
-  - `dashboard/src/styles/app.css` — all styles.
+  - `dashboard/src/data/sample-files.js` — `SAMPLE_FILES`, `RECENT` (now unused by History — kept only as legacy), `COURT_RULES` (the court-rules library powering the Court Rules screen).
+  - `dashboard/src/constants/messages.js` — UI copy strings (court-neutral).
+  - `dashboard/src/utils/{score-calculator,defect-filter,file-handler,report-generator}.js`.
+  - `dashboard/src/styles/app.css` — all styles (incl. the auth screen + user menu).
 - All exported data is exposed at runtime via `window.FC_DATA`.
 
-### Demo dashboard (separate, static)
-- `demo/` is a **separate self-contained copy** (investor/marketing demo, hardcoded scenarios, no backend). It has its **own** `build.js` and `src/`. Changes to `dashboard/` do NOT propagate to `demo/` and vice-versa.
+### Deploy / infra (repo root)
+- `requirements.txt` — minimal runtime deps (fastapi, uvicorn, pdfplumber, PyMuPDF, numpy, Pillow). **Do not re-bloat** (no Postgres/Redis/Celery/bcrypt — auth uses stdlib).
+- `Dockerfile` + `.dockerignore` — Hugging Face Spaces (Docker) deploy; serves on port 7860.
+- `render.yaml` — Render Blueprint (free tier; sets the memory env knobs above).
+- `README.md` — doubles as the HF Space card (YAML header: `sdk: docker`, `app_port: 7860`).
 
-### Reference docs (repo root)
-- `COURT_RULES.md` — detailed, sourced court rules (exact margins/fonts) + which rules are automatable with high confidence.
-- `DEMO_DASHBOARD_GUIDE.md`, `README.md`, `COMPLETE_ARCHITECTURE_SUMMARY.md`, `IMPLEMENTATION_SUMMARY.md`, plus `dashboard/docs/*`.
+### Demo dashboard (separate, now dormant)
+- `demo/` is a separate self-contained marketing copy with its **own** `build.js`/`src/`. It is **gitignored** (not deployed) and not kept in sync with `dashboard/`. Ignore it unless explicitly asked.
 
 ---
 
 ## PART 3 — RULES & CONSTRAINTS FOR CLAUDE (must always hold)
 
-1. **Never edit build artifacts directly:** `dashboard/app.js`, `dashboard/styles.css`, `demo/app.js`. Edit `*/src/**` then run the build.
-2. **After any change under `dashboard/src/`**, run `cd dashboard && node build.js` and confirm both `app.js` and `styles.css` updated. Same pattern for `demo/` (its own build).
-3. **Detector ↔ server agreement:** if you change scoring or defect fields, update both `detector/src` and `server.py` (`calculate_score`, `_normalize_defect`, `DETECTOR_RULE_LABEL`) so the API contract stays intact.
-4. **Avoid false positives:** detector thresholds were tuned against the `test_pdf` corpus. If you touch detectors, run `python regression.py` / `python test_detectors.py` and report results.
-5. **Only `sc` (Supreme Court) is live.** Don't silently enable other courts; if a change implies enabling one, call it out.
-6. **PowerShell / Windows** environment. Use Windows-friendly commands.
-7. **Don't introduce heavy dependencies** without asking — the frontend is deliberately bundler-free (Babel only), and detectors rely on the existing PDF stack.
-8. **Verify, then report:** end by stating exactly which files changed, what was run, and the result. If tests fail, say so with output.
-9. **Confirm before destructive or large-scale changes** (deletions, mass renames, schema/data wipes).
+1. **Never edit build artifacts directly:** `dashboard/app.js`, `dashboard/styles.css`. Edit `dashboard/src/**` then run `cd dashboard && node build.js` and confirm both `app.js` and `styles.css` updated.
+2. **The engine is `detector/src/pipeline/`** — the old `detector/src/detectors/` engine is gone. New checks = a `@register`ed `Detector` subclass with the right `kind`; verify it gets picked up by `detectors_of_kind`.
+3. **Detector ↔ server agreement:** if you change scoring or defect fields, update both the pipeline and `server.py` (`calculate_score`, `_normalize_defect`, `DETECTOR_RULE_LABEL`, `DETECTOR_CHECK_NAME`) so the API/UI contract stays intact.
+4. **Per-detector defect cap is 20** (enforced by `DefectSink`). **Pagination/folio checks are intentionally disabled** behind `feature_flags.PAGINATION_CHECKS_ENABLED` — don't silently re-enable them.
+5. **Avoid false positives:** detector thresholds are tuned against the `test_pdf/` corpus and specific ground-truth pages. If you touch detectors, run `python regression_pipeline.py` and `python test_pipeline.py` and report results; default to **precision over recall**.
+6. **Keep copy court-neutral.** Don't put a specific court name (e.g. "Delhi High Court") back into user-facing marketing/help copy. The court *selector* may name courts; claims about "what we check against" should say "the court".
+7. **Auth is login-gated + per-user.** Analyze/recents require a session; new saved data must be scoped to the logged-in `user_id`. Don't add data that leaks across users.
+8. **Memory matters on the free tier (512 MB).** Don't introduce per-page full-resolution renders or hold the whole document in memory unnecessarily; respect the `MAX_ANALYZE_PAGES` / `QUALITY_*` / `ANALYZE_CONCURRENCY` knobs.
+9. **Don't introduce heavy dependencies** without asking — the frontend is bundler-free (Babel only); the backend deps are deliberately minimal (stdlib auth, no OCR system packages in deploy).
+10. **Windows / PowerShell** environment (a Bash tool is also available) — use compatible commands.
+11. **Verify, then report:** end by stating exactly which files changed, what was run, and the result. If tests fail, say so with output.
+12. **Confirm before destructive or large-scale changes** (deletions, mass renames, schema/data wipes, enabling a new court, re-enabling pagination).
 
 ---
 
@@ -105,39 +137,16 @@ If my PART 4 request is ambiguous or missing detail, first list the clarifying q
 > Describe the change(s) in plain English. Be as specific or rough as you like — ChatGPT will turn it into a precise Claude prompt and ask me questions if it's unclear. Delete the examples below and write yours.
 
 **Goal / what I want to change:**
-<!-- e.g. "Add a new detector that checks the cover page has a 'Through: <AOR>, Reg. No.' line and flag it as minor if missing." -->
+<!-- e.g. "Add a detector that flags a missing 'Through: <AOR>, Reg. No.' line on the cover page as a minor defect." -->
 
 
 ---
 
 ### Quick reference for filling PART 4 (delete before sending if you want)
-- **UI change** → name the screen (Upload / Results / Court Rules / Help) and the data file in `dashboard/src/data/`.
-- **New/changed rule check** → think "detector + engine registration + server rule label + tests".
-- **Scoring change** → mention both `detector/src` and `server.py` must agree.
-- **New court** → `dashboard/src/data/courts.js` flags + `shared/python/constants.py` + `ENABLED_COURTS` in `server.py`.
-- **Rules content** → `dashboard/src/data/sample-files.js` (`COURT_RULES`) and/or `COURT_RULES.md`.k
-
-
-
-
-i want to do complete change in the flow:
-
-
-
-Problem: No detector is working fine. lets build it again from start.
-
-
-
-solution:
-
-Read Pdf in fractions like first 50 pages and then next 50 and so on. and defects found should be displayed realtime
-
-all detectors will run simultaneously and independently untill any specific case which needs two detectors to work along side. (But important - if any task is repeatitive and if its causing unnecessary delay then build the pipeline smartly)
-
-defects counts for each detector is capped by 20, if 20 defects are found for a particular detector then stop that specific detector for further analysis
-
-First identify the index page and read it and store this information like according to index what page number is for what type of page. 
-
-Then look for page numbers in top middle to top right corner of the pages, its not neccessary that page number starts from first pdf page, look from where page number starts and then  check for continuity.
-
-for margins, 
+- **UI change** → name the screen (Auth / Upload / Results / History / Court Rules / Help) and the data/source file in `dashboard/src/`. Remember the rebuild.
+- **New/changed rule check** → think "new `@register` Detector in `detector/src/pipeline/detectors/...` + correct `kind` + server `DETECTOR_RULE_LABEL`/`DETECTOR_CHECK_NAME` + run `regression_pipeline.py`".
+- **Scoring change** → both the pipeline and `server.py:calculate_score` must agree.
+- **New court** → `dashboard/src/data/courts.js` flags + `ENABLED_COURTS` in `server.py` (+ court rules in `sample-files.js`). Call it out explicitly.
+- **Rules content** → `dashboard/src/data/sample-files.js` (`COURT_RULES`).
+- **Auth / accounts / history** → `auth_db.py`, `recents_db.py`, `server.py` auth routes, `dashboard/src/components/screens/AuthScreen.jsx` + `app.jsx`.
+- **Deploy / memory** → `requirements.txt`, `Dockerfile`, `render.yaml`, and the env knobs in `server.py`.
