@@ -20,3 +20,12 @@ services:
         value: "3.11.9"
       - key: RECENTS_DB_PATH
         value: /tmp/recents.db         # writable on the ephemeral free filesystem
+      # Memory safety for the 512 MB free tier (peak ~190 MB on a 92-page scan):
+      - key: MAX_ANALYZE_PAGES
+        value: "150"                   # cap pages so a huge scanned book can't OOM
+      - key: QUALITY_RENDER_DPI
+        value: "130"                   # render DPI for blur measurement (vs 150 local)
+      - key: QUALITY_MAX_PAGES
+        value: "80"                    # how many pages are rasterised for DPI/blur
+      - key: ENABLE_OCR
+        value: "false"                 # OCR is heavy + Tesseract isn't installed here

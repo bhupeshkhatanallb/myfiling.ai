@@ -57,6 +57,12 @@ logger = logging.getLogger("myfiling.server")
 MAX_UPLOAD_BYTES = 50 * 1024 * 1024  # 50 MB — matches the dashboard hint
 ENABLED_COURTS = {"dhc"}             # Only Delhi High Court is live (see courts.js)
 
+# Resource caps (tunable via env for small instances, e.g. a 512 MB free tier).
+# MAX_ANALYZE_PAGES bounds peak memory on very large scanned filings; 0/unset =
+# no cap. OCR is heavy and usually absent on a free host, so it defaults off here.
+_MAX_ANALYZE_PAGES = int(os.environ.get("MAX_ANALYZE_PAGES", "0")) or None
+_ENABLE_OCR = os.environ.get("ENABLE_OCR", "false").lower() in ("1", "true", "yes", "on")
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup: ensure the recents SQLite store exists.
@@ -387,8 +393,13 @@ async def analyze_filing(
         logger.info("Analyzing %s (%.1f MB) court=%s case=%s",
                     filename, len(contents) / (1024 * 1024), court_id, case_type_id)
 
-        engine = DetectorEngine(temp_path)
-        results = engine.run_all(parallel=True)
+        # Build the context with resource caps (page limit + OCR toggle) so a huge
+        # filing can't OOM a small instance; run sequentially when capped to keep
+        # peak memory low (parallel detectors render pages concurrently).
+        from pipeline.builder import build_context
+        ctx = build_context(temp_path, max_pages=_MAX_ANALYZE_PAGES, enable_ocr=_ENABLE_OCR)
+        engine = DetectorEngine(temp_path, ctx=ctx)
+        results = engine.run_all(parallel=_MAX_ANALYZE_PAGES is None)
 
         payload = _finalize_results(results, filename=filename, contents_len=len(contents),
                                     court_id=court_id, case_type_id=case_type_id)
@@ -451,7 +462,8 @@ async def analyze_filing_stream(
 
     async def event_stream():
         try:
-            proc = DocumentProcessor(temp_path)
+            proc = DocumentProcessor(temp_path, max_pages=_MAX_ANALYZE_PAGES,
+                                     enable_ocr=_ENABLE_OCR)
             final_report = None
             async for ev in proc.stream():
                 if ev.type == "defect":

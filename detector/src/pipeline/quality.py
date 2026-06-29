@@ -27,6 +27,7 @@ signals stay None (the detectors then simply don't assert anything).
 
 from __future__ import annotations
 
+import os
 import logging
 from typing import List, Optional
 
@@ -61,7 +62,10 @@ _PCT_BRIGHT_SKIP = 0.90       # near-blank page (>90% very-bright px) — skip b
 # treats ``blur_score < _MIN_SHARP_BLUR`` as "flagged blurred".
 _MIN_SHARP_BLUR = _BLUR_SLIGHT
 
-_RENDER_DPI = 150             # rasterise at a modest DPI just to MEASURE quality
+# Rasterise at a modest DPI just to MEASURE quality (blur sharpness). 130 keeps
+# the per-page pixmap small enough for a 512 MB instance while staying close to
+# the 150-DPI blur calibration. Overridable via env.
+_RENDER_DPI = int(os.getenv("QUALITY_RENDER_DPI", "130"))
 
 # A page is rendered for quality scoring only if it carries a real content image
 # covering at least this fraction of the page — the reference's MIN_IMAGE_COVERAGE.
@@ -80,16 +84,26 @@ def _imports():
 
 
 def _laplacian_variance(gray) -> float:
-    """Variance of a 3x3 Laplacian over a greyscale array (focus measure)."""
+    """Variance of a 3x3 Laplacian over a greyscale array (focus measure).
+
+    Memory-frugal (the previous version allocated ~5 full-page float32 copies via
+    np.roll, which OOM'd the 512 MB free tier on large scans). Here we use sliced
+    views into a single int16 buffer and accumulate the Laplacian in place, so the
+    peak is ~2 page-sized arrays instead of 5+.
+    """
     import numpy as np
-    # Discrete Laplacian via shifts (avoids a SciPy/OpenCV dependency).
-    g = gray.astype("float32")
-    lap = (-4.0 * g
-           + np.roll(g, 1, axis=0) + np.roll(g, -1, axis=0)
-           + np.roll(g, 1, axis=1) + np.roll(g, -1, axis=1))
-    # Trim the 1-px border where the roll wraps around.
-    inner = lap[1:-1, 1:-1]
-    return float(inner.var()) if inner.size else 0.0
+    if gray.size == 0 or gray.shape[0] < 3 or gray.shape[1] < 3:
+        return 0.0
+    # int16 holds the discrete Laplacian range (|value| <= 8*255) and is half the
+    # size of float32. Slice views (no copies) give the 4-neighbour sum.
+    g = gray.astype(np.int16)
+    c = g[1:-1, 1:-1]
+    lap = (g[:-2, 1:-1].astype(np.int16))      # up      (one allocation)
+    lap += g[2:, 1:-1]                          # down    (in place)
+    lap += g[1:-1, :-2]                         # left
+    lap += g[1:-1, 2:]                          # right
+    lap -= 4 * c                                # centre  (still in place)
+    return float(lap.var()) if lap.size else 0.0
 
 
 def _estimate_dpi(fitz_page, page_width_pt: float, page_height_pt: float) -> Optional[float]:
@@ -268,7 +282,7 @@ def _quality_targets(ctx, path: str, max_pages: int) -> List[int]:
     return targets[:max_pages]
 
 
-def apply_quality(ctx, path: str, max_pages: int = 60) -> int:
+def apply_quality(ctx, path: str, max_pages: int = int(os.getenv("QUALITY_MAX_PAGES", "80"))) -> int:
     """
     Populate quality signals on the scan pages of ``ctx`` (in place).
 

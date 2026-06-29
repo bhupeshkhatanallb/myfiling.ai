@@ -47,9 +47,15 @@ class Event:
 class DocumentProcessor:
     """Async, streaming orchestration of the scrutiny pipeline."""
 
-    def __init__(self, pdf_path: str, chunk_size: int = 50):
+    def __init__(self, pdf_path: str, chunk_size: int = 50,
+                 max_pages: Optional[int] = None, enable_ocr: bool = True):
         self.pdf_path = pdf_path
         self.chunk_size = chunk_size
+        # Cap the number of pages parsed/analysed. None = no cap. Used to keep
+        # peak memory bounded on small instances (e.g. a 512 MB free tier OOMs on
+        # very large scanned filings).
+        self.max_pages = max_pages
+        self.enable_ocr = enable_ocr
         self.ctx: Optional[DocumentContext] = None
 
     # ---- public streaming API -------------------------------------------- #
@@ -99,6 +105,7 @@ class DocumentProcessor:
             emit(Event("progress", ev))
 
         self.ctx = build_context(self.pdf_path, chunk_size=self.chunk_size,
+                                 max_pages=self.max_pages, enable_ocr=self.enable_ocr,
                                  on_progress=on_parse_progress)
         ctx = self.ctx
         total = ctx.page_count
