@@ -14,6 +14,8 @@ the synchronous engine facade and the regression harness.
 
 from __future__ import annotations
 
+import gc
+import os
 import logging
 from typing import Callable, List, Optional
 
@@ -127,13 +129,18 @@ def build_context(path: str, chunk_size: int = DEFAULT_CHUNK_SIZE,
             on_progress(kw)
 
     pages: List[PageMetadata] = []
-    with ChunkReader(path, chunk_size=chunk_size, max_pages=max_pages) as reader:
+    # Smaller chunks keep fewer heavy raw-char lists alive at once (memory) on
+    # large scans; tunable via env for tight instances (e.g. a 512 MB free tier).
+    eff_chunk = min(chunk_size, int(os.getenv("PARSE_CHUNK_SIZE", "8")))
+    with ChunkReader(path, chunk_size=eff_chunk, max_pages=max_pages) as reader:
         total = reader.page_count
         parsed = reader.parsed_count
         for chunk in reader.chunks():
             for raw in chunk:
                 pages.append(build_page_metadata(raw))
             _progress(stage="parsing", page=len(pages), total=parsed)
+            chunk.clear()            # release this chunk's raw chars promptly
+            gc.collect()             # return freed buffers to the OS sooner
 
     # Stage 5: assign written page numbers (numbering need not start at page 1).
     assign_written_page_numbers(pages)

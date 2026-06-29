@@ -14,7 +14,9 @@ services:
     plan: free
     region: singapore                 # closest free region to India (lower latency)
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn server:app --host 0.0.0.0 --port $PORT
+    # Single worker: each worker holds its own copy of the loaded libs + any
+    # in-flight document, so >1 worker multiplies memory and OOMs a 512 MB box.
+    startCommand: uvicorn server:app --host 0.0.0.0 --port $PORT --workers 1
     envVars:
       - key: PYTHON_VERSION
         value: "3.11.9"

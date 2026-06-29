@@ -63,6 +63,13 @@ ENABLED_COURTS = {"dhc"}             # Only Delhi High Court is live (see courts
 _MAX_ANALYZE_PAGES = int(os.environ.get("MAX_ANALYZE_PAGES", "0")) or None
 _ENABLE_OCR = os.environ.get("ENABLE_OCR", "false").lower() in ("1", "true", "yes", "on")
 
+# Cap CONCURRENT analyses so simultaneous uploads queue instead of each holding a
+# full document in memory at once (the surest way to OOM a 512 MB instance when a
+# team tests together). 1 = strictly serial. Tunable via env.
+import asyncio as _asyncio  # noqa: E402
+_ANALYZE_CONCURRENCY = max(1, int(os.environ.get("ANALYZE_CONCURRENCY", "1")))
+_ANALYZE_SEM = _asyncio.Semaphore(_ANALYZE_CONCURRENCY)
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup: ensure the recents SQLite store exists.
@@ -385,6 +392,7 @@ async def analyze_filing(
     _validate_upload(court_id, filename, contents)
 
     temp_path = None
+    await _ANALYZE_SEM.acquire()   # serialise analyses to bound peak memory
     try:
         with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
             temp_path = tmp.name
@@ -428,6 +436,9 @@ async def analyze_filing(
                 os.remove(temp_path)
             except OSError:
                 pass
+        _ANALYZE_SEM.release()
+        import gc as _gc
+        _gc.collect()
 
 
 def _sse(event: str, data: Any) -> str:
@@ -461,6 +472,7 @@ async def analyze_filing_stream(
                 filename, len(contents) / (1024 * 1024), court_id, case_type_id)
 
     async def event_stream():
+        await _ANALYZE_SEM.acquire()   # serialise analyses to bound peak memory
         try:
             proc = DocumentProcessor(temp_path, max_pages=_MAX_ANALYZE_PAGES,
                                      enable_ocr=_ENABLE_OCR)
@@ -501,6 +513,11 @@ async def analyze_filing_stream(
                     os.remove(temp_path)
                 except OSError:
                     pass
+            # Release the analysis slot and return freed memory to the OS so the
+            # next request starts from a low baseline (bounds peak RSS).
+            _ANALYZE_SEM.release()
+            import gc as _gc
+            _gc.collect()
 
     return StreamingResponse(event_stream(), media_type="text/event-stream",
                              headers={"Cache-Control": "no-cache",
