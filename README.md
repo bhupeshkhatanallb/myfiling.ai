@@ -6,6 +6,8 @@ colorTo: blue
 sdk: docker
 app_port: 7860
 pinned: false
+license: apache-2.0
+short_description: Court filing defect checker (Delhi High Court)
 ---
 
 # myfiling.ai — Court Filing Defect Checker
