@@ -1,0 +1,16 @@
+# Runtime dependencies for the myfiling.ai server (team-testing deploy).
+# Minimal set: web server + PDF/quality analysis. OCR (Tesseract) is optional and
+# gracefully skipped when the binary is absent, so it is NOT required here.
+
+# Web framework + ASGI server + multipart upload handling
+fastapi==0.104.1
+uvicorn==0.24.0
+python-multipart==0.0.6
+
+# PDF text extraction + geometry
+pdfplumber==0.10.3
+PyMuPDF==1.24.11
+
+# Image / numeric math used by the quality (DPI/blur) detectors
+numpy==1.24.3
+Pillow==10.0.0

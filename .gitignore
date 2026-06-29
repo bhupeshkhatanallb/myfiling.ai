@@ -1,0 +1,39 @@
+# Large / private data that must NOT be deployed.
+# (1.4 GB sample filings, 548 MB reference codebase, stray PDFs, scratch dirs.)
+test_pdf/
+Test_pdf/
+dashboard/Test_pdf/
+Reference_only/
+*.pdf
+uploads/
+
+# Standalone demo build — not served by server.py.
+demo/
+
+# Build / dependency dirs.
+dashboard/node_modules/
+dashboard/_build-temp.jsx
+**/__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+
+# Runtime state (ephemeral on free tier).
+recents.db
+*.sqlite
+*.sqlite3
+
+# Local Claude / editor settings (machine-specific).
+.claude/
+.vscode/
+.idea/
+
+# Local env / secrets / virtualenvs.
+.env
+.env.*
+venv/
+.venv/
+
+# OS cruft.
+.DS_Store
+Thumbs.db

@@ -1,0 +1,30 @@
+{
+  "name": "myfiling.ai-dashboard",
+  "version": "0.1.0",
+  "description": "Legal filing defect analyzer Dashboard - React frontend",
+  "private": true,
+  "scripts": {
+    "build": "node build.js",
+    "dev": "python -m http.server 8000",
+    "serve": "python -m http.server 8000",
+    "test": "echo \"Add tests here\""
+  },
+  "keywords": [
+    "legal",
+    "filing",
+    "pdf",
+    "analysis",
+    "defect-detection"
+  ],
+  "author": "myfiling.ai",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.29.7",
+    "@babel/preset-env": "^7.29.7",
+    "@babel/preset-react": "^7.29.7"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}

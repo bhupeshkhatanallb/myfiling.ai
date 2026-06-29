@@ -1,0 +1,22 @@
+# Render Blueprint for myfiling.ai (team-testing deploy).
+# Free Web Service: builds from the repo, serves the dashboard + /api on one HTTPS URL.
+#
+# Notes:
+#  * The free instance SLEEPS after ~15 min idle and cold-starts in ~30-50s — fine
+#    for testing.
+#  * The filesystem is EPHEMERAL: recents.db lives under /tmp so it never fails on
+#    write, but "recent uploads" history resets on each restart/deploy. Acceptable
+#    for testing; add a paid disk or Postgres later for persistence.
+services:
+  - type: web
+    name: myfiling-test
+    runtime: python
+    plan: free
+    region: singapore                 # closest free region to India (lower latency)
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn server:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: RECENTS_DB_PATH
+        value: /tmp/recents.db         # writable on the ephemeral free filesystem

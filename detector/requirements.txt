@@ -1,0 +1,36 @@
+# Detector Engine Dependencies
+
+# PDF Processing
+pdfplumber==0.10.3           # PDF text extraction
+PyPDF2==4.1.1                # PDF parsing
+python-pptx==0.6.21          # Document handling
+
+# OCR (for scanned PDFs)
+pytesseract==0.3.10          # OCR wrapper
+Pillow==10.0.0               # Image processing
+
+# Text Processing
+python-docx==0.8.11          # DOCX handling
+langdetect==1.0.9            # Language detection
+nltk==3.8.1                  # NLP utilities
+
+# Data Processing
+numpy==1.24.3
+pandas==2.0.3
+
+# Validation & Schemas
+pydantic==2.0.3              # Data validation
+
+# Testing
+pytest==7.4.0
+pytest-cov==4.1.0
+pytest-asyncio==0.21.1
+
+# Logging & Monitoring
+python-json-logger==2.0.7
+structlog==23.1.0
+
+# Utilities
+python-dotenv==1.0.0         # Environment variables
+click==8.1.7                 # CLI utilities
+tqdm==4.66.1                 # Progress bars
