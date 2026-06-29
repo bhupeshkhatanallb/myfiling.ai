@@ -1,4 +1,4 @@
-// Printable filing report — opens a clean, self-contained report in a new window
+// Printable filing report - opens a clean, self-contained report in a new window
 // and invokes the browser's print dialog (the user saves as PDF). This makes the
 // "Download Report" button deliver a real artifact an advocate can keep or hand
 // to a clerk, instead of a placeholder toast.
@@ -21,7 +21,7 @@ function readinessRows(stats) {
       : c.status === "fail" ? "Action required"
       : "Review";
     return { name: c.name, rule: c.rule, status, raw: c.status,
-             detail: c.defects ? `${c.defects} issue${c.defects === 1 ? "" : "s"}` : "—" };
+             detail: c.defects ? `${c.defects} issue${c.defects === 1 ? "" : "s"}` : "-" };
   });
 }
 
@@ -35,8 +35,8 @@ function downloadReport(session) {
     : { label: "", color: "#0A1628" };
   const when = new Date(s.createdAt || Date.now()).toLocaleString();
   const fileName = (s.file && s.file.name) || "filing.pdf";
-  const court = (s.court && (s.court.short || s.court.name)) || "—";
-  const caseType = (s.caseType && s.caseType.name) || "—";
+  const court = (s.court && (s.court.short || s.court.name)) || "-";
+  const caseType = (s.caseType && s.caseType.name) || "-";
 
   const sevRank = { critical: 0, warning: 1, minor: 2 };
   const sorted = [...defects].sort((a, b) =>
@@ -70,7 +70,7 @@ function downloadReport(session) {
   };
 
   const html = `<!doctype html><html><head><meta charset="utf-8">
-  <title>Filing Readiness Report — ${escapeHtml(fileName)}</title>
+  <title>Filing Readiness Report - ${escapeHtml(fileName)}</title>
   <style>
     * { box-sizing: border-box; }
     body { font-family: Georgia, "Times New Roman", serif; color: #11203B; margin: 0; padding: 40px; line-height: 1.5; }
@@ -102,7 +102,7 @@ function downloadReport(session) {
     @media print { body { padding: 0; } @page { margin: 18mm; } }
   </style></head><body>
     <h1>Filing Readiness Report</h1>
-    <div class="sub">myfiling.ai — formatting &amp; registry-requirement scrutiny</div>
+    <div class="sub">myfiling.ai - formatting &amp; registry-requirement scrutiny</div>
     <div class="meta">
       <span><strong>File:</strong> ${escapeHtml(fileName)}</span>
       <span><strong>Court:</strong> ${escapeHtml(court)}</span>
@@ -137,7 +137,7 @@ function downloadReport(session) {
   </body></html>`;
 
   const w = window.open("", "_blank");
-  if (!w) return false;           // popup blocked — caller can toast a hint
+  if (!w) return false;           // popup blocked - caller can toast a hint
   w.document.open();
   w.document.write(html);
   w.document.close();

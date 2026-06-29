@@ -1,4 +1,4 @@
-// misc.jsx — Analysing overlay, Error screen, Toast
+// misc.jsx - Analysing overlay, Error screen, Toast
 
 const { useState: useStateM, useEffect: useEffectM } = React;
 

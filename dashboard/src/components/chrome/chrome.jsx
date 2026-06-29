@@ -112,7 +112,7 @@ function Sidebar({ recents, onOpenRecent, onCourtRuleClick }) {
         <div className="sidebar__label">Court rules</div>
         {COURT_RULES.map((c, i) => {
           // Enabled-ness is driven by the COURTS data (match by name) so the
-          // sidebar tracks whichever court is live — currently Delhi High Court.
+          // sidebar tracks whichever court is live - currently Delhi High Court.
           const isEnabled = !!(COURTS.find((ct) => ct.name === c.court) || {}).enabled;
           return (
             <button

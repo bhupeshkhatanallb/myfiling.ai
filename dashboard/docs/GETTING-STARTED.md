@@ -140,24 +140,24 @@ For details, see **[ARCHITECTURE.md](./ARCHITECTURE.md)**.
 ## Key Files to Understand
 
 ### Components (React UI)
-- **src/app.jsx** — Root component, state management, routing
-- **src/components/screens/UploadScreen.jsx** — File upload interface
-- **src/components/screens/ResultsScreen.jsx** — Analysis results display
-- **src/components/gauge/Gauge.jsx** — Score visualization
+- **src/app.jsx** - Root component, state management, routing
+- **src/components/screens/UploadScreen.jsx** - File upload interface
+- **src/components/screens/ResultsScreen.jsx** - Analysis results display
+- **src/components/gauge/Gauge.jsx** - Score visualization
 
 ### Data Layer
-- **src/data/defects.js** — 12 defects across 3 profiles
-- **src/data/sample-files.js** — Demo filings & recent uploads
-- **src/data/courts.js** — Court list
-- **src/data/case-types.js** — Case type list
+- **src/data/defects.js** - 12 defects across 3 profiles
+- **src/data/sample-files.js** - Demo filings & recent uploads
+- **src/data/courts.js** - Court list
+- **src/data/case-types.js** - Case type list
 
 ### Scoring Logic
-- **src/utils/score-calculator.js** — Calculate score from defects
+- **src/utils/score-calculator.js** - Calculate score from defects
   - If critical > 0: score = MAX(0, 40 - critical × 10)
   - If no critical: score = MAX(0, 100 - minor × 15)
 
 ### Styling
-- **src/styles/app.css** — Main stylesheet
+- **src/styles/app.css** - Main stylesheet
   - CSS variables for colors, spacing, fonts
   - BEM naming convention
   - Responsive design
@@ -237,12 +237,12 @@ See **[ROADMAP.md](./ROADMAP.md)** for Phase 2 plans.
 
 ## Documentation
 
-- **README.md** — Project overview & features
-- **ARCHITECTURE.md** — System design & data flow
-- **SCORING-SYSTEM.md** — Scoring algorithm explained
-- **CRITICAL-DEFECTS-LOGIC.md** — Critical defect philosophy
-- **FEATURES.md** — Detailed feature breakdown
-- **ROADMAP.md** — Future roadmap
+- **README.md** - Project overview & features
+- **ARCHITECTURE.md** - System design & data flow
+- **SCORING-SYSTEM.md** - Scoring algorithm explained
+- **CRITICAL-DEFECTS-LOGIC.md** - Critical defect philosophy
+- **FEATURES.md** - Detailed feature breakdown
+- **ROADMAP.md** - Future roadmap
 
 ---
 

@@ -29,7 +29,7 @@ def body(text):
     c.setFont("Helvetica", 11)
     c.drawString(1 * inch, h - 2.2 * inch, text)
 
-# Page 1: Cover (no number — correct)
+# Page 1: Cover (no number - correct)
 c.setFont("Helvetica-Bold", 14)
 c.drawCentredString(w / 2, h - 2 * inch, "IN THE SUPREME COURT OF INDIA")
 c.drawCentredString(w / 2, h - 2.4 * inch, "CIVIL APPELLATE JURISDICTION")

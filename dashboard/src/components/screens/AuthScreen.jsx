@@ -1,4 +1,4 @@
-// AuthScreen.jsx — login / signup gate. Shown before the app when logged out.
+// AuthScreen.jsx - login / signup gate. Shown before the app when logged out.
 
 const { useState: useStateAuth } = React;
 

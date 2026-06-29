@@ -1,4 +1,4 @@
-# myfiling.ai — dashboard Production-Ready Build
+# myfiling.ai - dashboard Production-Ready Build
 
 **Status:** ✓ Live & Ready  
 **Live URL:** http://localhost:3000  
@@ -139,10 +139,10 @@ Edit `data.jsx`, add to `ALL_DEFECTS` array:
 
 ### Changing the Brand
 
-1. `chrome.jsx` — Change logo text
-2. `index.html` — Change `<title>`
-3. `styles.css` — Update colors in `:root`
-4. `data.jsx` — Add/remove courts
+1. `chrome.jsx` - Change logo text
+2. `index.html` - Change `<title>`
+3. `styles.css` - Update colors in `:root`
+4. `data.jsx` - Add/remove courts
 
 ### Updating Copy
 
@@ -190,24 +190,24 @@ Edit `data.jsx`, add to `ALL_DEFECTS` array:
 
 ## Known Limitations
 
-1. **Mock Data** — No real PDF processing. Production needs:
+1. **Mock Data** - No real PDF processing. Production needs:
    - PyMuPDF/pdfplumber for text extraction
    - Tesseract/AWS Textract for OCR
    - Rule engine for actual analysis
 
-2. **Fixed Score** — Always 73% in demo. Production calculates from defect mix.
+2. **Fixed Score** - Always 73% in demo. Production calculates from defect mix.
 
-3. **No Persistence** — No user accounts, no filing history. Production adds:
+3. **No Persistence** - No user accounts, no filing history. Production adds:
    - PostgreSQL backend
    - Auth system
    - Filing history retrieval
 
-4. **Limited Rules** — 12 demo defects. Production needs:
+4. **Limited Rules** - 12 demo defects. Production needs:
    - All 140+ rules per court
    - Quarterly update process
    - Rules versioning
 
-5. **No Real Reports** — Download is a toast. Production generates:
+5. **No Real Reports** - Download is a toast. Production generates:
    - Branded PDF report
    - Email delivery
    - Digital signature
@@ -267,20 +267,20 @@ Edit `data.jsx`, add to `ALL_DEFECTS` array:
 ## Support & Feedback
 
 This dashboard is designed for:
-- **Stakeholder review** — Show investors/partners
-- **User feedback** — Test with pilots
-- **Developer onboarding** — Start building the backend
-- **Design iteration** — Refine based on feedback
+- **Stakeholder review** - Show investors/partners
+- **User feedback** - Test with pilots
+- **Developer onboarding** - Start building the backend
+- **Design iteration** - Refine based on feedback
 
 ---
 
 ## Next Steps
 
-1. **Share with stakeholders** — Get feedback on UX and feature set
-2. **Pilot with 3–5 law firms** — Validate user needs
-3. **Build backend** — Wire up PDF parsing and rules engine
-4. **Launch with single court** — Start with Delhi High Court
-5. **Expand gradually** — Add courts based on demand
+1. **Share with stakeholders** - Get feedback on UX and feature set
+2. **Pilot with 3–5 law firms** - Validate user needs
+3. **Build backend** - Wire up PDF parsing and rules engine
+4. **Launch with single court** - Start with Delhi High Court
+5. **Expand gradually** - Add courts based on demand
 
 ---
 

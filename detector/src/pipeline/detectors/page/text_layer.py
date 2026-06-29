@@ -1,10 +1,10 @@
 """
-TextLayerDetector — searchable/selectable text-layer check.
+TextLayerDetector - searchable/selectable text-layer check.
 
 A Supreme Court e-filing must be machine-readable: its pages should carry a real
 text layer so the paper-book is searchable and the text is selectable/copyable.
 A filing whose pages are scanned IMAGES with no text layer (a photocopied book
-saved straight to PDF without OCR) is a serious, common registry objection — and
+saved straight to PDF without OCR) is a serious, common registry objection - and
 it is exactly the kind of defect a human notices immediately ("I can't select any
 text") but an automated scan can miss, because every text-based check simply
 gates out with a quiet "could not verify" note.
@@ -17,11 +17,11 @@ False). So a page lacks a usable native text layer when it is either an OCR'd
 page or a native page with no real selectable text. We count those against the
 whole document.
 
-PRECISION POLICY (precision over recall — calibrated against the corpus):
+PRECISION POLICY (precision over recall - calibrated against the corpus):
   * CRITICAL only when the document is OVERWHELMINGLY image-only (the body itself
-    is not searchable) — the clear, defensible objection.
+    is not searchable) - the clear, defensible objection.
   * WARNING only when the MAJORITY of pages lack a text layer.
-  * Silent otherwise — crucially, a normal native petition with a substantial
+  * Silent otherwise - crucially, a normal native petition with a substantial
     block of SCANNED ANNEXURES (signed affidavits, certified copies, exhibits) is
     standard, accepted practice. Three valid corpus filings are 25-27% scanned
     annexures; flagging those is the false positive this policy forbids. So the
@@ -56,7 +56,7 @@ class TextLayerDetector(Detector):
 
     # Per-page OCR-garble: a page whose text layer is clearly UNREADABLE (heavily
     # distorted OCR). A page is flagged only when BOTH a high garble ratio AND a
-    # LOW real-word fraction hold — this separates genuinely-mangled text from a
+    # LOW real-word fraction hold - this separates genuinely-mangled text from a
     # readable page that merely carries leading-symbol scan noise (which inflates
     # the garble ratio alone). Calibrated across the corpus: catches the test
     # PDF's distorted page and other mangled scans while sparing readable pages.

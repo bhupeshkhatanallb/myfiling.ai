@@ -1,13 +1,13 @@
 """
-DocumentProcessor — async orchestration with real-time defect streaming.
+DocumentProcessor - async orchestration with real-time defect streaming.
 
 This is the brief's top-level ``DocumentProcessor``. It walks the eight stages and
 emits events as they happen so the frontend can show progress and defects LIVE:
 
-    progress  {stage, page, total}     — pipeline advancing
-    defect    {<finding dict>}         — a defect, the moment a detector finds it
-    summary   {<report dict>}          — final aggregated report
-    done      {}                       — stream complete
+    progress  {stage, page, total}     - pipeline advancing
+    defect    {<finding dict>}         - a defect, the moment a detector finds it
+    summary   {<report dict>}          - final aggregated report
+    done      {}                       - stream complete
 
 Concurrency model: the CPU-bound parse + detectors run in worker threads (they are
 the same pure-Python analysers the sync engine uses); the async layer's job is to
@@ -96,7 +96,7 @@ class DocumentProcessor:
     def _run_pipeline(self, emit: Callable[[Event], None]) -> None:
         # Stages 1-3 + 5 + (2 index/bookmark) + (4 quality) all happen inside
         # build_context (single chunked parse). We pass a progress callback so the
-        # parse of each chunk AND each OCR'd page stream live — otherwise a long or
+        # parse of each chunk AND each OCR'd page stream live - otherwise a long or
         # scanned document looks frozen until the detector phase.
         emit(Event("progress", {"stage": "parsing", "page": 0, "total": 0}))
 

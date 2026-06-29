@@ -1,4 +1,4 @@
-# Keep the Docker build context small — exclude the same heavy/private dirs the
+# Keep the Docker build context small - exclude the same heavy/private dirs the
 # .gitignore excludes (so a local `docker build` doesn't copy 2 GB of PDFs).
 test_pdf/
 Test_pdf/

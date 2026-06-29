@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>myfiling.ai - Catch Filing Defects Before the Registry Does</title>
+<meta name="description" content="Upload your filing PDF and receive an instant filing-readiness report with formatting, structure, and compliance checks for court filing requirements." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/site.css" />
+</head>
+<body>
+
+<!-- ===================== NAVBAR ===================== -->
+<header class="nav">
+  <div class="nav__inner">
+    <a class="brand" href="/">
+      <span class="brand__mark">M</span>
+      myfiling<span class="brand__dot">.ai</span>
+    </a>
+    <nav class="nav__links">
+      <a class="nav__link" href="/#features">Features</a>
+      <a class="nav__link" href="/pricing">Pricing</a>
+      <a class="nav__link" href="/about">About</a>
+      <a class="nav__link" href="/contact">Contact</a>
+    </nav>
+    <div class="nav__actions">
+      <a class="nav__signin" href="/login">Log in</a>
+      <a class="btn btn--primary" href="/register">Get Started</a>
+      <button class="nav__toggle" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav__mobile">
+    <a href="/#features">Features</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/login">Log in</a>
+    <a class="btn btn--primary" href="/register">Get Started</a>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero__grid">
+      <div>
+        <span class="hero__eyebrow">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2-6.3-4.6L5.7 21 8 14 2 9.4h7.6z"/></svg>
+          AI-powered filing scrutiny
+        </span>
+        <h1>Catch Filing Defects <em>Before the Registry Does</em></h1>
+        <p class="hero__sub">
+          Upload your filing PDF and receive an instant filing-readiness report with
+          formatting, structure, and compliance checks - so objections never reach the registry.
+        </p>
+        <div class="hero__cta">
+          <button class="btn btn--primary btn--lg" data-auth="signup">Start Free Analysis</button>
+          <a class="btn btn--ghost btn--lg" href="/dashboard/">View Dashboard</a>
+        </div>
+        <div class="hero__trust">
+          <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Court rules engine</span>
+          <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> We never save your PDF</span>
+          <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Results in seconds</span>
+        </div>
+      </div>
+
+      <!-- interactive upload widget -->
+      <div class="widget">
+        <div class="widget__bar">
+          <span class="widget__dots"><i></i><i></i><i></i></span>
+          <span class="widget__title">Upload Filing PDF</span>
+        </div>
+        <div class="widget__body">
+          <div class="widget__label">Select PDF</div>
+          <div class="dropzone" id="heroDropzone"></div>
+          <input type="file" id="heroFileInput" accept="application/pdf" style="display:none" />
+          <div class="widget__row">
+            <div class="widget__field">
+              <label>Court</label>
+              <select class="widget__select"><option>Select the court</option></select>
+            </div>
+            <div class="widget__field">
+              <label>Case type</label>
+              <select class="widget__select"><option>Writ Petition</option><option>Appeal</option><option>Civil Suit</option></select>
+            </div>
+          </div>
+          <button class="btn btn--primary btn--block btn--lg widget__cta" id="heroAnalyze">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2-6.3-4.6L5.7 21 8 14 2 9.4h7.6z"/></svg>
+            Analyze Filing
+          </button>
+          <p class="widget__note">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="vertical-align:-2px;margin-right:4px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            PDF only · Max 50 MB · Your file is never saved
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONFIDENTIALITY STRIP ===================== -->
+<section class="privacy-strip">
+  <div class="container">
+    <div class="privacy-strip__inner">
+      <div class="privacy-strip__badge">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div class="privacy-strip__text">
+        <h3>Your filings stay confidential - we never save your PDF</h3>
+        <p>Documents are analysed in memory and deleted the moment your report is ready. We never store your PDF, never share it, and never use it to train models. Only your report - never the file - is kept, and it stays private to your account.</p>
+      </div>
+      <div class="privacy-strip__points">
+        <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> PDF deleted after analysis</span>
+        <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Never shared with anyone</span>
+        <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Private to your account</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROBLEM ===================== -->
+<section class="section section--slate">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="eyebrow__dot"></span> The problem</span>
+      <h2>Filing rejections cost time the case can't afford</h2>
+      <p>A single overlooked detail can send a filing back from the registry. The common culprits are predictable - and preventable.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card__icon card__icon--red"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <h3>Registry objections</h3>
+        <p>Papers bounce at the counter over defects that a checklist would have caught in minutes.</p>
+      </div>
+      <div class="card">
+        <div class="card__icon card__icon--warn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v4H4z"/><path d="M4 12h10M4 17h7"/></svg></div>
+        <h3>Formatting defects</h3>
+        <p>Wrong margins, type size, line spacing or paper size - small misses, repeated objections.</p>
+      </div>
+      <div class="card">
+        <div class="card__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
+        <h3>Missing documents</h3>
+        <p>An index, vakalatnama, affidavit or certified copy left out stalls the whole filing.</p>
+      </div>
+      <div class="card">
+        <div class="card__icon card__icon--warn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></div>
+        <h3>Filing delays</h3>
+        <p>Each rejection means another trip, another queue, and a deadline creeping closer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HOW IT WORKS ===================== -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="eyebrow__dot"></span> How it works</span>
+      <h2>From PDF to readiness report in four steps</h2>
+      <p>No setup, no plugins. Upload once and get an evidence-based assessment of where your filing stands.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step__num">1</div>
+        <h3>Upload PDF</h3>
+        <p>Drop in your complete filing - cover, index, body and annexures.</p>
+        <svg class="step__arrow" width="40" height="16" viewBox="0 0 40 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="34" y2="8"/><polyline points="28 3 35 8 28 13"/></svg>
+      </div>
+      <div class="step">
+        <div class="step__num">2</div>
+        <h3>AI Analysis</h3>
+        <p>The engine reads the document and measures it against filing requirements.</p>
+        <svg class="step__arrow" width="40" height="16" viewBox="0 0 40 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="34" y2="8"/><polyline points="28 3 35 8 28 13"/></svg>
+      </div>
+      <div class="step">
+        <div class="step__num">3</div>
+        <h3>Defect Detection</h3>
+        <p>Every formatting, structure and compliance issue is flagged with evidence.</p>
+        <svg class="step__arrow" width="40" height="16" viewBox="0 0 40 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="8" x2="34" y2="8"/><polyline points="28 3 35 8 28 13"/></svg>
+      </div>
+      <div class="step">
+        <div class="step__num">4</div>
+        <h3>Readiness Report</h3>
+        <p>A clear score and a fix-it checklist you can action before you file.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== DASHBOARD SHOWCASE ===================== -->
+<section class="section section--slate">
+  <div class="container">
+    <div class="showcase">
+      <div>
+        <span class="eyebrow"><span class="eyebrow__dot"></span> The dashboard</span>
+        <h2 style="font-size:34px">Everything you need to file with confidence</h2>
+        <p style="margin-top:14px;color:var(--ink-500);font-size:17px">A focused workspace that turns a dense PDF into a clear, prioritised picture of filing readiness.</p>
+        <div class="showcase__list">
+          <div class="showcase__item"><span class="showcase__check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div><h4>Filing Readiness Score</h4><p>One number that summarises objection risk at a glance.</p></div></div>
+          <div class="showcase__item"><span class="showcase__check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div><h4>Defect Checklist</h4><p>Each finding prioritised by severity, with a suggested fix.</p></div></div>
+          <div class="showcase__item"><span class="showcase__check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div><h4>Evidence-Based Findings</h4><p>Every flag cites the page and the measurement behind it.</p></div></div>
+          <div class="showcase__item"><span class="showcase__check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div><h4>Historical Reports</h4><p>Every analysis is saved to your account for later review.</p></div></div>
+          <div class="showcase__item"><span class="showcase__check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div><h4>Court Rules Reference</h4><p>The filing requirements that drive each check, in one place.</p></div></div>
+        </div>
+      </div>
+
+      <!-- product mockup with realistic mock data -->
+      <div class="mockup">
+        <div class="mockup__bar"><i></i><i></i><i></i><span class="mockup__url">myfiling.ai/dashboard</span></div>
+        <div class="mockup__body">
+          <div class="mockup__score">
+            <div class="mockup__scorewrap">
+              <div class="gauge">
+                <svg width="130" height="130" viewBox="0 0 130 130">
+                  <circle cx="65" cy="65" r="56" fill="none" stroke="#E6E6F0" stroke-width="12"/>
+                  <circle cx="65" cy="65" r="56" fill="none" stroke="#10B981" stroke-width="12" stroke-linecap="round" stroke-dasharray="351.8" stroke-dashoffset="56" />
+                </svg>
+                <div class="gauge__val"><div class="gauge__num">84</div><div class="gauge__pct">readiness</div></div>
+              </div>
+              <span class="mockup__badge">Largely ready</span>
+            </div>
+            <div class="mockup__stats">
+              <div class="mockup__stat"><span>Pages scanned</span><span>42</span></div>
+              <div class="mockup__stat"><span>Checks run</span><span>15</span></div>
+              <div class="mockup__stat"><span>Paper size</span><span>A4</span></div>
+              <div class="mockup__stat"><span>Body type</span><span>14 pt</span></div>
+              <div class="mockup__stat"><span>Line spacing</span><span>1.5</span></div>
+            </div>
+          </div>
+          <div class="mockup__main">
+            <div class="mockup__h">Defect checklist</div>
+            <div class="defect"><div class="defect__sev defect__sev--warn"></div><div><div class="defect__t">Left margin below requirement</div><div class="defect__d">p.12 - measured 3.4 cm, expected ≥ 4 cm (binding edge).</div></div><span class="defect__tag defect__tag--warn">Warning</span></div>
+            <div class="defect"><div class="defect__sev defect__sev--warn"></div><div><div class="defect__t">Court fee not detected</div><div class="defect__d">No court-fee endorsement found in the document.</div></div><span class="defect__tag defect__tag--warn">Warning</span></div>
+            <div class="defect"><div class="defect__sev defect__sev--pass"></div><div><div class="defect__t">Index of record present</div><div class="defect__d">38 entries detected and cross-checked.</div></div><span class="defect__tag defect__tag--pass">Pass</span></div>
+            <div class="defect"><div class="defect__sev defect__sev--pass"></div><div><div class="defect__t">Paper size A4</div><div class="defect__d">All pages match the required dimensions.</div></div><span class="defect__tag defect__tag--pass">Pass</span></div>
+            <div class="defect"><div class="defect__sev defect__sev--pass"></div><div><div class="defect__t">Searchable text layer</div><div class="defect__d">Document is text-based - no OCR required.</div></div><span class="defect__tag defect__tag--pass">Pass</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FEATURES ===================== -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="eyebrow__dot"></span> Features</span>
+      <h2>Built for accuracy, designed for speed</h2>
+      <p>Professional-grade scrutiny that fits the way filing teams actually work.</p>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <div class="feature__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <h3>Smart PDF Analysis</h3>
+        <p>Automatically reviews filing documents - paper, margins, type, spacing, structure and more.</p>
+      </div>
+      <div class="feature">
+        <div class="feature__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <h3>Defect Detection</h3>
+        <p>Identifies issues before submission, each tied to the filing requirement it relates to.</p>
+      </div>
+      <div class="feature">
+        <div class="feature__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12A10 10 0 1 1 12 2"/><polyline points="12 7 12 12 16 12"/></svg></div>
+        <h3>Filing Readiness Score</h3>
+        <p>An instant quality assessment that reflects real objection risk, not raw defect count.</p>
+      </div>
+      <div class="feature">
+        <div class="feature__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <h3>Secure User Accounts</h3>
+        <p>Private reports and history, scoped to your account and protected by sessions.</p>
+      </div>
+      <div class="feature">
+        <div class="feature__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></div>
+        <h3>Historical Reports</h3>
+        <p>Review previous analyses any time - every result is saved to your workspace.</p>
+      </div>
+      <div class="feature">
+        <div class="feature__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <h3>Fast Processing</h3>
+        <p>Designed for professional workflows - results stream back in seconds, not minutes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WHO USES IT ===================== -->
+<section class="section section--slate section--tight">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="eyebrow__dot"></span> Who uses it</span>
+      <h2>Trusted across the filing workflow</h2>
+    </div>
+    <div class="personas">
+      <span class="persona"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l9 4-9 4-9-4 9-4z"/><path d="M3 11l9 4 9-4"/></svg> Advocates</span>
+      <span class="persona"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg> Law Firms</span>
+      <span class="persona"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg> Litigation Teams</span>
+      <span class="persona"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Legal Clerks</span>
+      <span class="persona"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> Filing Departments</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== COMPARISON ===================== -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="eyebrow__dot"></span> Why myfiling.ai</span>
+      <h2>Manual review vs. myfiling.ai</h2>
+      <p>The same scrutiny a careful clerk performs - consistent, instant, and evidence-backed.</p>
+    </div>
+    <div class="compare">
+      <table>
+        <thead><tr><th>&nbsp;</th><th>Traditional Manual Review</th><th class="compare__col-hl">myfiling.ai</th></tr></thead>
+        <tbody>
+          <tr><td>Turnaround</td><td class="no">Hours per filing</td><td class="yes compare__col-hl">Seconds</td></tr>
+          <tr><td>Consistency</td><td class="no">Varies by reviewer</td><td class="yes compare__col-hl">Identical every time</td></tr>
+          <tr><td>Evidence trail</td><td class="no">Handwritten notes</td><td class="yes compare__col-hl">Page + measurement cited</td></tr>
+          <tr><td>Coverage</td><td class="no">Easy to miss items</td><td class="yes compare__col-hl">Every check, every page</td></tr>
+          <tr><td>History</td><td class="no">Scattered files</td><td class="yes compare__col-hl">Saved to your account</td></tr>
+          <tr><td>Cost per review</td><td class="no">Billable hours</td><td class="yes compare__col-hl">Starts free</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TESTIMONIALS ===================== -->
+<section class="section section--slate">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="eyebrow__dot"></span> Testimonials</span>
+      <h2>What filing teams are saying</h2>
+    </div>
+    <div class="quotes">
+      <div class="quote">
+        <div class="quote__stars">★★★★★</div>
+        <p class="quote__text">"We used to lose a full day to a bounced filing. Now the defects surface before anything leaves the office."</p>
+        <div class="quote__author"><div class="quote__avatar">RS</div><div><div class="quote__name">R. Sharma</div><div class="quote__role">Managing Partner</div></div></div>
+      </div>
+      <div class="quote">
+        <div class="quote__stars">★★★★★</div>
+        <p class="quote__text">"The readiness score is the first thing I check now. It tells me in one glance whether a brief is ready to go."</p>
+        <div class="quote__author"><div class="quote__avatar">AK</div><div><div class="quote__name">A. Kapoor</div><div class="quote__role">Advocate</div></div></div>
+      </div>
+      <div class="quote">
+        <div class="quote__stars">★★★★★</div>
+        <p class="quote__text">"Evidence on every finding means no arguing with the result. Our clerks fix and re-check in minutes."</p>
+        <div class="quote__author"><div class="quote__avatar">MN</div><div><div class="quote__name">M. Nair</div><div class="quote__role">Filing Department Lead</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="eyebrow__dot"></span> FAQ</span>
+      <h2>Questions, answered</h2>
+    </div>
+    <div class="faq">
+      <div class="faq__item">
+        <button class="faq__q">Do I need an account? <svg class="faq__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        <div class="faq__a"><div class="faq__a-inner">You can explore the homepage and the upload widget freely. To run a full analysis and save your report, you'll create a free account - it takes seconds and no card is required.</div></div>
+      </div>
+      <div class="faq__item">
+        <button class="faq__q">Are my files private? <svg class="faq__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        <div class="faq__a"><div class="faq__a-inner">Completely. We never save your PDF - it is analysed in memory and deleted the moment your report is ready. We never share it and never use it to train models. Only the resulting report is kept, scoped to your account and visible only to you.</div></div>
+      </div>
+      <div class="faq__item">
+        <button class="faq__q">Can I access previous reports? <svg class="faq__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        <div class="faq__a"><div class="faq__a-inner">Every completed analysis is saved to your account. Open any past report from your dashboard history to review the score and findings again - no re-upload needed.</div></div>
+      </div>
+      <div class="faq__item">
+        <button class="faq__q">What file formats are supported? <svg class="faq__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        <div class="faq__a"><div class="faq__a-inner">PDF files up to 50 MB. For best results, upload a text-based (searchable) PDF rather than a scanned image - the analysis reads the document's text and layout directly.</div></div>
+      </div>
+      <div class="faq__item">
+        <button class="faq__q">How does analysis work? <svg class="faq__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        <div class="faq__a"><div class="faq__a-inner">The engine reads your PDF once, measures it against court filing requirements - paper, margins, type, spacing, structure and required documents - and streams back each finding with the page and measurement behind it, plus an overall readiness score.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FINAL CTA ===================== -->
+<section class="section section--tight">
+  <div class="container">
+    <div class="cta">
+      <h2>Ready to Improve Filing Quality?</h2>
+      <p>Run your first analysis free and see exactly where your filing stands.</p>
+      <div class="cta__row">
+        <a class="btn btn--primary btn--lg" href="/register">Create Free Account</a>
+        <a class="btn btn--light btn--lg" href="/dashboard/">Go To Dashboard</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER (shared) ===================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <a class="brand" href="/"><span class="brand__mark">M</span> myfiling<span class="brand__dot">.ai</span></a>
+        <p>Catch filing defects before the registry does. Instant, evidence-based filing-readiness reports for legal filing compliance.</p>
+      </div>
+      <div class="footer__col">
+        <h4>Product</h4>
+        <a href="/#features">Features</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/dashboard/">Dashboard</a>
+      </div>
+      <div class="footer__col">
+        <h4>Company</h4>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+      </div>
+      <div class="footer__col">
+        <h4>Legal</h4>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/terms-and-conditions">Terms &amp; Conditions</a>
+        <a href="/cookie-policy">Cookie Policy</a>
+      </div>
+      <div class="footer__col">
+        <h4>Resources</h4>
+        <a href="/security">Security</a>
+        <a href="/#features">FAQ</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 myfiling.ai. All rights reserved.</span>
+      <span><a href="/privacy-policy">Privacy</a> · <a href="/terms-and-conditions">Terms</a> · <a href="/cookie-policy">Cookies</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js"></script>
+</body>
+</html>

@@ -7,9 +7,9 @@ const RECENT = [];
 // ---------------------------------------------------------------------------
 // COURT RULES LIBRARY
 // Detailed, court-specific rules with exact specifications and legal source.
-// Researched 15 Jun 2026 from official court circulars / Rules — see
+// Researched 15 Jun 2026 from official court circulars / Rules - see
 // COURT_RULES.md at the repo root for full citations and automation ratings.
-// `auto` field: "high" | "medium" | "manual" — detector confidence.
+// `auto` field: "high" | "medium" | "manual" - detector confidence.
 // ---------------------------------------------------------------------------
 
 const COURT_RULES = [
@@ -20,7 +20,7 @@ const COURT_RULES = [
       {
         name: "Paper, Font & Margins (Circular 05-03-2020)",
         rules: [
-          { text: "Paper size: A4 — 29.7 cm × 21 cm", auto: "high" },
+          { text: "Paper size: A4 - 29.7 cm × 21 cm", auto: "high" },
           { text: "Paper weight: not less than 75 GSM (superior quality)", auto: "manual" },
           { text: "Font: Times New Roman", auto: "medium" },
           { text: "Body font size: 14 pt", auto: "high" },
@@ -77,7 +77,7 @@ const COURT_RULES = [
       {
         name: "Paper, Font & Margins (PD 74/Rules/DHC)",
         rules: [
-          { text: "Paper size: A4 — 29.7 cm × 21 cm", auto: "high" },
+          { text: "Paper size: A4 - 29.7 cm × 21 cm", auto: "high" },
           { text: "Paper weight: not less than 75 GSM", auto: "manual" },
           { text: "Font: Times New Roman", auto: "medium" },
           { text: "Body font size: 14 pt", auto: "high" },
@@ -126,7 +126,7 @@ const COURT_RULES = [
   },
   {
     court: "Calcutta High Court",
-    source: "Calcutta HC Gazette Notification — A4 white bond paper (figures marked * follow SC uniform standard; verify primary notification)",
+    source: "Calcutta HC Gazette Notification - A4 white bond paper (figures marked * follow SC uniform standard; verify primary notification)",
     categories: [
       {
         name: "Paper, Font & Margins",
@@ -142,7 +142,7 @@ const COURT_RULES = [
   },
   {
     court: "Madras High Court",
-    source: "Madras HC direction — A4, min 75 GSM, both-sided (figures marked * follow SC uniform standard; verify primary notification)",
+    source: "Madras HC direction - A4, min 75 GSM, both-sided (figures marked * follow SC uniform standard; verify primary notification)",
     categories: [
       {
         name: "Paper, Font & Margins",

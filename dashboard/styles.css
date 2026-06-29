@@ -1,16 +1,16 @@
-/* myfiling.ai — "Deep Indigo + Gold" premium legal-tech theme.
+/* myfiling.ai - "Deep Indigo + Gold" premium legal-tech theme.
    The legacy token names (--navy-*, --blue-*, --ink-*) are retained but RE-MAPPED
    to the new palette, so every component re-skins automatically. New first-class
    accent tokens (--indigo-*, --gold-*) drive the refreshed identity. */
 :root {
-  /* Dark chrome — indigo-night, not flat navy. Used for header/sidebar. */
+  /* Dark chrome - indigo-night, not flat navy. Used for header/sidebar. */
   --navy-900: #14162E;   /* indigo-night (deepest) */
   --navy-800: #1B1E3D;
   --navy-700: #262A55;
   --navy-600: #34386E;
   --navy-300: #8A8FB8;
 
-  /* Ink scale — warm-cool neutrals for body text on light surfaces. */
+  /* Ink scale - warm-cool neutrals for body text on light surfaces. */
   --ink-900: #14152A;
   --ink-700: #2C2E48;
   --ink-600: #44476A;
@@ -24,7 +24,7 @@
   --bg-100: #EFEFF7;
   --white: #FFFFFF;
 
-  /* Indigo — the PRIMARY action color (replaces the old generic blue). */
+  /* Indigo - the PRIMARY action color (replaces the old generic blue). */
   --indigo-600: #4F46E5;
   --indigo-700: #4338CA;
   --indigo-500: #6366F1;
@@ -34,13 +34,13 @@
   --blue-700: #4338CA;
   --blue-50: #EEEDFE;
 
-  /* Gold — the SECONDARY accent (authority, courts). Use sparingly for highlight. */
+  /* Gold - the SECONDARY accent (authority, courts). Use sparingly for highlight. */
   --gold-600: #B8862E;   /* readable gold text on light */
   --gold-500: #C8A24C;   /* primary gold for marks/highlights */
   --gold-400: #D8B868;
   --gold-50: #FBF3DF;
 
-  /* Semantic colors — slightly warmer/richer than stock. */
+  /* Semantic colors - slightly warmer/richer than stock. */
   --red-600: #D6293E;
   --red-50: #FCE9EB;
   --amber-600: #C2790B;
@@ -48,7 +48,7 @@
   --green-600: #119366;  /* emerald-leaning success */
   --green-50: #E0F4EC;
 
-  /* Layered elevation — tinted with indigo so shadows feel of-a-piece. */
+  /* Layered elevation - tinted with indigo so shadows feel of-a-piece. */
   --shadow-xs: 0 1px 2px rgba(20, 22, 46, 0.05);
   --shadow-sm: 0 1px 2px rgba(20, 22, 46, 0.06), 0 1px 3px rgba(20, 22, 46, 0.05);
   --shadow-md: 0 6px 20px rgba(20, 22, 46, 0.09), 0 2px 6px rgba(20, 22, 46, 0.06);
@@ -107,7 +107,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Respect users who prefer reduced motion — disable entrance/spin animations. */
+/* Respect users who prefer reduced motion - disable entrance/spin animations. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -165,7 +165,7 @@ select:focus-visible, [role="button"]:focus-visible {
   position: relative;
   z-index: 5;
 }
-/* A whisper-thin gold rule along the bottom edge — the signature accent. */
+/* A whisper-thin gold rule along the bottom edge - the signature accent. */
 .header::after {
   content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
   background: linear-gradient(90deg, transparent 0%, rgba(200,162,76,0.55) 50%, transparent 100%);
@@ -523,7 +523,7 @@ select:focus-visible, [role="button"]:focus-visible {
   padding: 56px 32px 80px;
 }
 
-/* Hero — sits above the upload panel as the page's anchor. */
+/* Hero - sits above the upload panel as the page's anchor. */
 .upload__hero {
   text-align: center;
   margin-bottom: 32px;
@@ -585,13 +585,26 @@ select:focus-visible, [role="button"]:focus-visible {
 }
 .upload__trust-item svg { color: var(--green-600); }
 
-/* The upload panel — a single elevated card framing the whole input flow. */
+/* The upload panel - a single elevated card framing the whole input flow. */
 .upload__panel {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
   padding: 28px;
   box-shadow: var(--shadow-md);
+}
+
+/* Handoff banner: shown when a file was carried over from the public homepage
+   upload widget after sign-in (see UploadScreen.jsx pending-upload pickup). */
+.upload__handoff {
+  display: flex; align-items: center; gap: 9px;
+  margin-bottom: 18px;
+  padding: 11px 15px;
+  border-radius: var(--radius-md);
+  background: var(--indigo-50, #EEEDFE);
+  color: var(--indigo-700, #4338CA);
+  border: 1px solid rgba(79, 70, 229, 0.18);
+  font-size: 13.5px; font-weight: 600;
 }
 
 .dropzone {
@@ -719,7 +732,7 @@ select:focus-visible, [role="button"]:focus-visible {
 .btn--gold:hover:not(:disabled) { filter: brightness(1.04); box-shadow: var(--shadow-gold), inset 0 1px 0 rgba(255,255,255,0.5); transform: translateY(-1px); }
 .btn--lg { padding: 14px 28px; font-size: 15px; }
 
-/* Sample row — its own subtle section beneath the upload panel. */
+/* Sample row - its own subtle section beneath the upload panel. */
 .upload__samples {
   margin-top: 28px;
   padding: 20px 24px;
@@ -931,7 +944,7 @@ select:focus-visible, [role="button"]:focus-visible {
 }
 .tag--blue { background: var(--indigo-50); color: var(--indigo-700); border-color: #D9D6FB; }
 
-/* Gauge — presented as an elevated score card, the focal point of the report. */
+/* Gauge - presented as an elevated score card, the focal point of the report. */
 .gauge {
   display: flex; flex-direction: column; align-items: center;
   padding: 28px 20px 18px;
@@ -942,7 +955,7 @@ select:focus-visible, [role="button"]:focus-visible {
   position: relative;
   flex: none;   /* never let the column flex shrink the score card's height */
 }
-/* Gold hairline across the top of the score card — the signature accent.
+/* Gold hairline across the top of the score card - the signature accent.
    Inset slightly and rounded so it follows the card corners without needing
    overflow:hidden on the card (which previously clipped the gauge arc). */
 .gauge::before {
@@ -1229,7 +1242,7 @@ select:focus-visible, [role="button"]:focus-visible {
 .defect--minor    { border-left-color: var(--ink-300); }
 .defect--fixed    { border-left-color: var(--green-600); }
 
-/* Confidence badge — how sure the detector is about this finding. */
+/* Confidence badge - how sure the detector is about this finding. */
 .conf-badge {
   display: inline-flex; align-items: center;
   font-family: var(--font-mono);
@@ -1459,7 +1472,7 @@ select:focus-visible, [role="button"]:focus-visible {
 }
 
 /* ----------------- Entrance animations ----------------- */
-/* Resting state is visible — animation interpolates from hidden to visible.
+/* Resting state is visible - animation interpolates from hidden to visible.
    `both` fill mode covers pre-delay state and locks the end state. If the
    animation is throttled or skipped, content remains visible. */
 .stagger > * { animation: rise 360ms both; }
@@ -2053,7 +2066,7 @@ select:focus-visible, [role="button"]:focus-visible {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Tasteful motion — the "AI live" eyebrow dot gently pulses; the score card
+/* Tasteful motion - the "AI live" eyebrow dot gently pulses; the score card
    lifts in. Both honour prefers-reduced-motion via the global override above. */
 @keyframes goldPulse {
   0%, 100% { box-shadow: 0 0 0 3px rgba(200,162,76,0.22); }
@@ -2113,7 +2126,7 @@ select:focus-visible, [role="button"]:focus-visible {
   transition: transform 150ms;
 }
 
-/* Dropdown Menu — only rendered when courtOpen === true via React state */
+/* Dropdown Menu - only rendered when courtOpen === true via React state */
 .court-dropdown__menu {
   position: absolute;
   top: calc(100% + 4px);
@@ -2236,7 +2249,7 @@ select:focus-visible, [role="button"]:focus-visible {
 svg { display: block; }
 
 /* ============================================================================
-   RESPONSIVE — desktop, laptop, tablet, mobile
+   RESPONSIVE - desktop, laptop, tablet, mobile
    The shell is a CSS grid (sidebar + main); we collapse the sidebar and stack
    the two-column screens as the viewport narrows so nothing is cramped or clipped.
    ============================================================================ */

@@ -1,5 +1,5 @@
 """
-Formatting page-detectors — Supreme Court paper-book formatting brief.
+Formatting page-detectors - Supreme Court paper-book formatting brief.
 
 Spec targets:
     paper        A4 (21.0 x 29.7 cm)
@@ -12,7 +12,7 @@ The DECISION LOGIC here (tiered severity, left-margin-only flagging, mixed-doc
 font/spacing suppression guards, sans-serif-only font flagging, informational
 quotations) is PORTED VERBATIM from the corpus-tuned engine. Only the plumbing
 changed: detectors read ``self.ctx`` (DocumentContext) and pages expose
-``pdf_page_no``. Behaviour — and therefore corpus parity — is unchanged.
+``pdf_page_no``. Behaviour - and therefore corpus parity - is unchanged.
 """
 
 from __future__ import annotations
@@ -126,7 +126,7 @@ class PaperSizeDetector(Detector):
                 id="d_fmt_paper_003", severity=Severity.WARNING, page=first_bad,
                 title="Mixed Paper Sizes",
                 description=(f"{bad} of {total} pages are not A4 or Legal ({breakdown}). The "
-                             f"paper-book should use a standard size — A4 (21.0 x 29.7 cm) "
+                             f"paper-book should use a standard size - A4 (21.0 x 29.7 cm) "
                              f"or Legal (21.6 x 35.6 cm).{ex_note}"),
                 remediation="Re-format the off-size pages to A4 (or Legal).",
                 confidence=Confidence.HIGH,
@@ -142,7 +142,7 @@ class MarginDetector(Detector):
     """Flags the SPECIFIC pages whose body text runs into the left/right margin.
 
     Per-page only: the document-median ("whole book") margin findings were
-    removed — they duplicated the per-page result and were less actionable. Each
+    removed - they duplicated the per-page result and were less actionable. Each
     page is judged by the calibrated block-min + pervasiveness rule (see
     metrics._edge_defect_signal). Top/bottom are not flagged per-page because they
     have a single edge line, so the pervasiveness signal does not apply.
@@ -189,7 +189,7 @@ class MarginDetector(Detector):
             return self.result(details=details, findings=[], confidence=Confidence.LOW)
 
         # PER-PAGE margin defects only: the SPECIFIC pages whose body text runs
-        # into the left or right margin. No document-median/whole-book findings —
+        # into the left or right margin. No document-median/whole-book findings -
         # those duplicated the per-page result and were less actionable.
         for cfg in self._PAGE_SIDES:
             pages = self._edge_defect_pages(cfg["block_attr"], cfg["frac_attr"])
@@ -203,7 +203,7 @@ class MarginDetector(Detector):
                 id=cfg["fid"], severity=Severity.WARNING, page=pages[0],
                 title=cfg["title"],
                 description=(f"On {len(pages)} page(s) the body text runs into "
-                             f"{cfg['phrase']} — text reaches within "
+                             f"{cfg['phrase']} - text reaches within "
                              f"~{_EDGE_PAGE_BLOCK_MIN_CM:.1f} cm of the page edge across "
                              f"much of the page. Affected page(s): {listed}{more}."),
                 remediation=f"Increase the {cfg['side']} margin on these pages towards "
@@ -342,7 +342,7 @@ class BodyFontSizeDetector(Detector):
                 evidence={"body_pt": round(size, 1), "example_page": ex_page}))
         elif abs(size - SPEC_BODY_PT) > _FONT_SPEC_TOL:
             details["off_spec_note"] = (
-                f"Body font ~{size:.1f} pt (spec {SPEC_BODY_PT:.0f} pt) — legible, "
+                f"Body font ~{size:.1f} pt (spec {SPEC_BODY_PT:.0f} pt) - legible, "
                 f"not a registry objection.")
 
         conf = Confidence.HIGH if not findings else Confidence.MEDIUM
@@ -394,7 +394,7 @@ class LineSpacingDetector(Detector):
                 evidence={"ratio": round(ratio, 2), "example_page": ex_page}))
         elif abs(ratio - _SPACING_SPEC) > _SPACING_TOL:
             details["off_spec_note"] = (
-                f"Line spacing ~{ratio:.2f} (spec {_SPACING_SPEC:.1f}) — acceptable, "
+                f"Line spacing ~{ratio:.2f} (spec {_SPACING_SPEC:.1f}) - acceptable, "
                 f"not a registry objection.")
 
         conf = Confidence.HIGH if not findings else Confidence.MEDIUM
@@ -432,7 +432,7 @@ class QuotationBlockDetector(Detector):
             bad_size = [b for b in blocks if abs(b["size"] - SPEC_QUOTE_PT) > 1.0]
             details["off_spec_blocks"] = len(bad_size)
 
-        # Informational only — never raises a defect (corpus precision decision).
+        # Informational only - never raises a defect (corpus precision decision).
         return self.result(details=details, findings=[], confidence=Confidence.MEDIUM)
 
     def _find_quote_blocks(self, body_size: float) -> List[dict]:

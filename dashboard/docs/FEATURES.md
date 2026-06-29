@@ -1,4 +1,4 @@
-# myfiling.ai dashboard — Feature Overview
+# myfiling.ai dashboard - Feature Overview
 
 ## 🎯 Core Value Proposition
 
@@ -292,7 +292,7 @@ Start
 - **Exploring results:** 3–5 minutes (reading rules and fixes)
 - **Repeat user:** 30 seconds per filing
 
-**Training needed:** Minimal — interface is intuitive
+**Training needed:** Minimal - interface is intuitive
 
 ---
 
@@ -322,12 +322,12 @@ Start
 
 This dashboard is successful if:
 
-✅ **Stakeholders understand the value** — "I see why this solves a real problem"  
-✅ **Lawyers want to pilot it** — "This would save me time"  
-✅ **Defects are credible** — "These are real issues I encounter"  
-✅ **Disclaimer is trusted** — "They're being honest about limitations"  
-✅ **Architecture is sound** — "Easy to build production on this"  
-✅ **UX is intuitive** — "I can use this without training"  
+✅ **Stakeholders understand the value** - "I see why this solves a real problem"  
+✅ **Lawyers want to pilot it** - "This would save me time"  
+✅ **Defects are credible** - "These are real issues I encounter"  
+✅ **Disclaimer is trusted** - "They're being honest about limitations"  
+✅ **Architecture is sound** - "Easy to build production on this"  
+✅ **UX is intuitive** - "I can use this without training"  
 
 ---
 

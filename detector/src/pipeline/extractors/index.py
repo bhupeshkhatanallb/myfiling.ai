@@ -1,5 +1,5 @@
 """
-IndexExtractor — Stage 2: find the Index / Table of Contents and extract entries.
+IndexExtractor - Stage 2: find the Index / Table of Contents and extract entries.
 
 Produces :class:`~pipeline.model.IndexEntry` rows (title + start/end page +
 serial + annexures). The grammar (tolerant entry regexes, column-header gate,

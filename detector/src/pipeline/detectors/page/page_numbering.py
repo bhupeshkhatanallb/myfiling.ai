@@ -1,10 +1,10 @@
 """
-PageNumberingDetector — continuous folio numbering (Stage 5 consumer).
+PageNumberingDetector - continuous folio numbering (Stage 5 consumer).
 
 PORTED VERBATIM from the prior engine's structure.py. This detector produces the
 corpus's single CRITICAL (duplicate folios on p17 of diary 172759), so its
-algorithms — region scoring, longest-non-decreasing denoise, genuine-vs-artifact
-duplicate discrimination, gap-vs-unreadable reconciliation — are preserved
+algorithms - region scoring, longest-non-decreasing denoise, genuine-vs-artifact
+duplicate discrimination, gap-vs-unreadable reconciliation - are preserved
 exactly. Only ``self.doc``->``self.ctx`` and ``.index``->``.pdf_page_no`` changed,
 and folio extraction now lives in ``extractors.page_numbering``.
 """

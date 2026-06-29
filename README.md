@@ -10,11 +10,11 @@ license: apache-2.0
 short_description: Court filing defect checker (Delhi High Court)
 ---
 
-# myfiling.ai — Court Filing Defect Checker
+# myfiling.ai - Court Filing Defect Checker
 
 Checks a court-filing PDF (currently **Delhi High Court**) against the Registry's
-formatting and filing requirements — paper size, margins, page DPI/blur, distorted
-OCR text, fonts, pagination, court fee, vakalatnama, affidavit, and more — and
+formatting and filing requirements - paper size, margins, page DPI/blur, distorted
+OCR text, fonts, pagination, court fee, vakalatnama, affidavit, and more - and
 returns a defect report with a filing-readiness score.
 
 ## Running it

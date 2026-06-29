@@ -1,5 +1,5 @@
 """
-BookmarkValidator — Stage 8: PDF outline (bookmark) presence + accuracy.
+BookmarkValidator - Stage 8: PDF outline (bookmark) presence + accuracy.
 
 Two checks:
   * PRESENCE: a Supreme Court paper-book is expected to be bookmarked so the
@@ -31,7 +31,7 @@ from ..registry import register
 # section words in passing. Mapping on a bare keyword anywhere in the title is the
 # dominant false-positive source. So a bookmark is mapped to a section ONLY when
 # the title is SHORT and the keyword ANCHORS it (the bookmark IS that section, not
-# one that references it). "Affidavit"/"Prayer" are excluded — they appear inside
+# one that references it). "Affidavit"/"Prayer" are excluded - they appear inside
 # countless unrelated bookmark titles.
 _BOOKMARK_SECTION = [
     ("Index", r"^\s*(?:INDEX|TABLE\s+OF\s+CONTENTS)\b"),
@@ -88,7 +88,7 @@ class BookmarkValidator(Detector):
             return self.result(details=details, findings=findings,
                                confidence=Confidence.MEDIUM, _ocr_annotate=False)
 
-        # 2) Accuracy — only when we can read page content to compare against.
+        # 2) Accuracy - only when we can read page content to compare against.
         if self.ctx.text_scrutinizable:
             mismatches = self._accuracy_mismatches()
             details["mismatches"] = mismatches
@@ -133,7 +133,7 @@ class BookmarkValidator(Detector):
             if section in titles:
                 continue                       # bookmark lands on/near its section
             landing = self.ctx.pages[b.page_index].detected_title
-            # Front-matter sections commonly open on the cause-title page — fine.
+            # Front-matter sections commonly open on the cause-title page - fine.
             if landing == "Cause Title" and section in self._FRONT_MATTER_OK:
                 continue
             # Only a mismatch when the landing page confidently reads as a DIFFERENT

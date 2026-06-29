@@ -77,7 +77,7 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 // TweakSelect past ~16/~10 chars per label); reach for TweakSelect directly when
 // options are many or long. For color tweaks always curate 3-4 options rather than
 // a free picker; an option can also be a whole 2–5 color palette (the stored value
-// is the array). The Tweak* controls are a floor, not a ceiling — build custom
+// is the array). The Tweak* controls are a floor, not a ceiling - build custom
 // controls inside the panel if a tweak calls for UI they don't cover.
 /* END USAGE */
 // ─────────────────────────────────────────────────────────────────────────────
@@ -105,7 +105,7 @@ function useTweaks(defaults) {
       edits: edits
     }, '*');
     // Same-window signal so in-page listeners (deck-stage rail thumbnails)
-    // can react — the parent message only reaches the host, not peers.
+    // can react - the parent message only reaches the host, not peers.
     window.dispatchEvent(new CustomEvent('tweakchange', {
       detail: edits
     }));
@@ -115,7 +115,7 @@ function useTweaks(defaults) {
 
 // ── TweaksPanel ─────────────────────────────────────────────────────────────
 // Floating shell. Registers the protocol listener BEFORE announcing
-// availability — if the announce ran first, the host's activate could land
+// availability - if the announce ran first, the host's activate could land
 // before our handler exists and the toolbar toggle would silently no-op.
 // The close button posts __edit_mode_dismissed so the host's toolbar toggle
 // flips off in lockstep; the host echoes __deactivate_edit_mode back which
@@ -313,13 +313,13 @@ function TweakRadio(_ref7) {
     dragging = _React$useState6[0],
     setDragging = _React$useState6[1];
   // The active value is read by pointer-move handlers attached for the lifetime
-  // of a drag — ref it so a stale closure doesn't fire onChange for every move.
+  // of a drag - ref it so a stale closure doesn't fire onChange for every move.
   var valueRef = React.useRef(value);
   valueRef.current = value;
 
   // Segments wrap mid-word once per-segment width runs out. The track is
   // ~248px (280 panel − 28 body pad − 4 seg pad), each button loses 12px
-  // to its own padding, and 11.5px system-ui averages ~6.3px/char — so 2
+  // to its own padding, and 11.5px system-ui averages ~6.3px/char - so 2
   // options fit ~16 chars each, 3 fit ~10. Past that (or >3 options), fall
   // back to a dropdown rather than wrap.
   var labelLen = function labelLen(o) {
@@ -333,7 +333,7 @@ function TweakRadio(_ref7) {
     3: 10
   }[options.length]) !== null && _$3$options$length !== void 0 ? _$3$options$length : 0);
   if (!fitsAsSegments) {
-    // <select> emits strings — map back to the original option value so the
+    // <select> emits strings - map back to the original option value so the
     // fallback stays type-preserving (numbers, booleans) like the segment path.
     var resolve = function resolve(s) {
       var m = options.find(function (o) {
@@ -502,7 +502,7 @@ function TweakNumber(_ref0) {
   }, unit));
 }
 
-// Relative-luminance contrast pick — checkmarks drawn over a swatch need to
+// Relative-luminance contrast pick - checkmarks drawn over a swatch need to
 // read on both #111 and #fafafa without per-option configuration. Hex input
 // only (#rgb / #rrggbb); named or rgb()/hsl() colors fall through to "light".
 function __twkIsLight(hex) {
@@ -532,8 +532,8 @@ var __TwkCheck = function __TwkCheck(_ref1) {
   }));
 };
 
-// TweakColor — curated color/palette picker. Each option is either a single
-// hex string or an array of 1-5 hex strings; the card adapts — a lone color
+// TweakColor - curated color/palette picker. Each option is either a single
+// hex string or an array of 1-5 hex strings; the card adapts - a lone color
 // renders solid, a palette renders colors[0] as the hero (left ~2/3) with the
 // rest stacked in a sharp column on the right. onChange emits the
 // option in the shape it was passed (string stays string, array stays array).
@@ -629,7 +629,7 @@ Object.assign(window, {
   TweakButton: TweakButton
 });
 
-// icons.jsx — small inline SVG icons shared across the app
+// icons.jsx - small inline SVG icons shared across the app
 
 var Ico = {
   Upload: function Upload(p) {
@@ -859,14 +859,14 @@ var Ico = {
 };
 window.Ico = Ico;
 
-// gauge.jsx — Arc / semicircle gauge with dynamic color band
+// gauge.jsx - Arc / semicircle gauge with dynamic color band
 
 function Gauge(_ref12) {
   var _ref12$score = _ref12.score,
     score = _ref12$score === void 0 ? 0 : _ref12$score,
     _ref12$animate = _ref12.animate,
     animate = _ref12$animate === void 0 ? true : _ref12$animate;
-  // Determine band based on score (reframed per advocate audit — no "safe to
+  // Determine band based on score (reframed per advocate audit - no "safe to
   // file" guarantee; reflects formatting + filing-requirement readiness).
   var band = score >= 75 ? {
     color: "#119366",
@@ -878,11 +878,11 @@ function Gauge(_ref12) {
     soft: "#FBEFD7"
   } : {
     color: "#D6293E",
-    label: "Not ready — must fix",
+    label: "Not ready - must fix",
     soft: "#FBDCE0"
   };
 
-  // SVG arc geometry — semicircle. viewBox snugly fits arc + stroke + end-cap.
+  // SVG arc geometry - semicircle. viewBox snugly fits arc + stroke + end-cap.
   var R = 100;
   var STROKE = 16;
   var CAP_R = STROKE / 2 + 3; // end-cap circle radius
@@ -890,7 +890,7 @@ function Gauge(_ref12) {
   var CX = R + PAD; // center x
   var CY = R + PAD; // center y (baseline of arc)
   var W = 2 * R + 2 * PAD; // viewBox width
-  var H = R + 2 * PAD; // viewBox height — just enough for top half + cap
+  var H = R + 2 * PAD; // viewBox height - just enough for top half + cap
 
   // Parametrize position on the top semicircle by t in [0, 1].
   // t=0 → west endpoint, t=0.5 → top, t=1 → east endpoint.
@@ -1138,7 +1138,7 @@ function Sidebar(_ref13) {
     className: "sidebar__label"
   }, "Court rules"), COURT_RULES.map(function (c, i) {
     // Enabled-ness is driven by the COURTS data (match by name) so the
-    // sidebar tracks whichever court is live — currently Delhi High Court.
+    // sidebar tracks whichever court is live - currently Delhi High Court.
     var isEnabled = !!(COURTS.find(function (ct) {
       return ct.name === c.court;
     }) || {}).enabled;
@@ -1203,7 +1203,7 @@ function Sidebar(_ref13) {
 }
 window.Header = Header;
 window.Sidebar = Sidebar;
-// misc.jsx — Analysing overlay, Error screen, Toast
+// misc.jsx - Analysing overlay, Error screen, Toast
 
 var _React2 = React,
   useStateM = _React2.useState,
@@ -1364,7 +1364,7 @@ window.AnalysingOverlay = AnalysingOverlay;
 window.ErrorScreen = ErrorScreen;
 window.Toast = Toast;
 
-// AuthScreen.jsx — login / signup gate. Shown before the app when logged out.
+// AuthScreen.jsx - login / signup gate. Shown before the app when logged out.
 
 var _React3 = React,
   useStateAuth = _React3.useState;
@@ -1647,11 +1647,34 @@ window.AuthScreen = AuthScreen;
 window.apiMe = apiMe;
 window.apiLogout = apiLogout;
 
-// upload.jsx — Screen 1: Upload & Court Selection
+// upload.jsx - Screen 1: Upload & Court Selection
 var _React4 = React,
   useStateU = _React4.useState,
   useRefU = _React4.useRef,
   useEffectU = _React4.useEffect;
+
+// Key shared with the public marketing site (marketing/assets/site.js): when a
+// visitor picks a PDF in the hero widget and then signs in, the file (metadata
+// and, when small enough, its bytes) is stashed here so we can pre-fill the
+// upload screen and let them continue with a single click.
+var PENDING_UPLOAD_KEY = "myfiling.pendingUpload";
+
+// Reconstruct a File from the base64 the marketing widget stored, so the real
+// streaming upload works without re-picking. Returns null if bytes are absent.
+function _pendingFileFromB64(name, dataB64) {
+  if (!dataB64) return null;
+  try {
+    var bin = atob(dataB64);
+    var len = bin.length;
+    var bytes = new Uint8Array(len);
+    for (var i = 0; i < len; i++) bytes[i] = bin.charCodeAt(i);
+    return new File([bytes], name || "filing.pdf", {
+      type: "application/pdf"
+    });
+  } catch (_) {
+    return null;
+  }
+}
 function UploadScreen(_ref19) {
   var _COURTS$find;
   var onAnalyse = _ref19.onAnalyse,
@@ -1685,6 +1708,10 @@ function UploadScreen(_ref19) {
     _useStateU0 = _slicedToArray(_useStateU9, 2),
     courtOpen = _useStateU0[0],
     setCourtOpen = _useStateU0[1];
+  var _useStateU1 = useStateU(null),
+    _useStateU10 = _slicedToArray(_useStateU1, 2),
+    handoffNote = _useStateU10[0],
+    setHandoffNote = _useStateU10[1];
   var inputRef = useRefU();
   var courtDropdownRef = useRefU();
   useEffectU(function () {
@@ -1696,6 +1723,63 @@ function UploadScreen(_ref19) {
     document.addEventListener("mousedown", handleClickOutside);
     return function () {
       return document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // On mount, pick up any file handed off from the public homepage upload widget
+  // (only when the URL says ?pending=1, set by the marketing redirect). We
+  // pre-fill the dropzone and court/case-type so the user can analyse in one
+  // click. The stash is cleared immediately so a refresh doesn't re-apply it.
+  useEffectU(function () {
+    var pendingFlag = false;
+    try {
+      pendingFlag = new URLSearchParams(window.location.search).get("pending") === "1";
+    } catch (_) {/* no URL API */}
+    if (!pendingFlag) return;
+    var raw = null;
+    try {
+      raw = sessionStorage.getItem(PENDING_UPLOAD_KEY);
+    } catch (_) {
+      return;
+    }
+    if (!raw) return;
+    try {
+      sessionStorage.removeItem(PENDING_UPLOAD_KEY);
+    } catch (_) {}
+    var meta;
+    try {
+      meta = JSON.parse(raw);
+    } catch (_) {
+      return;
+    }
+    if (!meta || !meta.name) return;
+
+    // Restore court / case type when they map to known, enabled options.
+    if (meta.court && COURTS.some(function (c) {
+      return c.id === meta.court && c.enabled;
+    })) setCourt(meta.court);
+    if (meta.caseType && CASE_TYPES.some(function (c) {
+      return c.id === meta.caseType;
+    })) setCaseType(meta.caseType);
+    var restored = _pendingFileFromB64(meta.name, meta.dataB64);
+    if (restored) {
+      setFile({
+        name: restored.name,
+        size: (restored.size / (1024 * 1024)).toFixed(1) + " MB",
+        raw: restored
+      });
+      setHandoffNote("Your file is ready - click “Analyse Filing” to continue.");
+    } else {
+      // We have the name but not the bytes (e.g. file was too large to carry):
+      // prompt the user to re-select so the real analysis can run.
+      setHandoffNote("Please re-select “" + meta.name + "” to run your analysis.");
+    }
+    // Clear the prompt after a short while so it doesn't linger.
+    var t = setTimeout(function () {
+      return setHandoffNote(null);
+    }, 9000);
+    return function () {
+      return clearTimeout(t);
     };
   }, []);
   var onPick = function onPick(f) {
@@ -1749,7 +1833,11 @@ function UploadScreen(_ref19) {
     size: 13
   }), " Results in seconds"))), /*#__PURE__*/React.createElement("div", {
     className: "upload__panel"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, handoffNote && /*#__PURE__*/React.createElement("div", {
+    className: "upload__handoff"
+  }, /*#__PURE__*/React.createElement(Ico.Spark, {
+    size: 14
+  }), " ", handoffNote), /*#__PURE__*/React.createElement("div", {
     className: "dropzone" + (dragging ? " dropzone--drag" : "") + (file ? " dropzone--has-file" : ""),
     onDragOver: function onDragOver(e) {
       e.preventDefault();
@@ -1936,7 +2024,7 @@ function UploadScreen(_ref19) {
 }
 window.UploadScreen = UploadScreen;
 
-// results.jsx — Screen 2: Results Dashboard
+// results.jsx - Screen 2: Results Dashboard
 var _React5 = React,
   useStateR = _React5.useState,
   useMemoR = _React5.useMemo,
@@ -2281,7 +2369,7 @@ function ResultsScreen(_ref26) {
     className: "summary__detail-list"
   }, /*#__PURE__*/React.createElement("div", {
     className: "summary__detail-row"
-  }, /*#__PURE__*/React.createElement("span", null, "Pages scanned"), /*#__PURE__*/React.createElement("span", null, stats.pages_scanned != null ? stats.pages_scanned : "—")), function () {
+  }, /*#__PURE__*/React.createElement("span", null, "Pages scanned"), /*#__PURE__*/React.createElement("span", null, stats.pages_scanned != null ? stats.pages_scanned : "-")), function () {
     var checks = stats.checks || [];
     var clickable = checks.length > 0;
     return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
@@ -2301,7 +2389,7 @@ function ResultsScreen(_ref26) {
         transition: "transform .15s",
         transform: checksOpen ? "rotate(180deg)" : "none"
       }
-    })), /*#__PURE__*/React.createElement("span", null, stats.rules_evaluated != null ? stats.rules_evaluated : "—")), clickable && checksOpen && /*#__PURE__*/React.createElement("div", {
+    })), /*#__PURE__*/React.createElement("span", null, stats.rules_evaluated != null ? stats.rules_evaluated : "-")), clickable && checksOpen && /*#__PURE__*/React.createElement("div", {
       className: "checks-panel"
     }, checks.map(function (c, i) {
       return /*#__PURE__*/React.createElement("div", {
@@ -2321,7 +2409,7 @@ function ResultsScreen(_ref26) {
     className: "summary__detail-row"
   }, /*#__PURE__*/React.createElement("span", null, "Sections detected"), /*#__PURE__*/React.createElement("span", null, stats.sections_detected && stats.sections_detected.length ? stats.sections_detected.length : 0)), /*#__PURE__*/React.createElement("div", {
     className: "summary__detail-row"
-  }, /*#__PURE__*/React.createElement("span", null, "Index entries"), /*#__PURE__*/React.createElement("span", null, stats.index_entries != null ? stats.index_entries : "—")), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", null, "Index entries"), /*#__PURE__*/React.createElement("span", null, stats.index_entries != null ? stats.index_entries : "-")), /*#__PURE__*/React.createElement("div", {
     className: "summary__detail-row"
   }, /*#__PURE__*/React.createElement("span", null, "Scrutiny baseline"), /*#__PURE__*/React.createElement("span", null, stats.baseline || "DHC Rules / PD 74")), /*#__PURE__*/React.createElement("div", {
     className: "summary__detail-row"
@@ -2417,7 +2505,7 @@ function ResultsScreen(_ref26) {
 }
 window.ResultsScreen = ResultsScreen;
 
-// screens.jsx — Additional screens: History, Court Rules, Help
+// screens.jsx - Additional screens: History, Court Rules, Help
 
 var _React6 = React,
   useStateS = _React6.useState,
@@ -2566,7 +2654,7 @@ function CourtRulesScreen() {
   });
   var categories = selected && selected.categories || [];
 
-  // Normalize a rule entry to { text, auto } — supports plain strings too.
+  // Normalize a rule entry to { text, auto } - supports plain strings too.
   var normalizeRule = function normalizeRule(r) {
     return typeof r === "string" ? {
       text: r,
@@ -2582,7 +2670,7 @@ function CourtRulesScreen() {
     medium: {
       label: "Partial",
       cls: "rule-badge--medium",
-      title: "Partially automated — verify manually"
+      title: "Partially automated - verify manually"
     },
     manual: {
       label: "Manual",
@@ -2870,7 +2958,7 @@ var CRITICAL_DEFECTS = [{
   severity: "critical",
   page: 1,
   desc: "No e-stamp or affixed court fee on the cover page. Filing without prescribed court fee will be rejected at Registry scrutiny.",
-  rule: "Supreme Court Rules, 2013 — Order IV, Rule 1(a); Court Fees Act Schedule II. Court fee of ₹250 required on first page.",
+  rule: "Supreme Court Rules, 2013 - Order IV, Rule 1(a); Court Fees Act Schedule II. Court fee of ₹250 required on first page.",
   fix: "Affix prescribed court fee stamp (e-stamp via SHCIL or physical stamp) on cover page. Re-upload the corrected PDF."
 }, {
   id: "d2",
@@ -2878,7 +2966,7 @@ var CRITICAL_DEFECTS = [{
   severity: "critical",
   page: 2,
   desc: "No executed Vakalatnama between cover page and index. Counsel authorization is mandatory; filing without it is rejected.",
-  rule: "SC Rules, 2013 — Order IV, Rule 7. Vakalatnama must be signed by petitioner and accepted by Advocate-on-Record.",
+  rule: "SC Rules, 2013 - Order IV, Rule 7. Vakalatnama must be signed by petitioner and accepted by Advocate-on-Record.",
   fix: "Insert signed Vakalatnama immediately after cover page. Ensure clear AOR stamp and registration number visible."
 }, {
   id: "d3",
@@ -2886,7 +2974,7 @@ var CRITICAL_DEFECTS = [{
   severity: "critical",
   page: 8,
   desc: "Verifying affidavit lacks notary seal. Unattested affidavits are routinely returned by the Registry without scrutiny.",
-  rule: "SC Rules — Order XIX, Rule 3 read with Notaries Act, 1952, §8. Affidavit must be sworn before Notary Public.",
+  rule: "SC Rules - Order XIX, Rule 3 read with Notaries Act, 1952, §8. Affidavit must be sworn before Notary Public.",
   fix: "Get affidavit notarized by Notary Public. Replace page with attested version. Ensure notary seal is legible."
 }];
 
@@ -2897,7 +2985,7 @@ var MEDIUM_DEFECTS = [{
   severity: "minor",
   page: 1,
   desc: "Cause title lacks 'Through: [Advocate name & AOR number]' line. Incomplete cause title causes Registry queries.",
-  rule: "SC Rules — Order IV, Rule 1(b) and Form No. 1. Cause title must include counsel representation.",
+  rule: "SC Rules - Order IV, Rule 1(b) and Form No. 1. Cause title must include counsel representation.",
   fix: "Add 'Through: [Counsel name], Advocate-on-Record (Reg. No.)' line after respondent array."
 }, {
   id: "d7",
@@ -2905,7 +2993,7 @@ var MEDIUM_DEFECTS = [{
   severity: "minor",
   page: 2,
   desc: "Index lists Annexure P-5 at Page 42, but P-5 actually begins Page 44. Pagination mismatch causes Registry correspondence.",
-  rule: "SC Rules — Order IV, Rule 4. Index must accurately reflect page numbers of document sections.",
+  rule: "SC Rules - Order IV, Rule 4. Index must accurately reflect page numbers of document sections.",
   fix: "Manually verify index against bound document. Correct all page numbers. Re-paginate if needed."
 }, {
   id: "d10",
@@ -2913,7 +3001,7 @@ var MEDIUM_DEFECTS = [{
   severity: "warning",
   page: "3–50",
   desc: "Left margin measures 1.8cm; minimum is 2.5cm. May prevent proper binding. Not grounds for rejection.",
-  rule: "SC Practice Direction — Minimum left margin of 2.5cm required for proper binding.",
+  rule: "SC Practice Direction - Minimum left margin of 2.5cm required for proper binding.",
   fix: "Re-print all pages with 2.5cm left margin. Recommend 3cm to ensure safe binding."
 }];
 
@@ -2924,7 +3012,7 @@ var EXCELLENT_DEFECTS = [{
   severity: "warning",
   page: 8,
   desc: "Affidavit deponent's printed name is slightly small but readable. Best practice: make it more prominent.",
-  rule: "SC Rules — Deponent should be clearly identified for audit trail. Current format is acceptable.",
+  rule: "SC Rules - Deponent should be clearly identified for audit trail. Current format is acceptable.",
   fix: "Optional: Increase deponent name font size slightly for better visibility."
 }, {
   id: "d12",
@@ -2932,7 +3020,7 @@ var EXCELLENT_DEFECTS = [{
   severity: "warning",
   page: "14, 16",
   desc: "Certified copy attestation uses acceptable wording. Standard format would enhance consistency.",
-  rule: "SC Practice Direction — Attestation format is acceptable. Standard format recommended for best practice.",
+  rule: "SC Practice Direction - Attestation format is acceptable. Standard format recommended for best practice.",
   fix: "Optional: Revise attestation to read: 'Certified true copy of the original. Attested by: [Signature] [Date]'."
 }];
 var ALL_DEFECTS = [].concat(CRITICAL_DEFECTS, MEDIUM_DEFECTS, EXCELLENT_DEFECTS);
@@ -2948,9 +3036,9 @@ var RECENT = [];
 // ---------------------------------------------------------------------------
 // COURT RULES LIBRARY
 // Detailed, court-specific rules with exact specifications and legal source.
-// Researched 15 Jun 2026 from official court circulars / Rules — see
+// Researched 15 Jun 2026 from official court circulars / Rules - see
 // COURT_RULES.md at the repo root for full citations and automation ratings.
-// `auto` field: "high" | "medium" | "manual" — detector confidence.
+// `auto` field: "high" | "medium" | "manual" - detector confidence.
 // ---------------------------------------------------------------------------
 
 var COURT_RULES = [{
@@ -2959,7 +3047,7 @@ var COURT_RULES = [{
   categories: [{
     name: "Paper, Font & Margins (Circular 05-03-2020)",
     rules: [{
-      text: "Paper size: A4 — 29.7 cm × 21 cm",
+      text: "Paper size: A4 - 29.7 cm × 21 cm",
       auto: "high"
     }, {
       text: "Paper weight: not less than 75 GSM (superior quality)",
@@ -3056,7 +3144,7 @@ var COURT_RULES = [{
   categories: [{
     name: "Paper, Font & Margins (PD 74/Rules/DHC)",
     rules: [{
-      text: "Paper size: A4 — 29.7 cm × 21 cm",
+      text: "Paper size: A4 - 29.7 cm × 21 cm",
       auto: "high"
     }, {
       text: "Paper weight: not less than 75 GSM",
@@ -3138,7 +3226,7 @@ var COURT_RULES = [{
   }]
 }, {
   court: "Calcutta High Court",
-  source: "Calcutta HC Gazette Notification — A4 white bond paper (figures marked * follow SC uniform standard; verify primary notification)",
+  source: "Calcutta HC Gazette Notification - A4 white bond paper (figures marked * follow SC uniform standard; verify primary notification)",
   categories: [{
     name: "Paper, Font & Margins",
     rules: [{
@@ -3160,7 +3248,7 @@ var COURT_RULES = [{
   }]
 }, {
   court: "Madras High Court",
-  source: "Madras HC direction — A4, min 75 GSM, both-sided (figures marked * follow SC uniform standard; verify primary notification)",
+  source: "Madras HC direction - A4, min 75 GSM, both-sided (figures marked * follow SC uniform standard; verify primary notification)",
   categories: [{
     name: "Paper, Font & Margins",
     rules: [{
@@ -3196,7 +3284,7 @@ COURT_RULES.forEach(function (c) {
 }
 ;
 
-// Filing-readiness score — MIRRORS server.py:calculate_score so the demo/preset
+// Filing-readiness score - MIRRORS server.py:calculate_score so the demo/preset
 // path and any client-side computation agree with the backend. For real
 // analyses the score comes from the API (data.score); this is the fallback.
 
@@ -3241,7 +3329,7 @@ function getScoreBand(score) {
   };
   return {
     color: "#D6293E",
-    label: "Not ready — must fix",
+    label: "Not ready - must fix",
     soft: "#FBDCE0"
   };
 }
@@ -3250,7 +3338,7 @@ function getScoreBand(score) {
 }
 ;
 
-// Printable filing report — opens a clean, self-contained report in a new window
+// Printable filing report - opens a clean, self-contained report in a new window
 // and invokes the browser's print dialog (the user saves as PDF). This makes the
 // "Download Report" button deliver a real artifact an advocate can keep or hand
 // to a clerk, instead of a placeholder toast.
@@ -3273,7 +3361,7 @@ function readinessRows(stats) {
       rule: c.rule,
       status: status,
       raw: c.status,
-      detail: c.defects ? "".concat(c.defects, " issue").concat(c.defects === 1 ? "" : "s") : "—"
+      detail: c.defects ? "".concat(c.defects, " issue").concat(c.defects === 1 ? "" : "s") : "-"
     };
   });
 }
@@ -3288,8 +3376,8 @@ function downloadReport(session) {
   };
   var when = new Date(s.createdAt || Date.now()).toLocaleString();
   var fileName = s.file && s.file.name || "filing.pdf";
-  var court = s.court && (s.court["short"] || s.court.name) || "—";
-  var caseType = s.caseType && s.caseType.name || "—";
+  var court = s.court && (s.court["short"] || s.court.name) || "-";
+  var caseType = s.caseType && s.caseType.name || "-";
   var sevRank = {
     critical: 0,
     warning: 1,
@@ -3319,7 +3407,7 @@ function downloadReport(session) {
   };
   var html = "<!doctype html><html><head><meta charset=\"utf-8\">\n  <title>Filing Readiness Report \u2014 ".concat(escapeHtml(fileName), "</title>\n  <style>\n    * { box-sizing: border-box; }\n    body { font-family: Georgia, \"Times New Roman\", serif; color: #11203B; margin: 0; padding: 40px; line-height: 1.5; }\n    h1 { font-size: 22px; margin: 0 0 4px; }\n    h2 { font-size: 15px; margin: 28px 0 10px; border-bottom: 2px solid #11203B; padding-bottom: 4px; }\n    .sub { color: #5B6577; font-size: 12px; }\n    .meta { margin: 16px 0; font-size: 12px; color: #2A3344; }\n    .meta span { display: inline-block; margin-right: 18px; }\n    .scorebox { display: flex; align-items: center; gap: 16px; margin: 16px 0 8px; padding: 14px 18px; border: 1px solid #E5E8EE; border-radius: 10px; }\n    .scorenum { font-size: 40px; font-weight: 700; line-height: 1; color: ").concat(band.color, "; }\n    .scoreband { font-size: 14px; font-weight: 700; color: ").concat(band.color, "; }\n    .summary { font-size: 12px; color: #5B6577; }\n    table { width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 12px; }\n    th { text-align: left; color: #5B6577; font-size: 10px; text-transform: uppercase; letter-spacing: .05em; padding: 6px 8px; border-bottom: 1px solid #E5E8EE; }\n    td { padding: 8px; border-bottom: 1px solid #EEF1F5; vertical-align: top; }\n    .rule { color: #828B9D; font-size: 10px; margin-top: 2px; }\n    .status { font-weight: 700; white-space: nowrap; }\n    .status--pass { color: #167A3C; } .status--warn { color: #B0640A; } .status--fail { color: #C2261B; }\n    .defect { border: 1px solid #E5E8EE; border-left: 3px solid #B7BECC; border-radius: 8px; padding: 12px 14px; margin: 10px 0; page-break-inside: avoid; }\n    .defect--critical { border-left-color: #D6293E; } .defect--warning { border-left-color: #C2790B; } .defect--minor { border-left-color: #B9BCD4; }\n    .defect__head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }\n    .defect__title { font-weight: 700; font-family: Arial, sans-serif; font-size: 13px; flex: 1; }\n    .defect__page { color: #828B9D; font-family: Arial, sans-serif; font-size: 11px; }\n    .sev { font-family: Arial, sans-serif; font-size: 9px; font-weight: 700; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; }\n    .sev--critical { background: #FEECEC; color: #C2261B; } .sev--warning { background: #FFF7E0; color: #A16207; } .sev--minor { background: #FCF1DF; color: #B0640A; }\n    .defect__desc, .defect__rule, .defect__fix { font-family: Arial, sans-serif; font-size: 11.5px; color: #2A3344; margin-top: 4px; }\n    .defect__rule { color: #5B6577; } .none { color: #167A3C; font-family: Arial, sans-serif; }\n    .disclaimer { margin-top: 28px; padding: 12px 14px; background: #F7F8FB; border: 1px solid #E5E8EE; border-radius: 8px; font-family: Arial, sans-serif; font-size: 10.5px; color: #5B6577; }\n    @media print { body { padding: 0; } @page { margin: 18mm; } }\n  </style></head><body>\n    <h1>Filing Readiness Report</h1>\n    <div class=\"sub\">myfiling.ai \u2014 formatting &amp; registry-requirement scrutiny</div>\n    <div class=\"meta\">\n      <span><strong>File:</strong> ").concat(escapeHtml(fileName), "</span>\n      <span><strong>Court:</strong> ").concat(escapeHtml(court), "</span>\n      <span><strong>Case type:</strong> ").concat(escapeHtml(caseType), "</span>\n      <span><strong>Generated:</strong> ").concat(escapeHtml(when), "</span>\n    </div>\n    <div class=\"scorebox\">\n      <div class=\"scorenum\">").concat(escapeHtml(score), "</div>\n      <div>\n        <div class=\"scoreband\">").concat(escapeHtml(band.label), "</div>\n        <div class=\"summary\">").concat(counts.critical, " critical \xB7 ").concat(counts.warning, " warning \xB7 ").concat(counts.minor, " minor</div>\n      </div>\n    </div>\n\n    <h2>Filing Readiness Checklist</h2>\n    <table>\n      <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>\n      <tbody>").concat(checklistHtml, "</tbody>\n    </table>\n\n    <h2>Defects &amp; Remediation</h2>\n    ").concat(defectsHtml, "\n\n    <div class=\"disclaimer\">\n      This report covers <strong>formatting and registry-filing requirements</strong>\n      (paper, margins, type, pagination, index, court fee, vakalatnama, limitation,\n      certified copy, affidavit). It does <strong>not</strong> assess the legal merit\n      or substance of the matter, and is not a guarantee against registry objection.\n      Have a qualified advocate review the filing before submission.\n    </div>\n    <script>window.onload = function(){ setTimeout(function(){ window.print(); }, 250); };</script>\n  </body></html>");
   var w = window.open("", "_blank");
-  if (!w) return false; // popup blocked — caller can toast a hint
+  if (!w) return false; // popup blocked - caller can toast a hint
   w.document.open();
   w.document.write(html);
   w.document.close();
@@ -3397,7 +3485,7 @@ function createFileObject(file) {
   validatePdfFile, formatFileSize, createFileObject;
 }
 ;
-// app.jsx — root App, ties screens together
+// app.jsx - root App, ties screens together
 var _React7 = React,
   useStateA = _React7.useState,
   useEffectA = _React7.useEffect;
@@ -3808,7 +3896,7 @@ function App() {
     onBack: goHome,
     onDownload: function onDownload() {
       var ok = downloadReport(session);
-      setToast(ok ? "Filing report opened in a new tab — use your browser's Save as PDF." : "Pop-up blocked. Allow pop-ups for this site to download the report.");
+      setToast(ok ? "Filing report opened in a new tab - use your browser's Save as PDF." : "Pop-up blocked. Allow pop-ups for this site to download the report.");
     },
     onShare: function onShare() {
       return setToast("Share link copied to clipboard! Share with: co-counsel@firm.com");

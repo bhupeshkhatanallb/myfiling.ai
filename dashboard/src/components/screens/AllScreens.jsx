@@ -1,4 +1,4 @@
-// screens.jsx — Additional screens: History, Court Rules, Help
+// screens.jsx - Additional screens: History, Court Rules, Help
 
 const { useState: useStateS, useMemo: useMemoS } = React;
 
@@ -130,12 +130,12 @@ function CourtRulesScreen() {
   const selected = courtsWithRules.find(r => r.court === selectedCourt);
   const categories = (selected && selected.categories) || [];
 
-  // Normalize a rule entry to { text, auto } — supports plain strings too.
+  // Normalize a rule entry to { text, auto } - supports plain strings too.
   const normalizeRule = (r) => (typeof r === "string" ? { text: r, auto: null } : r);
 
   const autoBadge = {
     high: { label: "Auto", cls: "rule-badge--high", title: "Checked automatically with high confidence" },
-    medium: { label: "Partial", cls: "rule-badge--medium", title: "Partially automated — verify manually" },
+    medium: { label: "Partial", cls: "rule-badge--medium", title: "Partially automated - verify manually" },
     manual: { label: "Manual", cls: "rule-badge--manual", title: "Requires manual verification" },
   };
 
@@ -293,12 +293,12 @@ function HelpScreen({ onHome }) {
 
             <div className="faq-item">
               <h3>Does the tool guarantee my filing will pass?</h3>
-              <p>No. The Filing Readiness Score is indicative only — it reflects formatting and registry-filing requirements, not the legal merit of your matter, and registry scrutiny involves human discretion we can't fully automate. Always have a qualified advocate review your filing before submission.</p>
+              <p>No. The Filing Readiness Score is indicative only - it reflects formatting and registry-filing requirements, not the legal merit of your matter, and registry scrutiny involves human discretion we can't fully automate. Always have a qualified advocate review your filing before submission.</p>
             </div>
 
             <div className="faq-item">
               <h3>What courts do you cover?</h3>
-              <p>We're rolling out support court by court — select your court at upload to see what's currently available. We're expanding coverage based on user demand.</p>
+              <p>We're rolling out support court by court - select your court at upload to see what's currently available. We're expanding coverage based on user demand.</p>
             </div>
 
             <div className="faq-item">
@@ -324,7 +324,7 @@ function HelpScreen({ onHome }) {
 
             <div className="terms-section" style={{background: "var(--blue-50)", padding: 16, borderRadius: "var(--radius-md)", border: "1px solid #D6E1FB", marginBottom: 24}}>
               <h3 style={{marginTop: 0}}>How myfiling.ai Works</h3>
-              <p><strong>myfiling.ai checks your filings</strong> against the court's formatting and registry-filing requirements (paper, margins, type, pagination, index, court fee, vakalatnama, limitation, certified copy, affidavit). The Filing Readiness Score helps you understand your filing's registry-compliance level. This is a <strong>tool to catch common defects early</strong> and save time on your drafting workflow — not a substitute for legal review.</p>
+              <p><strong>myfiling.ai checks your filings</strong> against the court's formatting and registry-filing requirements (paper, margins, type, pagination, index, court fee, vakalatnama, limitation, certified copy, affidavit). The Filing Readiness Score helps you understand your filing's registry-compliance level. This is a <strong>tool to catch common defects early</strong> and save time on your drafting workflow - not a substitute for legal review.</p>
               <p style={{marginBottom: 0}}><strong>Important:</strong> While highly accurate, we recommend having your advocate review the final filing before submission, as with any important legal document.</p>
             </div>
 
@@ -371,10 +371,10 @@ function HelpScreen({ onHome }) {
               <h3>📚 Documentation</h3>
               <p>Check our detailed guides:</p>
               <ul style={{marginTop: 8}}>
-                <li><strong>Getting Started Guide</strong> — How to upload and analyze</li>
-                <li><strong>Court Rules Library</strong> — Rules for each court</li>
-                <li><strong>FAQ</strong> — Common questions</li>
-                <li><strong>Video Tutorials</strong> — Visual walkthrough</li>
+                <li><strong>Getting Started Guide</strong> - How to upload and analyze</li>
+                <li><strong>Court Rules Library</strong> - Rules for each court</li>
+                <li><strong>FAQ</strong> - Common questions</li>
+                <li><strong>Video Tutorials</strong> - Visual walkthrough</li>
               </ul>
             </div>
 

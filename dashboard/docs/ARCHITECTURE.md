@@ -384,7 +384,7 @@ legal-analysis-platform/
 ## Contact & Support
 
 For questions about this architecture, refer to:
-- `FEATURES.md` — Detailed feature breakdown
-- `SCORING-SYSTEM.md` — Scoring algorithm explained
-- `CRITICAL-DEFECTS-LOGIC.md` — Critical defect handling
+- `FEATURES.md` - Detailed feature breakdown
+- `SCORING-SYSTEM.md` - Scoring algorithm explained
+- `CRITICAL-DEFECTS-LOGIC.md` - Critical defect handling
 - GitHub Issues (future)

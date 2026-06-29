@@ -1,5 +1,5 @@
 """
-Filing-requirement detectors — the "will-bounce" checks.
+Filing-requirement detectors - the "will-bounce" checks.
 
 PORTED VERBATIM from the corpus-tuned engine: court fee, limitation/condonation,
 certified copy (case-type aware), vakalatnama (in-person waiver), affidavit. The

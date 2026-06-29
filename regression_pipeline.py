@@ -1,4 +1,4 @@
-"""Regression harness for the V2 pipeline — mirrors regression.py for the new engine.
+"""Regression harness for the V2 pipeline - mirrors regression.py for the new engine.
 
 Runs the pipeline DetectorEngine over the corpus and prints, per file, the same
 summary format as regression.py so the two can be diffed line-for-line.

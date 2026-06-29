@@ -2,7 +2,7 @@
 Low-level typography & geometry measurement.
 
 This module turns one raw pdfplumber page into the geometry/typography numbers a
-:class:`~pipeline.model.PageMetadata` carries. It is PURE MEASUREMENT — no policy,
+:class:`~pipeline.model.PageMetadata` carries. It is PURE MEASUREMENT - no policy,
 no thresholds, no notion of "defect". Policy lives in the detectors.
 
 The measurement algorithms here are PORTED VERBATIM from the prior engine's
@@ -25,7 +25,7 @@ from typing import Dict, List, Optional, Tuple
 
 
 # --------------------------------------------------------------------------- #
-# Tunables for the geometry pass — MEASUREMENT parameters (how we group chars
+# Tunables for the geometry pass - MEASUREMENT parameters (how we group chars
 # into lines, what counts as the header band), not pass/fail policy.
 # --------------------------------------------------------------------------- #
 _LINE_BUCKET = 2.0        # chars whose baselines fall within this many pt are one line
@@ -57,7 +57,7 @@ class Line:
 
 
 # --------------------------------------------------------------------------- #
-# Font-name normalisation (ported verbatim — corpus-tuned).
+# Font-name normalisation (ported verbatim - corpus-tuned).
 # --------------------------------------------------------------------------- #
 _SUBSET_PREFIX = re.compile(r"^[A-Z]{6}\+")
 _STYLE_TOKENS = (
@@ -208,7 +208,7 @@ def _trimmed_edge(sorted_vals, trim, from_high):
 
 # Lines that are NOT main typed body content: signatures, stamps, attestation
 # strips, court-fee/seal text, and footer/header furniture. Ported from the
-# reference analyzer's ``_MARGIN_NOISE_RE`` + ``_block_is_main_content`` — such
+# reference analyzer's ``_MARGIN_NOISE_RE`` + ``_block_is_main_content`` - such
 # fragments (often flush to the page edge) must not drive the binding-margin
 # measurement, or a stamp on a scanned page produces a false "narrow margin".
 _MARGIN_NOISE_RE = re.compile(
@@ -253,7 +253,7 @@ def _group_into_blocks(lines: List["Line"]) -> List[List["Line"]]:
     Mirrors the granularity of the reference's ``get_text('dict')`` blocks: a run
     of lines with small vertical gaps is one block. Margins are then judged at
     block level (combined text), so a garbled-but-real OCR line is kept when its
-    surrounding paragraph is clearly body content — the per-line alnum test alone
+    surrounding paragraph is clearly body content - the per-line alnum test alone
     would wrongly drop it.
     """
     if not lines:
@@ -274,7 +274,7 @@ def _block_is_margin_noise(block: List["Line"]) -> bool:
 
     A block is noise (excluded from the margin edge) when its COMBINED text is
     near-empty, low-alnum-density (OCR garbage / rules), or a short
-    stamp/signature/footer fragment. Judging the whole block — not each line —
+    stamp/signature/footer fragment. Judging the whole block - not each line -
     keeps a real paragraph whose individual lines look noisy in isolation.
     """
     txt = " ".join((ln.text or "") for ln in block).strip()
@@ -318,7 +318,7 @@ def physical_margins(chars, lines, width, height):
       * group them into paragraph blocks (``_group_into_blocks``);
       * drop signature/stamp/footer/garbage blocks (``_block_is_margin_noise``);
       * require >= ``_MIN_MARGIN_BLOCKS`` content blocks (else the page is a
-        stamp/title/cover page — fall back so a value is still produced);
+        stamp/title/cover page - fall back so a value is still produced);
       * margins = the extreme block edges.
     Returns (left, right, top, bottom) in points.
     """
@@ -369,7 +369,7 @@ def physical_margins(chars, lines, width, height):
 # Calibrated against ground-truth defect pages on the reference Test corpus
 # (11_09_2025_14_09_409.pdf, pages 31/37/38/39/40/60/67): a real horizontal-margin
 # defect is a page where the body text BLOCK genuinely runs very close to the page
-# edge AND a substantial fraction of its lines do so — distinguishing a
+# edge AND a substantial fraction of its lines do so - distinguishing a
 # pervasively-narrow scanned/form page from a clean-prose page whose low minimum
 # is just one stray glyph. Precision-over-recall: these thresholds give zero
 # false positives on that document (one sparse/garbled page is intentionally not
@@ -377,7 +377,7 @@ def physical_margins(chars, lines, width, height):
 #
 # The RIGHT side is the mirror of the LEFT: instead of each line's distance from
 # the left page edge (``x0``) we use its distance from the right page edge
-# (``width - x1``). The thresholds are shared — the geometry is symmetric.
+# (``width - x1``). The thresholds are shared - the geometry is symmetric.
 # --------------------------------------------------------------------------- #
 _EDGE_DEFECT_BLOCK_MIN_CM = 1.5   # narrowest real content block must be below this (cm)
 _EDGE_DEFECT_EDGE_CM = 2.0        # a line "runs to the edge" when within this of the edge
@@ -400,8 +400,8 @@ def _edge_defect_signal(body_lines, edge_dist):
 
     Returns (block_min_cm, narrow_frac):
       block_min_cm: narrowest real CONTENT block's distance from the edge (noise
-                    blocks excluded), in cm — the true position of the body text.
-      narrow_frac:  fraction of body lines that run within the edge threshold —
+                    blocks excluded), in cm - the true position of the body text.
+      narrow_frac:  fraction of body lines that run within the edge threshold -
                     high on pervasively-narrow form/scan pages, low when only a
                     stray block reaches the edge on an otherwise normal page.
     Returns (None, None) when there are too few body lines to judge.
@@ -412,7 +412,7 @@ def _edge_defect_signal(body_lines, edge_dist):
     blocks = [b for b in _group_into_blocks(real) if not _block_is_margin_noise(b)]
 
     # A genuine narrow margin is body text NEAR the edge (0..threshold), not text
-    # drawn PAST the page boundary — a negative distance is an OCR/layout artifact
+    # drawn PAST the page boundary - a negative distance is an OCR/layout artifact
     # (glyphs placed beyond the page on a garbled scan), not a real defect. Clamp
     # such overflow out of both the block-min and the pervasiveness fraction.
     def _block_dist(b):
@@ -501,7 +501,7 @@ def measure_chars(chars: List[dict], width: float, height: float) -> GeometryRes
 
 
 # --------------------------------------------------------------------------- #
-# OCR adaptation (ported verbatim — OCR box height calibration + geometry math).
+# OCR adaptation (ported verbatim - OCR box height calibration + geometry math).
 # --------------------------------------------------------------------------- #
 _OCR_SIZE_CAL = 1.08
 
@@ -531,7 +531,7 @@ def measure_ocr(ocr_page) -> GeometryResult:
         # OCR lines into paragraph blocks, drop noise blocks, take the extreme
         # block edges. OCR text is the noisiest case, so judging whole blocks
         # (not lone garbled lines) is what keeps a real narrow margin from being
-        # discarded — exactly the case this fixes.
+        # discarded - exactly the case this fixes.
         content_blocks = [b for b in _group_into_blocks(body)
                           if not _block_is_margin_noise(b)]
         if len(content_blocks) >= _MIN_MARGIN_BLOCKS:

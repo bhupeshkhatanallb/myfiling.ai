@@ -44,12 +44,12 @@ DEFECT_IDS = [
 
 # Score band thresholds (reference; the live score model is server.py:
 # calculate_score). Reframed per the advocate audit: the score reflects
-# formatting + filing-requirement readiness, not legal merit — so no "safe to
+# formatting + filing-requirement readiness, not legal merit - so no "safe to
 # file" guarantee.
 SCORE_BANDS = {
     "ready": {"min": 75, "max": 100, "label": "Likely registry-ready"},
     "needs_work": {"min": 45, "max": 74, "label": "Fix issues before filing"},
-    "must_fix": {"min": 0, "max": 44, "label": "Not ready — must fix"},
+    "must_fix": {"min": 0, "max": 44, "label": "Not ready - must fix"},
 }
 
 # Scoring parameters

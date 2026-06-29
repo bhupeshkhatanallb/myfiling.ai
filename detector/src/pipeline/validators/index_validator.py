@@ -1,5 +1,5 @@
 """
-IndexValidator — Stage 7: index claims vs actual page metadata.
+IndexValidator - Stage 7: index claims vs actual page metadata.
 
 After every page has been analysed, compare what the Index says (an
 :class:`IndexEntry`'s title + cited start/end folio) against where that section
@@ -7,7 +7,7 @@ actually appears in the document (derived from the per-page detected titles and
 written folio numbers). Generate a defect when the index points to the wrong
 place or to a section that cannot be found.
 
-PRECISION POLICY (the project's core rule — precision over recall): index page
+PRECISION POLICY (the project's core rule - precision over recall): index page
 columns are extraction-fragile, and folio<->PDF-page mapping is approximate, so
 this validator is deliberately CONSERVATIVE. It only flags:
   * a section the index lists whose title NEVER appears anywhere in the body
@@ -117,7 +117,7 @@ class IndexValidator(Detector):
         # 2) Cited start folio resolves to a page whose detected title clearly
         #    contradicts the entry (require >=2 to avoid parse artifacts).
         #    This relies on written-folio detection, so it is part of the
-        #    pagination/folio family — suppressed while folio detection is
+        #    pagination/folio family - suppressed while folio detection is
         #    unreliable (see feature_flags.PAGINATION_CHECKS_ENABLED).
         details["validated"] = len(folio_to_pdf)
         if PAGINATION_CHECKS_ENABLED:
@@ -147,7 +147,7 @@ class IndexValidator(Detector):
         Index-listed well-known sections that appear NEITHER as a page heading NOR
         as a bookmark. Cross-checking the bookmarks is essential: a synopsis is
         frequently merged into the petition's front matter with no dedicated
-        heading line, but the outline still names it — that is NOT a missing
+        heading line, but the outline still names it - that is NOT a missing
         section, so we must not flag it (precision over recall).
         """
         present_titles = {p.detected_title for p in self.ctx.pages if p.detected_title}

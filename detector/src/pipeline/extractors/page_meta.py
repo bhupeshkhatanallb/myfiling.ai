@@ -1,5 +1,5 @@
 """
-MetadataBuilder — Stage 3: generate PageMetadata for every page.
+MetadataBuilder - Stage 3: generate PageMetadata for every page.
 
 Consumes a :class:`~pipeline.reader.RawPage` and produces the immutable
 :class:`~pipeline.model.PageMetadata` that becomes the single source of truth for
@@ -37,10 +37,10 @@ _VOWELS = set("aeiouAEIOU")
 def _garble_signals(text: str):
     """Return (garble_ratio, realword_ratio) for a page's extracted text.
 
-    garble_ratio:   fraction of tokens that look like OCR garbage — 3+ chars and
+    garble_ratio:   fraction of tokens that look like OCR garbage - 3+ chars and
                     <50% alphanumeric (ref ``_is_garbled_token``). Short tokens
                     (numbers, abbreviations) are legitimate, so they don't count.
-    realword_ratio: fraction of tokens that are plausible words — 4+ letters, all
+    realword_ratio: fraction of tokens that are plausible words - 4+ letters, all
                     alpha, containing a vowel. A page of genuinely-mangled OCR has
                     FEW real words even when its garble ratio looks moderate (the
                     garble ratio alone is inflated by leading-symbol scan noise on
@@ -95,7 +95,7 @@ def build_page_metadata(raw: RawPage) -> PageMetadata:
         garble_ratio=garble,
         realword_ratio=realword,
         detected_title=detect_page_title(raw.text),
-        # A real, selectable text layer — not just a stray stamp/watermark glyph.
+        # A real, selectable text layer - not just a stray stamp/watermark glyph.
         text_selectable=len(raw.chars) >= _REAL_TEXT_LAYER_MIN_CHARS,
         extraction_mode="native",
     )

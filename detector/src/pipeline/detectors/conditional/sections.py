@@ -1,5 +1,5 @@
 """
-Conditional detectors — Stage 6.
+Conditional detectors - Stage 6.
 
 Each runs ONLY when the relevant page was identified by the MetadataBuilder
 (``PageMetadata.detected_title``), so page-specific checks never run on every
@@ -7,16 +7,16 @@ page. A conditional detector that finds no applicable page returns an empty pass
 (no defect, no noise).
 
 PRECISION POLICY (project core rule): these inspect a specific, already-located
-page, so they can be more confident than a whole-document scan — but they still
+page, so they can be more confident than a whole-document scan - but they still
 prefer silence over a shaky finding. They reuse the same sworn/in-person/markers
 vocabulary the ported filing-requirement detectors use.
 
 Detectors here:
-  * SynopsisDetector      — synopsis/list-of-dates present and non-trivial
-  * CauseTitleDetector    — cause-title page carries court + parties + versus
-  * VakalatnamaPageDetector — on the vakalatnama page, look for execution markers
-  * AffidavitPageDetector — on the affidavit page, look for swearing/attestation
-  * AnnexurePageDetector  — annexure pages carry an annexure marker/number
+  * SynopsisDetector      - synopsis/list-of-dates present and non-trivial
+  * CauseTitleDetector    - cause-title page carries court + parties + versus
+  * VakalatnamaPageDetector - on the vakalatnama page, look for execution markers
+  * AffidavitPageDetector - on the affidavit page, look for swearing/attestation
+  * AnnexurePageDetector  - annexure pages carry an annexure marker/number
 """
 
 from __future__ import annotations
@@ -102,7 +102,7 @@ class CauseTitleDetector(Detector):
         findings: List[Finding] = []
 
         # Only flag when the cause-title page names NEITHER a party role NOR a
-        # versus — a real cause title always has both; missing both means the
+        # versus - a real cause title always has both; missing both means the
         # parties aren't set out (precision: require both absent).
         if not has_versus and not has_party:
             findings.append(Finding(
@@ -197,7 +197,7 @@ class AnnexurePageDetector(Detector):
         details = {"applicable": bool(pages), "annexure_pages": len(pages)}
         # Annexure marking gaps are already handled (with corpus-tuned precision)
         # by SectionOrderDetector._check_annexure_numbering. This conditional
-        # detector is INFORMATIONAL only — it records which pages open an annexure
+        # detector is INFORMATIONAL only - it records which pages open an annexure
         # so the report/UI can show annexure coverage, but raises no defect (to
         # avoid duplicating the section detector's annexure-gap finding).
         details["annexure_page_numbers"] = [p.pdf_page_no + 1 for p in pages[:50]]

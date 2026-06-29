@@ -1,4 +1,4 @@
-// icons.jsx — small inline SVG icons shared across the app
+// icons.jsx - small inline SVG icons shared across the app
 
 const Ico = {
   Upload: (p) => (

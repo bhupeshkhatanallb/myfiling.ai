@@ -88,9 +88,9 @@ If ONLY warnings:        Score = Preset (93% for excellent)
 See **[SCORING-SYSTEM.md](./docs/SCORING-SYSTEM.md)** for details.
 
 ### 📊 Three Confidence Levels
-- **🟢 71-100%:** "Safe to file" — File now (after lawyer review)
-- **🟡 41-70%:** "Fix issues first" — Polish before submission
-- **🔴 0-40%:** "Must fix before filing" — Do not file in this state
+- **🟢 71-100%:** "Safe to file" - File now (after lawyer review)
+- **🟡 41-70%:** "Fix issues first" - Polish before submission
+- **🔴 0-40%:** "Must fix before filing" - Do not file in this state
 
 ### 📋 Defect Analysis
 Each defect shows:
@@ -198,7 +198,7 @@ Score: 93% 🟢 "Safe to file"
 | Build | Babel (in-browser) | Zero-build for dashboard |
 | Hosting | Static HTML | Can run anywhere |
 
-**No build step required** — Open `index.html` in a browser with local server.
+**No build step required** - Open `index.html` in a browser with local server.
 
 ---
 
@@ -216,16 +216,16 @@ Score: 93% 🟢 "Safe to file"
 
 ## Defects (12 Total)
 
-### Critical (3) — File-Breaking
+### Critical (3) - File-Breaking
 1. Court Fee Stamp Missing
 2. Vakalatnama Not Found
 3. Affidavit Not Notarized
 
-### Minor (2) — Cause Queries
+### Minor (2) - Cause Queries
 4. Cause Title Missing 'Through:' Line
 5. Index Page References Mismatch
 
-### Warnings (2) — Best Practices
+### Warnings (2) - Best Practices
 6. Insufficient Left Margin
 7. Affidavit Deponent Name Clarity
 8. Certified Copy Stamp Format
@@ -285,7 +285,7 @@ All 12 defects are **real court filing issues** based on:
 - Delhi High Court procedures
 - Advocate-on-Record requirements
 
-Not generic issues — these are actual blockers that cause filings to be returned by court registries.
+Not generic issues - these are actual blockers that cause filings to be returned by court registries.
 
 ---
 

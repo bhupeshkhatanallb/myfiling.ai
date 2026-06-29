@@ -13,7 +13,7 @@ Design constraints (decided with the user):
     (word/line bounding boxes) from scans via ``image_to_data``, converted from
     image pixels to PDF points using the rasterisation DPI. This lets the
     geometry detectors (margins / font size / line spacing / quotations) measure
-    scanned pages — at reduced confidence, since OCR boxes are noisier than native
+    scanned pages - at reduced confidence, since OCR boxes are noisier than native
     coordinates.
   * Fully optional and defensive: if PyMuPDF, pytesseract, or the Tesseract
     binary is unavailable, every function degrades to a no-op and the engine
@@ -115,7 +115,7 @@ def _import_pytesseract():
     try:
         pytesseract.get_tesseract_version()
         return pytesseract
-    except Exception:  # noqa: BLE001 — not on PATH; try known locations
+    except Exception:  # noqa: BLE001 - not on PATH; try known locations
         for cand in _WINDOWS_TESSERACT_PATHS:
             if cand and os.path.exists(cand):
                 pytesseract.pytesseract.tesseract_cmd = cand
@@ -178,7 +178,7 @@ def ocr_page_text(fitz_doc, page_index: int, dpi: int = _OCR_DPI) -> Optional[st
         return None
 
 
-# Discard OCR tokens below this confidence — they are usually speckle/noise and
+# Discard OCR tokens below this confidence - they are usually speckle/noise and
 # would pollute geometry (stray boxes at the page edge inflate margins/font).
 _MIN_WORD_CONF = 40.0
 
@@ -323,7 +323,7 @@ def ocr_pages_layout(path: str, page_indices, dpi: int = _OCR_DPI,
             if on_page is not None:
                 try:
                     on_page(i, ordinal, total)
-                except Exception:  # noqa: BLE001 — a progress hook must not break OCR
+                except Exception:  # noqa: BLE001 - a progress hook must not break OCR
                     pass
         return out
     finally:
@@ -342,7 +342,7 @@ def corner_tokens_from_text(text: str) -> dict:
     the first line into the top regions (TL/TC/TR) and the last line into the
     bottom regions (BL/BC/BR) so the page-numbering detector's existing
     folio-extraction can pull a number from whichever it finds. This is coarse by
-    design — it recovers "is there a number top/bottom?" not exact placement.
+    design - it recovers "is there a number top/bottom?" not exact placement.
     """
     lines = [ln.strip() for ln in (text or "").splitlines() if ln.strip()]
     out = {r: "" for r in ("TL", "TC", "TR", "BL", "BC", "BR")}
@@ -358,7 +358,7 @@ def corner_tokens_from_text(text: str) -> dict:
 
 def corner_tokens_from_layout(ocr_page: "OcrPage") -> dict:
     """
-    Place OCR words into corner/centre bands using their real bounding boxes —
+    Place OCR words into corner/centre bands using their real bounding boxes -
     more precise than the text-only fallback because we know each word's x/y.
     Mirrors the native char-level corner extraction so the page-numbering
     detector's folio logic works identically on scans.

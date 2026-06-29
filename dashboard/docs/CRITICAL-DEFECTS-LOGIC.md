@@ -1,4 +1,4 @@
-# myfiling.ai dashboard — Critical Defects Logic Update
+# myfiling.ai dashboard - Critical Defects Logic Update
 
 **Date:** June 2026 (Latest Update)  
 **Feature:** One Critical = Cannot Pass  

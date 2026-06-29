@@ -1,11 +1,11 @@
 """
-Page-number extraction — Stage 5.
+Page-number extraction - Stage 5.
 
 Two jobs:
-  1. ``extract_folio_number`` — pull a page/folio number from a raw corner token,
+  1. ``extract_folio_number`` - pull a page/folio number from a raw corner token,
      tolerating the real-world shapes seen in the corpus. PORTED VERBATIM from the
      prior engine's structure.py so the PageNumberingDetector behaves identically.
-  2. ``assign_written_page_numbers`` — Stage 5: for each page, record the written
+  2. ``assign_written_page_numbers`` - Stage 5: for each page, record the written
      page number it carries (``PageMetadata.written_page_number``), reading from
      the top-centre/right then other corners. Numbering is NOT assumed to start at
      PDF page 1; pages before numbering begins simply carry ``None``.
@@ -63,7 +63,7 @@ def assign_written_page_numbers(pages: List) -> None:
 
     The first PDF page (cover) is skipped for numbering by convention, matching
     the detector (which starts folio collection at index >= 1). Pages whose folio
-    can't be read keep ``None`` — that is valid (numbering may start later, or the
+    can't be read keep ``None`` - that is valid (numbering may start later, or the
     stamp may be faint).
     """
     for p in pages:

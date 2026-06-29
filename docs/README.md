@@ -7,37 +7,37 @@ Welcome to the complete myfiling.ai documentation hub. This directory contains a
 ## 📚 Quick Links
 
 ### Getting Started
-- **[GETTING-STARTED.md](#)** — Set up your development environment
-- **[ARCHITECTURE.md](#)** — Understand the complete platform architecture
-- **[DEVELOPMENT.md](#)** — Local development guide
+- **[GETTING-STARTED.md](#)** - Set up your development environment
+- **[ARCHITECTURE.md](#)** - Understand the complete platform architecture
+- **[DEVELOPMENT.md](#)** - Local development guide
 
 ### Component Guides
-- **[dashboard/README.md](../dashboard/README.md)** — React frontend guide
-- **[detector/README.md](../detector/README.md)** — PDF analysis engine guide (TO CREATE)
-- **[api/README.md](../api/README.md)** — Backend API guide (TO CREATE)
+- **[dashboard/README.md](../dashboard/README.md)** - React frontend guide
+- **[detector/README.md](../detector/README.md)** - PDF analysis engine guide (TO CREATE)
+- **[api/README.md](../api/README.md)** - Backend API guide (TO CREATE)
 
 ### Technical Documentation
-- **[API.md](#)** — REST API endpoint documentation (OpenAPI/Swagger)
-- **[DETECTOR.md](#)** — PDF detection engine technical guide
-- **[DATABASE.md](#)** — Database schema and design
-- **[SECURITY.md](#)** — Security policies and best practices
+- **[API.md](#)** - REST API endpoint documentation (OpenAPI/Swagger)
+- **[DETECTOR.md](#)** - PDF detection engine technical guide
+- **[DATABASE.md](#)** - Database schema and design
+- **[SECURITY.md](#)** - Security policies and best practices
 
 ### Operational Guides
-- **[DEPLOYMENT.md](#)** — Production deployment procedures
-- **[PERFORMANCE.md](#)** — Performance benchmarks and optimization
-- **[MONITORING.md](#)** — Logging, metrics, and alerting
-- **[TROUBLESHOOTING.md](#)** — Common issues and solutions
+- **[DEPLOYMENT.md](#)** - Production deployment procedures
+- **[PERFORMANCE.md](#)** - Performance benchmarks and optimization
+- **[MONITORING.md](#)** - Logging, metrics, and alerting
+- **[TROUBLESHOOTING.md](#)** - Common issues and solutions
 
 ### Contributing
-- **[CONTRIBUTING.md](#)** — Contribution guidelines
-- **[CODE-STYLE.md](#)** — Code style and conventions
-- **[TESTING.md](#)** — Testing strategies and examples
+- **[CONTRIBUTING.md](#)** - Contribution guidelines
+- **[CODE-STYLE.md](#)** - Code style and conventions
+- **[TESTING.md](#)** - Testing strategies and examples
 
 ### How-To Guides
-- **[guides/adding-new-defect.md](guides/adding-new-defect.md)** — Add a new filing defect type
-- **[guides/adding-new-court.md](guides/adding-new-court.md)** — Support a new court
-- **[guides/integrating-ml-model.md](guides/integrating-ml-model.md)** — Integrate ML models
-- **[guides/scaling-to-production.md](guides/scaling-to-production.md)** — Scale the platform
+- **[guides/adding-new-defect.md](guides/adding-new-defect.md)** - Add a new filing defect type
+- **[guides/adding-new-court.md](guides/adding-new-court.md)** - Support a new court
+- **[guides/integrating-ml-model.md](guides/integrating-ml-model.md)** - Integrate ML models
+- **[guides/scaling-to-production.md](guides/scaling-to-production.md)** - Scale the platform
 
 ---
 
@@ -155,9 +155,9 @@ User
 - Operations & monitoring
 
 ### Component-Level Docs
-- `dashboard/docs/` — Frontend-specific guides
-- `detector/README.md` — Detector engine guide
-- `api/README.md` — API guide
+- `dashboard/docs/` - Frontend-specific guides
+- `detector/README.md` - Detector engine guide
+- `api/README.md` - API guide
 
 ### Inline Documentation
 - Code comments (why, not what)
@@ -250,9 +250,9 @@ See **[CODE-STYLE.md](#)** for code conventions.
 - [pdfplumber docs](https://github.com/jsvine/pdfplumber)
 
 ### Related Docs
-- **[dashboard README](../dashboard/README.md)** — Frontend project overview
-- **[CHANGELOG.md](#)** — Release notes & version history
-- **[VERSION](#)** — Current version file
+- **[dashboard README](../dashboard/README.md)** - Frontend project overview
+- **[CHANGELOG.md](#)** - Release notes & version history
+- **[VERSION](#)** - Current version file
 
 ---
 

@@ -1,10 +1,10 @@
 """
-Quality detectors — Stage 4 quality checks over scanned-page signals.
+Quality detectors - Stage 4 quality checks over scanned-page signals.
 
 These consume the lazy image-quality signals (``dpi`` / ``blur_score`` /
 ``ocr_compatible``) the quality pass populated on image-heavy pages. They flag a
-filing whose scanned pages are too low-resolution or too blurred to read — a real
-Registry objection — while staying silent on clean native filings (which have no
+filing whose scanned pages are too low-resolution or too blurred to read - a real
+Registry objection - while staying silent on clean native filings (which have no
 image-heavy pages, hence no signals).
 
 PRECISION POLICY: only flag when MULTIPLE scanned pages are clearly bad (a single
@@ -28,7 +28,7 @@ class ScanQualityDetector(Detector):
 
     DPI uses the court-spec floor (300 DPI, flagged below 290 to absorb rounding,
     matching the reference analyzer). Blur uses the adaptive verdict the quality
-    pass computed against the document's own p75 sharpness — far more robust than
+    pass computed against the document's own p75 sharpness - far more robust than
     a fixed Laplacian-variance constant.
     """
 
@@ -45,7 +45,7 @@ class ScanQualityDetector(Detector):
     def run(self) -> DetectorResult:
         # A page is "scored" if the quality pass measured EITHER a DPI or a blur
         # value on it. (blur_score is None on near-blank pages, but those can
-        # still carry a measurable low DPI — so gate on either signal.)
+        # still carry a measurable low DPI - so gate on either signal.)
         scored = [p for p in self.ctx.pages
                   if p.dpi is not None or p.blur_score is not None]
         details = {"pages_quality_scanned": len(scored)}
@@ -87,7 +87,7 @@ class ScanQualityDetector(Detector):
                 evidence={"low_dpi_pages": details["low_dpi_pages"]}))
 
         # SEVERELY blurred pages are illegible (not merely soft) and are surfaced
-        # INDIVIDUALLY — no pervasiveness gate — because even one such page is a
+        # INDIVIDUALLY - no pervasiveness gate - because even one such page is a
         # real "can't read this page" defect. Slight blur still needs the
         # pervasiveness gate (a single soft cover/photo is not a filing defect).
         severe = [p for p in scored if p.blur_severe]
@@ -102,7 +102,7 @@ class ScanQualityDetector(Detector):
                 page=severe[0].pdf_page_no + 1,
                 title="Blurred / Illegible Scanned Pages",
                 description=(f"{len(severe)} scanned page(s) are badly blurred and hard to "
-                             f"read — text on these pages may be illegible in the "
+                             f"read - text on these pages may be illegible in the "
                              f"paper-book. Affected page(s): {pages}{more}."),
                 remediation="Re-scan the affected pages with the document flat and in "
                             "focus (at 300 DPI).",

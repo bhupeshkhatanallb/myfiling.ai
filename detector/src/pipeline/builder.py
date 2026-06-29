@@ -1,5 +1,5 @@
 """
-Document assembly — wire ChunkReader -> MetadataBuilder -> extractors -> context.
+Document assembly - wire ChunkReader -> MetadataBuilder -> extractors -> context.
 
 ``build_context`` is the synchronous entry point: it performs the single chunked
 parse, builds PageMetadata for every page, runs index/bookmark extraction and the
@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 _OCR_PAGE_CAP = 75
 
 # A page is considered to lack usable native text (an OCR candidate) when its
-# text layer is essentially empty — i.e. it is a scanned image page. We keep
+# text layer is essentially empty - i.e. it is a scanned image page. We keep
 # pages that DO have good native text native (do not re-OCR them), so a mixed
 # document's native pleading pages retain full-fidelity geometry/fonts.
 _NATIVE_TEXT_MIN_CHARS = 50
@@ -47,7 +47,7 @@ def _needs_ocr(ctx: DocumentContext) -> bool:
     OCR runs whenever the TEXT is not scrutinisable on a document that still
     looks like a real filing (has page dimensions / some images). The old gate
     required ``cannot_scrutinize`` (no text AND no geometry), which WRONGLY
-    skipped OCR on a MIXED scan — a filing with a few native text pages had
+    skipped OCR on a MIXED scan - a filing with a few native text pages had
     ``has_geometry`` True, so its scanned bulk was never OCR'd and every
     text-based check returned "Could Not Be Verified". The correct trigger is
     simply: the text can't be read, but there are scanned pages we can OCR.
@@ -71,7 +71,7 @@ def _apply_quality_safe(ctx: DocumentContext, path: str) -> None:
     try:
         from .quality import apply_quality
         apply_quality(ctx, path)
-    except Exception:  # noqa: BLE001 — quality scoring is best-effort
+    except Exception:  # noqa: BLE001 - quality scoring is best-effort
         logger.exception("Quality pass failed (continuing without quality signals)")
 
 

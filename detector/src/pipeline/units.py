@@ -4,7 +4,7 @@ Unit constants and standard paper sizes (PDF points).
 Single source of truth so every detector measures against the same numbers.
 1 pt = 1/72 inch. 1 inch = 2.54 cm => 1 cm = 72/2.54 = 28.3465 pt.
 
-(Ported verbatim from the prior engine — these physical constants and the SC
+(Ported verbatim from the prior engine - these physical constants and the SC
 spec targets are not changing in the rewrite.)
 """
 

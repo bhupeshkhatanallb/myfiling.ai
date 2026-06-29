@@ -1,4 +1,4 @@
-// results.jsx — Screen 2: Results Dashboard
+// results.jsx - Screen 2: Results Dashboard
 const { useState: useStateR, useMemo: useMemoR, useEffect: useEffectR } = React;
 
 const SEV_LABEL = { critical: "Critical", minor: "Minor", warning: "Warning" };
@@ -204,7 +204,7 @@ function ResultsScreen({ session, onBack, onDownload, onShare }) {
         <Gauge score={score} />
 
         <p className="readiness-note">
-          Covers formatting &amp; registry-filing requirements — not legal merit.
+          Covers formatting &amp; registry-filing requirements - not legal merit.
           Not a guarantee against objection; have an advocate review before filing.
         </p>
 
@@ -224,7 +224,7 @@ function ResultsScreen({ session, onBack, onDownload, onShare }) {
         </div>
 
         <div className="summary__detail-list">
-          <div className="summary__detail-row"><span>Pages scanned</span><span>{stats.pages_scanned != null ? stats.pages_scanned : "—"}</span></div>
+          <div className="summary__detail-row"><span>Pages scanned</span><span>{stats.pages_scanned != null ? stats.pages_scanned : "-"}</span></div>
           {(() => {
             const checks = stats.checks || [];
             const clickable = checks.length > 0;
@@ -245,7 +245,7 @@ function ResultsScreen({ session, onBack, onDownload, onShare }) {
                       />
                     )}
                   </span>
-                  <span>{stats.rules_evaluated != null ? stats.rules_evaluated : "—"}</span>
+                  <span>{stats.rules_evaluated != null ? stats.rules_evaluated : "-"}</span>
                 </div>
                 {clickable && checksOpen && (
                   <div className="checks-panel">
@@ -267,7 +267,7 @@ function ResultsScreen({ session, onBack, onDownload, onShare }) {
             );
           })()}
           <div className="summary__detail-row"><span>Sections detected</span><span>{stats.sections_detected && stats.sections_detected.length ? stats.sections_detected.length : 0}</span></div>
-          <div className="summary__detail-row"><span>Index entries</span><span>{stats.index_entries != null ? stats.index_entries : "—"}</span></div>
+          <div className="summary__detail-row"><span>Index entries</span><span>{stats.index_entries != null ? stats.index_entries : "-"}</span></div>
           <div className="summary__detail-row"><span>Scrutiny baseline</span><span>{stats.baseline || "DHC Rules / PD 74"}</span></div>
           <div className="summary__detail-row"><span>Analysed</span><span>Just now</span></div>
         </div>

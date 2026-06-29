@@ -3,14 +3,14 @@ myfiling.ai detector pipeline (V2 rewrite).
 
 A from-scratch scrutiny pipeline built to the rewrite brief:
 
-  Stage 1  ChunkReader        — single chunked parse (memory-bounded, streamable)
-  Stage 2  Index/Bookmark     — extract index entries + PDF outline
-  Stage 3  MetadataBuilder    — shared PageMetadata (the single source of truth)
-  Stage 4  Page detectors     — margin/paper/font/spacing/page-number (parallel)
-  Stage 5  Page numbering      — written-number assignment (numbering may start late)
-  Stage 6  Conditional        — synopsis/cause-title/vakalatnama/affidavit/annexure
-  Stage 7  IndexValidator     — index claims vs actual page metadata
-  Stage 8  BookmarkValidator  — outline presence + accuracy
+  Stage 1  ChunkReader        - single chunked parse (memory-bounded, streamable)
+  Stage 2  Index/Bookmark     - extract index entries + PDF outline
+  Stage 3  MetadataBuilder    - shared PageMetadata (the single source of truth)
+  Stage 4  Page detectors     - margin/paper/font/spacing/page-number (parallel)
+  Stage 5  Page numbering      - written-number assignment (numbering may start late)
+  Stage 6  Conditional        - synopsis/cause-title/vakalatnama/affidavit/annexure
+  Stage 7  IndexValidator     - index claims vs actual page metadata
+  Stage 8  BookmarkValidator  - outline presence + accuracy
 
 The corpus-tuned DECISION LOGIC of every detector is ported verbatim from the
 prior engine, so accuracy is preserved; the pipeline, chunking, shared metadata

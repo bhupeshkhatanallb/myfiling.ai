@@ -1,5 +1,5 @@
 """
-Finding value objects — the unit of detector output.
+Finding value objects - the unit of detector output.
 
 A :class:`Finding` is one defect (or honest "could not verify" note). It is
 deliberately UI-agnostic: the server layer maps it to the frontend contract.

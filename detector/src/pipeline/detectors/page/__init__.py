@@ -1,4 +1,4 @@
-"""Page detectors — run on every page's metadata (Stage 4)."""
+"""Page detectors - run on every page's metadata (Stage 4)."""
 
 from . import formatting       # noqa: F401  paper/margin/font/spacing/quote
 from . import page_numbering   # noqa: F401  folio numbering

@@ -1,4 +1,4 @@
-// Filing-readiness score — MIRRORS server.py:calculate_score so the demo/preset
+// Filing-readiness score - MIRRORS server.py:calculate_score so the demo/preset
 // path and any client-side computation agree with the backend. For real
 // analyses the score comes from the API (data.score); this is the fallback.
 
@@ -29,7 +29,7 @@ function calculateScore(defectsToUse, presetScore) {
 function getScoreBand(score) {
   if (score >= 75) return { color: "#119366", label: "Likely registry-ready", soft: "#D8F0E6" };
   if (score >= 45) return { color: "#C2790B", label: "Fix issues before filing", soft: "#FBEFD7" };
-  return { color: "#D6293E", label: "Not ready — must fix", soft: "#FBDCE0" };
+  return { color: "#D6293E", label: "Not ready - must fix", soft: "#FBDCE0" };
 }
 
 export { calculateScore, getScoreBand };

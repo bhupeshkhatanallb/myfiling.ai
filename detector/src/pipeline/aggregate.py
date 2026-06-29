@@ -1,5 +1,5 @@
 """
-Report aggregation — turn a set of DetectorResults into the engine report dict.
+Report aggregation - turn a set of DetectorResults into the engine report dict.
 
 Shared by the synchronous facade and the async processor so both emit an
 identical report shape (the same contract the prior engine produced, so the

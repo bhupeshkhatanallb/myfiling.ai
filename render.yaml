@@ -2,7 +2,7 @@
 # Free Web Service: builds from the repo, serves the dashboard + /api on one HTTPS URL.
 #
 # Notes:
-#  * The free instance SLEEPS after ~15 min idle and cold-starts in ~30-50s — fine
+#  * The free instance SLEEPS after ~15 min idle and cold-starts in ~30-50s - fine
 #    for testing.
 #  * The filesystem is EPHEMERAL: recents.db lives under /tmp so it never fails on
 #    write, but "recent uploads" history resets on each restart/deploy. Acceptable

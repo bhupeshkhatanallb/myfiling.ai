@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Contact - myfiling.ai</title>
+<meta name="description" content="Get in touch with the myfiling.ai team about plans, demos, or your filing workflow." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/site.css" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav__inner">
+    <a class="brand" href="/"><span class="brand__mark">M</span> myfiling<span class="brand__dot">.ai</span></a>
+    <nav class="nav__links">
+      <a class="nav__link" href="/#features">Features</a>
+      <a class="nav__link" href="/pricing">Pricing</a>
+      <a class="nav__link" href="/about">About</a>
+      <a class="nav__link" href="/contact">Contact</a>
+    </nav>
+    <div class="nav__actions">
+      <a class="nav__signin" href="/login">Log in</a>
+      <a class="btn btn--primary" href="/register">Get Started</a>
+      <button class="nav__toggle" aria-label="Menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+  <div class="nav__mobile">
+    <a href="/#features">Features</a><a href="/pricing">Pricing</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/login">Log in</a><a class="btn btn--primary" href="/register">Get Started</a>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow" style="display:inline-flex"><span class="eyebrow__dot"></span> Contact</span>
+    <h1>Let's talk</h1>
+    <p>Questions about plans, a demo for your team, or something specific to your filing workflow - we'd love to hear from you.</p>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container" style="max-width:560px">
+    <div class="authcard" style="max-width:none">
+      <form id="contactForm">
+        <div class="formok" id="contactOk" style="display:none">Thanks - your message has been received. We'll be in touch shortly.</div>
+        <div class="field"><label for="c-name">Name</label><input id="c-name" name="name" type="text" required placeholder="Your name" /></div>
+        <div class="field"><label for="c-email">Email</label><input id="c-email" name="email" type="email" required placeholder="you@example.com" /></div>
+        <div class="field"><label for="c-company">Company</label><input id="c-company" name="company" type="text" placeholder="Firm or organisation" /></div>
+        <div class="field"><label for="c-message">Message</label><textarea id="c-message" name="message" required placeholder="How can we help?"></textarea></div>
+        <button type="submit" class="btn btn--primary btn--block btn--lg">Send message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <a class="brand" href="/"><span class="brand__mark">M</span> myfiling<span class="brand__dot">.ai</span></a>
+        <p>Catch filing defects before the registry does. Instant, evidence-based filing-readiness reports for legal filing compliance.</p>
+      </div>
+      <div class="footer__col"><h4>Product</h4><a href="/#features">Features</a><a href="/pricing">Pricing</a><a href="/dashboard/">Dashboard</a></div>
+      <div class="footer__col"><h4>Company</h4><a href="/about">About</a><a href="/contact">Contact</a></div>
+      <div class="footer__col"><h4>Legal</h4><a href="/privacy-policy">Privacy Policy</a><a href="/terms-and-conditions">Terms &amp; Conditions</a><a href="/cookie-policy">Cookie Policy</a></div>
+      <div class="footer__col"><h4>Resources</h4><a href="/security">Security</a><a href="/#features">FAQ</a></div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 myfiling.ai. All rights reserved.</span>
+      <span><a href="/privacy-policy">Privacy</a> · <a href="/terms-and-conditions">Terms</a> · <a href="/cookie-policy">Cookies</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js"></script>
+</body>
+</html>

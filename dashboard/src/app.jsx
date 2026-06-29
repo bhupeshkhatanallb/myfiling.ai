@@ -1,4 +1,4 @@
-// app.jsx — root App, ties screens together
+// app.jsx - root App, ties screens together
 const { useState: useStateA, useEffect: useEffectA } = React;
 
 // --- Recent filings: server-side (SQLite via /api/recents) ------------------
@@ -255,7 +255,7 @@ function App() {
             onDownload={() => {
               const ok = downloadReport(session);
               setToast(ok
-                ? "Filing report opened in a new tab — use your browser's Save as PDF."
+                ? "Filing report opened in a new tab - use your browser's Save as PDF."
                 : "Pop-up blocked. Allow pop-ups for this site to download the report.");
             }}
             onShare={() => setToast("Share link copied to clipboard! Share with: co-counsel@firm.com")}

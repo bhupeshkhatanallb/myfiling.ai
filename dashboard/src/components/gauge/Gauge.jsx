@@ -1,14 +1,14 @@
-// gauge.jsx — Arc / semicircle gauge with dynamic color band
+// gauge.jsx - Arc / semicircle gauge with dynamic color band
 
 function Gauge({ score = 0, animate = true }) {
-  // Determine band based on score (reframed per advocate audit — no "safe to
+  // Determine band based on score (reframed per advocate audit - no "safe to
   // file" guarantee; reflects formatting + filing-requirement readiness).
   const band =
     score >= 75 ? { color: "#119366", label: "Likely registry-ready", soft: "#D8F0E6" } :
     score >= 45 ? { color: "#C2790B", label: "Fix issues before filing", soft: "#FBEFD7" } :
-                  { color: "#D6293E", label: "Not ready — must fix",     soft: "#FBDCE0" };
+                  { color: "#D6293E", label: "Not ready - must fix",     soft: "#FBDCE0" };
 
-  // SVG arc geometry — semicircle. viewBox snugly fits arc + stroke + end-cap.
+  // SVG arc geometry - semicircle. viewBox snugly fits arc + stroke + end-cap.
   const R = 100;
   const STROKE = 16;
   const CAP_R = STROKE / 2 + 3; // end-cap circle radius
@@ -16,7 +16,7 @@ function Gauge({ score = 0, animate = true }) {
   const CX = R + PAD;           // center x
   const CY = R + PAD;           // center y (baseline of arc)
   const W = 2 * R + 2 * PAD;    // viewBox width
-  const H = R + 2 * PAD;        // viewBox height — just enough for top half + cap
+  const H = R + 2 * PAD;        // viewBox height - just enough for top half + cap
 
   // Parametrize position on the top semicircle by t in [0, 1].
   // t=0 → west endpoint, t=0.5 → top, t=1 → east endpoint.

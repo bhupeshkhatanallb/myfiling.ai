@@ -1,5 +1,5 @@
 """
-Image-quality measurement — Stage 4 quality signals, computed LAZILY.
+Image-quality measurement - Stage 4 quality signals, computed LAZILY.
 
 Per the chosen policy (DPI/blur on scanned pages only), this rasterises and scores
 ONLY pages that carry a real content image (a scan / photographed page). Clean
@@ -9,17 +9,17 @@ The MEASUREMENT logic here is PORTED from the reference analyzer's
 ``detect_blur_pages`` / ``analyze_pdf_min_dpi`` (the AI-free, rule-based half of
 that pipeline), adapted to this project's PyMuPDF+numpy stack:
 
-  * dpi          — effective scan resolution = min(dpi_x, dpi_y) of the largest
+  * dpi          - effective scan resolution = min(dpi_x, dpi_y) of the largest
                    embedded raster, vs the page's physical size. Using min() of
                    both axes (not width only) catches anisotropically downsampled
                    scans the old width-only estimate missed.
-  * blur_score   — variance of the Laplacian of the greyscale page (higher =
+  * blur_score   - variance of the Laplacian of the greyscale page (higher =
                    sharper). Compared against an ADAPTIVE p75 baseline so a
                    genuinely soft page is judged against the document's own good
                    pages, not a fixed constant that drifts with render DPI.
-  * sharp_norm   — blur variance normalised by render-DPI² (the reference's
+  * sharp_norm   - blur variance normalised by render-DPI² (the reference's
                    scale-free sharpness), kept so detectors can reason about it.
-  * ocr_compatible / text_selectable — unchanged role.
+  * ocr_compatible / text_selectable - unchanged role.
 
 Fully defensive: if PyMuPDF/numpy are unavailable the pass is a no-op and the
 signals stay None (the detectors then simply don't assert anything).
@@ -54,7 +54,7 @@ _BLUR_STRONG = 0.01           # absolute scale-free sharpness floor (hard blur)
 _BLUR_SLIGHT = 0.12           # absolute scale-free sharpness ceiling for "slight"
 _BLUR_P75_FRAC_STRONG = 0.15  # < 15% of the document's good-page sharpness
 _BLUR_P75_FRAC_SLIGHT = 0.40  # < 40% of the document's good-page sharpness
-_PCT_BRIGHT_SKIP = 0.90       # near-blank page (>90% very-bright px) — skip blur judgement
+_PCT_BRIGHT_SKIP = 0.90       # near-blank page (>90% very-bright px) - skip blur judgement
 
 # Back-compat: kept so quality_checks.py keeps importing a name. With the adaptive
 # model the per-page blur flag is decided in ``measure_page_quality`` and exposed
@@ -68,9 +68,9 @@ _MIN_SHARP_BLUR = _BLUR_SLIGHT
 _RENDER_DPI = int(os.getenv("QUALITY_RENDER_DPI", "130"))
 
 # A page is rendered for quality scoring only if it carries a real content image
-# covering at least this fraction of the page — the reference's MIN_IMAGE_COVERAGE.
+# covering at least this fraction of the page - the reference's MIN_IMAGE_COVERAGE.
 _MIN_IMAGE_COVERAGE = 0.10
-# Pure text pages (lots of native text) are never blurry scans — skip them.
+# Pure text pages (lots of native text) are never blurry scans - skip them.
 _MIN_TEXT_SKIP = 500
 
 
@@ -109,7 +109,7 @@ def _laplacian_variance(gray) -> float:
 def _estimate_dpi(fitz_page, page_width_pt: float, page_height_pt: float) -> Optional[float]:
     """
     Effective DPI of the dominant embedded raster on a page, as
-    ``min(dpi_x, dpi_y)`` — the reference analyzer's measure. Using the smaller of
+    ``min(dpi_x, dpi_y)`` - the reference analyzer's measure. Using the smaller of
     the two axes (rather than width only) catches scans that are downsampled on
     one axis. Returns None if the page has no measurable image.
     """
@@ -134,7 +134,7 @@ def _estimate_dpi(fitz_page, page_width_pt: float, page_height_pt: float) -> Opt
 
 
 # A page whose largest raster covers at least this fraction of the page is a
-# full-page SCAN — its text (if any) is a garbled OCR overlay, not native text,
+# full-page SCAN - its text (if any) is a garbled OCR overlay, not native text,
 # so it must be DPI/blur-measured even when its char count is high.
 _FULL_PAGE_IMAGE_COVERAGE = 0.80
 
@@ -176,8 +176,8 @@ def measure_page_quality(path: str, page_indices: List[int]) -> dict:
     Rasterise & score the given page indices. Returns {index: {dpi, blur,
     sharp_norm, ocr_compatible}}. Pages that can't be measured are omitted.
 
-    ``blur`` is the scale-free sharpness (Laplacian-variance / render_dpi²) — the
-    reference's normalised measure — so a fixed-render baseline does not bias it.
+    ``blur`` is the scale-free sharpness (Laplacian-variance / render_dpi²) - the
+    reference's normalised measure - so a fixed-render baseline does not bias it.
     The ADAPTIVE blur classification (vs the document's own p75) is applied in
     ``apply_quality`` once all candidate pages are scored. Never raises.
     """
@@ -199,7 +199,7 @@ def measure_page_quality(path: str, page_indices: List[int]) -> dict:
             try:
                 page = doc[idx]
                 dpi = _estimate_dpi(page, float(page.rect.width), float(page.rect.height))
-                # Render greyscale directly (csGRAY) — matches the reference and
+                # Render greyscale directly (csGRAY) - matches the reference and
                 # halves the buffer vs RGB.
                 pix = page.get_pixmap(matrix=mat, colorspace=fitz.csGRAY, alpha=False)
                 gray = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.height, pix.width)
@@ -211,7 +211,7 @@ def measure_page_quality(path: str, page_indices: List[int]) -> dict:
                 sharp_norm = lap_var / float(_RENDER_DPI ** 2)
 
                 # Near-blank pages have low variance because they are EMPTY, not
-                # blurred — mark sharpness None so the adaptive pass skips them.
+                # blurred - mark sharpness None so the adaptive pass skips them.
                 blur_meas = None if pct_very_bright > _PCT_BRIGHT_SKIP else round(sharp_norm, 5)
 
                 ocr_ok = ((dpi is None or dpi >= _OCR_USABLE_DPI)
@@ -221,7 +221,7 @@ def measure_page_quality(path: str, page_indices: List[int]) -> dict:
                     "blur": blur_meas,
                     "ocr_compatible": bool(ocr_ok),
                 }
-            except Exception:  # noqa: BLE001 — one bad page must not stop the rest
+            except Exception:  # noqa: BLE001 - one bad page must not stop the rest
                 logger.exception("Quality scan of page %d failed", idx)
     finally:
         try:
@@ -237,7 +237,7 @@ def _quality_targets(ctx, path: str, max_pages: int) -> List[int]:
 
     Primary source is the cheap ``is_image_heavy`` flag (image + little text).
     We additionally promote pages that have a large covering image even when they
-    carry some text (a scanned body under a typed header overlay) — the reference
+    carry some text (a scanned body under a typed header overlay) - the reference
     treats these as scan candidates, and the old ``is_image_heavy``-only gate
     silently skipped them, missing low-DPI/blurred scans on hybrid pages.
     """
@@ -254,7 +254,7 @@ def _quality_targets(ctx, path: str, max_pages: int) -> List[int]:
             try:
                 for p in ctx.pages:
                     # Once we have more candidates than we will render, stop the
-                    # scan — measure_page_quality only renders ``max_pages`` of them.
+                    # scan - measure_page_quality only renders ``max_pages`` of them.
                     if len(targets) >= max_pages:
                         break
                     if p.pdf_page_no in seen:
@@ -303,7 +303,7 @@ def apply_quality(ctx, path: str, max_pages: int = int(os.getenv("QUALITY_MAX_PA
     # ── Adaptive blur baseline (ported from detect_blur_pages) ────────────────
     # p75 of the scale-free sharpness across all measured pages: the document's
     # "good page" reference. A page is blurred when it is far below this baseline
-    # AND below an absolute ceiling — so a uniformly-soft scan (low p75) is not
+    # AND below an absolute ceiling - so a uniformly-soft scan (low p75) is not
     # judged blurry just for being soft, and a sharp doc's one bad page is caught.
     import statistics as _st  # local import keeps module import side-effect free
     sharp_vals = sorted(s["blur"] for s in scored.values() if s["blur"] is not None)

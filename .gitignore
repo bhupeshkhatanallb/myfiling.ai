@@ -7,7 +7,7 @@ Reference_only/
 *.pdf
 uploads/
 
-# Standalone demo build — not served by server.py.
+# Standalone demo build - not served by server.py.
 demo/
 
 # Build / dependency dirs.

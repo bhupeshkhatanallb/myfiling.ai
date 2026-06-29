@@ -1,4 +1,4 @@
-# myfiling.ai dashboard — Intelligent Scoring System
+# myfiling.ai dashboard - Intelligent Scoring System
 
 **Updated:** June 2026  
 **Feature:** Critical-First Scoring Logic  

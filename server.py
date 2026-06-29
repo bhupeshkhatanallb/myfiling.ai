@@ -1,10 +1,10 @@
 """
-myfiling.ai — Production application server.
+myfiling.ai - Production application server.
 
 Single entry point that:
   1. Serves the compiled dashboard (static files) at /
-  2. Exposes POST /api/analyze — runs the REAL detector engine on an uploaded PDF
-  3. Exposes GET  /api/health — liveness/readiness probe
+  2. Exposes POST /api/analyze - runs the REAL detector engine on an uploaded PDF
+  3. Exposes GET  /api/health - liveness/readiness probe
 
 Run:
     python server.py
@@ -28,7 +28,7 @@ from contextlib import asynccontextmanager
 from fastapi import (
     FastAPI, UploadFile, File, Form, HTTPException, Request, Response, Cookie, Body,
 )
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import JSONResponse, StreamingResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 
 # --------------------------------------------------------------------------- #
@@ -38,6 +38,7 @@ from fastapi.staticfiles import StaticFiles
 ROOT = Path(__file__).resolve().parent
 DETECTOR_SRC = ROOT / "detector" / "src"
 DASHBOARD_DIR = ROOT / "dashboard"
+MARKETING_DIR = ROOT / "marketing"
 
 sys.path.insert(0, str(DETECTOR_SRC))
 
@@ -47,8 +48,8 @@ sys.path.insert(0, str(DETECTOR_SRC))
 from pipeline import DetectorEngine  # noqa: E402  (import after sys.path tweak)
 from pipeline.processor import DocumentProcessor  # noqa: E402
 
-import recents_db  # noqa: E402  — SQLite-backed recent-filings store
-import auth_db      # noqa: E402  — SQLite-backed users + sessions
+import recents_db  # noqa: E402  - SQLite-backed recent-filings store
+import auth_db      # noqa: E402  - SQLite-backed users + sessions
 
 logging.basicConfig(
     level=logging.INFO,
@@ -57,7 +58,7 @@ logging.basicConfig(
 logger = logging.getLogger("myfiling.server")
 
 # Limits and validation ------------------------------------------------------ #
-MAX_UPLOAD_BYTES = 50 * 1024 * 1024  # 50 MB — matches the dashboard hint
+MAX_UPLOAD_BYTES = 50 * 1024 * 1024  # 50 MB - matches the dashboard hint
 ENABLED_COURTS = {"dhc"}             # Only Delhi High Court is live (see courts.js)
 
 # Resource caps (tunable via env for small instances, e.g. a 512 MB free tier).
@@ -85,14 +86,14 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="myfiling.ai API",
-    description="Legal filing defect analysis — real detector engine.",
+    description="Legal filing defect analysis - real detector engine.",
     version="1.0.0",
     lifespan=lifespan,
 )
 
 
 # --------------------------------------------------------------------------- #
-# Authentication — email/password accounts with server-side sessions.
+# Authentication - email/password accounts with server-side sessions.
 # Cookie is HttpOnly + SameSite=Lax; Secure is auto-on when served over HTTPS.
 # --------------------------------------------------------------------------- #
 _COOKIE_SECURE = os.environ.get("COOKIE_SECURE", "auto").lower()
@@ -190,7 +191,7 @@ async def auth_me(request: Request) -> Dict[str, Any]:
 
 
 # --------------------------------------------------------------------------- #
-# Scoring — mirrors detector/src/main.py:calculate_score so the API and CLI
+# Scoring - mirrors detector/src/main.py:calculate_score so the API and CLI
 # pipeline agree. Kept here to avoid importing the half-built main module chain.
 # --------------------------------------------------------------------------- #
 def _human_size(num_bytes: int) -> str:
@@ -212,7 +213,7 @@ def calculate_score(defects: List[Dict[str, Any]]) -> int:
       * WARNINGs are "the Office is likely to raise an objection" items (margins
         off, court fee / vakalatnama / affidavit / certified copy not detected).
         They matter, but a clean petition with one or two should still read as
-        "largely ready" (~80s) — so warnings are taxed gently and floored.
+        "largely ready" (~80s) - so warnings are taxed gently and floored.
       * MINORs are advisory / could-not-verify notes; they barely move the score.
 
     This deliberately stops cosmetic/advisory items from dragging an otherwise
@@ -236,7 +237,7 @@ def calculate_score(defects: List[Dict[str, Any]]) -> int:
 
 
 # --------------------------------------------------------------------------- #
-# Normalization — the React UI expects each defect as:
+# Normalization - the React UI expects each defect as:
 #   { id, page, severity, title, desc, rule, fix }
 # The detectors emit:
 #   { id, page, severity, title, description, remediation, source_detector }
@@ -245,7 +246,7 @@ def calculate_score(defects: List[Dict[str, Any]]) -> int:
 # Live court = Delhi High Court. Formatting rules are sourced from DHC Practice
 # Direction 74 / DHC Rules; the measured spec (A4 / Times New Roman / 14 pt / 1.5 /
 # 4-4-2-2 cm) is identical to the SC uniform standard, so the detectors are
-# unchanged — only the citation label reflects the filing court.
+# unchanged - only the citation label reflects the filing court.
 DETECTOR_RULE_LABEL = {
     "IndexFormatDetector": "DHC Rules - Index of record",
     "PageNumberingDetector": "DHC Rules - Pagination",
@@ -529,7 +530,7 @@ async def analyze_filing(
 
     except HTTPException:
         raise
-    except Exception as exc:  # noqa: BLE001 — surface a clean error to the UI
+    except Exception as exc:  # noqa: BLE001 - surface a clean error to the UI
         logger.exception("Analysis failed")
         raise HTTPException(
             status_code=500,
@@ -635,10 +636,64 @@ async def analyze_filing_stream(
                                       "X-Accel-Buffering": "no"})
 
 # --------------------------------------------------------------------------- #
-# Static dashboard — mounted LAST so /api/* takes precedence.
-# html=True serves index.html at "/".
+# Public marketing website (served at "/") + the gated application ("/dashboard").
+#
+# Layout:
+#   /                       -> marketing homepage  (marketing/index.html)
+#   /about, /pricing, ...   -> marketing pages      (marketing/<slug>.html)
+#   /login, /register       -> marketing auth pages (reuse the same API)
+#   /assets/*               -> marketing CSS/JS/img  (StaticFiles mount)
+#   /dashboard, /dashboard/ -> the existing React SPA (auth-gated in the client)
+#   /dashboard/<asset>      -> SPA static assets     (StaticFiles mount)
+#   /api/*                  -> unchanged (declared above; takes precedence)
+#
+# The SPA is mounted UNDER /dashboard rather than / so its relative asset URLs
+# (styles.css, app.js) resolve to /dashboard/styles.css etc. Nothing in the SPA
+# or its API contract changes - only where the HTML shell is served from.
 # --------------------------------------------------------------------------- #
-app.mount("/", StaticFiles(directory=str(DASHBOARD_DIR), html=True), name="dashboard")
+
+# Marketing pages are static HTML files; map clean URLs to them so links like
+# /pricing work without an .html suffix. Each must exist in marketing/.
+_MARKETING_PAGES = {
+    "/": "index.html",
+    "/about": "about.html",
+    "/pricing": "pricing.html",
+    "/contact": "contact.html",
+    "/privacy-policy": "privacy-policy.html",
+    "/terms-and-conditions": "terms-and-conditions.html",
+    "/cookie-policy": "cookie-policy.html",
+    "/security": "security.html",
+    "/login": "login.html",
+    "/register": "register.html",
+}
+
+
+def _serve_marketing(page_file: str) -> FileResponse:
+    path = MARKETING_DIR / page_file
+    if not path.is_file():
+        raise HTTPException(status_code=404, detail="Page not found")
+    return FileResponse(str(path))
+
+
+def _make_marketing_route(page_file: str):
+    async def _route() -> FileResponse:
+        return _serve_marketing(page_file)
+    return _route
+
+
+for _url, _file in _MARKETING_PAGES.items():
+    app.add_api_route(_url, _make_marketing_route(_file), methods=["GET"],
+                      include_in_schema=False)
+
+# Marketing static assets (shared stylesheet, JS, images, favicon).
+app.mount("/assets", StaticFiles(directory=str(MARKETING_DIR / "assets")),
+          name="marketing-assets")
+
+# The application SPA at /dashboard. html=True serves index.html for "/dashboard/"
+# and the bare "/dashboard" 307-redirects to it. Mounted LAST so /api/* and the
+# marketing routes above win.
+app.mount("/dashboard", StaticFiles(directory=str(DASHBOARD_DIR), html=True),
+          name="dashboard")
 
 
 if __name__ == "__main__":

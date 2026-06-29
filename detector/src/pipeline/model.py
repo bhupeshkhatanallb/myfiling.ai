@@ -3,7 +3,7 @@ Shared page metadata + document context (Stage 3 of the rewrite brief).
 
 ``PageMetadata`` is the single source of truth for one page: every measurement
 any detector could want, generated ONCE by the MetadataBuilder. No detector
-re-reads a page — they all consume PageMetadata.
+re-reads a page - they all consume PageMetadata.
 
 ``DocumentContext`` is the central shared repository (the brief's
 ``DocumentContext``): the page metadata list + index data + bookmark data +
@@ -67,7 +67,7 @@ CORNER_REGIONS = ("TL", "TC", "TR", "BL", "BC", "BR")
 #
 # ORDER = PRIORITY (first match wins). SPECIFIC section markers come first; the
 # generic "Cause Title" (the court-name header) is LAST, because that header
-# appears as a RUNNING HEAD at the top of nearly every page — if it ranked high
+# appears as a RUNNING HEAD at the top of nearly every page - if it ranked high
 # it would steal synopsis/vakalatnama/affidavit pages and mis-tag them as cause
 # titles (observed on the corpus). A page is a "Cause Title" only when it carries
 # the court name AND none of the specific section headings.
@@ -107,7 +107,7 @@ def detect_page_title(text: str) -> Optional[str]:
 @dataclass
 class PageMetadata:
     """
-    All measurements for ONE page — the single source of truth (Stage 3).
+    All measurements for ONE page - the single source of truth (Stage 3).
 
     Geometry/typography fields mirror the prior engine's PageMetrics (so detector
     math is unchanged). New fields per the brief: ``detected_title``,

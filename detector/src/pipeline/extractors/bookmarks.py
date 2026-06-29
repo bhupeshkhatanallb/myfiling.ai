@@ -1,5 +1,5 @@
 """
-BookmarkExtractor — Stage 2/8: read the PDF outline (bookmarks).
+BookmarkExtractor - Stage 2/8: read the PDF outline (bookmarks).
 
 Uses PyMuPDF's ``get_toc()`` to recover the document outline as
 :class:`~pipeline.model.Bookmark` entries (title + 0-based target page + level).
@@ -21,7 +21,7 @@ def extract_bookmarks(path: str) -> List[Bookmark]:
     """Return the PDF outline as Bookmark entries, or [] if none/unavailable."""
     try:
         import fitz  # PyMuPDF
-    except Exception:  # noqa: BLE001 — optional dependency
+    except Exception:  # noqa: BLE001 - optional dependency
         return []
     try:
         doc = fitz.open(path)

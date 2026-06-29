@@ -1,5 +1,5 @@
 """
-DetectorEngine — synchronous facade over the new pipeline.
+DetectorEngine - synchronous facade over the new pipeline.
 
 Drop-in replacement for the prior engine's public surface (``run`` / ``run_all``)
 so the regression harness and server can switch with no API changes. It builds the

@@ -1,5 +1,26 @@
-// upload.jsx — Screen 1: Upload & Court Selection
+// upload.jsx - Screen 1: Upload & Court Selection
 const { useState: useStateU, useRef: useRefU, useEffect: useEffectU } = React;
+
+// Key shared with the public marketing site (marketing/assets/site.js): when a
+// visitor picks a PDF in the hero widget and then signs in, the file (metadata
+// and, when small enough, its bytes) is stashed here so we can pre-fill the
+// upload screen and let them continue with a single click.
+const PENDING_UPLOAD_KEY = "myfiling.pendingUpload";
+
+// Reconstruct a File from the base64 the marketing widget stored, so the real
+// streaming upload works without re-picking. Returns null if bytes are absent.
+function _pendingFileFromB64(name, dataB64) {
+  if (!dataB64) return null;
+  try {
+    const bin = atob(dataB64);
+    const len = bin.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) bytes[i] = bin.charCodeAt(i);
+    return new File([bytes], name || "filing.pdf", { type: "application/pdf" });
+  } catch (_) {
+    return null;
+  }
+}
 
 function UploadScreen({ onAnalyse, onError }) {
   const { COURTS, CASE_TYPES, SAMPLE_FILES } = window.FC_DATA;
@@ -11,6 +32,7 @@ function UploadScreen({ onAnalyse, onError }) {
   const [caseType, setCaseType] = useStateU("wp");
   const [dragging, setDragging] = useStateU(false);
   const [courtOpen, setCourtOpen] = useStateU(false);
+  const [handoffNote, setHandoffNote] = useStateU(null);
   const inputRef = useRefU();
   const courtDropdownRef = useRefU();
 
@@ -22,6 +44,50 @@ function UploadScreen({ onAnalyse, onError }) {
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // On mount, pick up any file handed off from the public homepage upload widget
+  // (only when the URL says ?pending=1, set by the marketing redirect). We
+  // pre-fill the dropzone and court/case-type so the user can analyse in one
+  // click. The stash is cleared immediately so a refresh doesn't re-apply it.
+  useEffectU(() => {
+    let pendingFlag = false;
+    try {
+      pendingFlag = new URLSearchParams(window.location.search).get("pending") === "1";
+    } catch (_) { /* no URL API */ }
+    if (!pendingFlag) return;
+
+    let raw = null;
+    try { raw = sessionStorage.getItem(PENDING_UPLOAD_KEY); } catch (_) { return; }
+    if (!raw) return;
+    try { sessionStorage.removeItem(PENDING_UPLOAD_KEY); } catch (_) {}
+
+    let meta;
+    try { meta = JSON.parse(raw); } catch (_) { return; }
+    if (!meta || !meta.name) return;
+
+    // Restore court / case type when they map to known, enabled options.
+    if (meta.court && COURTS.some((c) => c.id === meta.court && c.enabled)) setCourt(meta.court);
+    if (meta.caseType && CASE_TYPES.some((c) => c.id === meta.caseType)) setCaseType(meta.caseType);
+
+    const restored = _pendingFileFromB64(meta.name, meta.dataB64);
+    if (restored) {
+      setFile({
+        name: restored.name,
+        size: (restored.size / (1024 * 1024)).toFixed(1) + " MB",
+        raw: restored,
+      });
+      setHandoffNote("Your file is ready - click “Analyse Filing” to continue.");
+    } else {
+      // We have the name but not the bytes (e.g. file was too large to carry):
+      // prompt the user to re-select so the real analysis can run.
+      setHandoffNote(
+        "Please re-select “" + meta.name + "” to run your analysis."
+      );
+    }
+    // Clear the prompt after a short while so it doesn't linger.
+    const t = setTimeout(() => setHandoffNote(null), 9000);
+    return () => clearTimeout(t);
   }, []);
 
   const onPick = (f) => {
@@ -56,7 +122,7 @@ function UploadScreen({ onAnalyse, onError }) {
         </h1>
         <p className="upload__sub">
           myfiling.ai checks your PDF against the court's formatting and
-          registry-filing requirements — paper size, margins, type, pagination, index,
+          registry-filing requirements - paper size, margins, type, pagination, index,
           court fee, vakalatnama, limitation, certified copy and affidavit. Get a
           filing-readiness score and a defect checklist in seconds.
         </p>
@@ -68,6 +134,12 @@ function UploadScreen({ onAnalyse, onError }) {
       </div>
 
       <div className="upload__panel">
+
+      {handoffNote && (
+        <div className="upload__handoff">
+          <Ico.Spark size={14} /> {handoffNote}
+        </div>
+      )}
 
       <div
         className={
@@ -112,7 +184,7 @@ function UploadScreen({ onAnalyse, onError }) {
               Drag your filing PDF here or <span className="dropzone__browse">click to browse</span>
             </div>
             <div className="dropzone__sub">
-              Cover page, index, synopsis, body and annexures — all in one PDF.
+              Cover page, index, synopsis, body and annexures - all in one PDF.
             </div>
           </React.Fragment>
         )}

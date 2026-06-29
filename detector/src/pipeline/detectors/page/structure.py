@@ -1,5 +1,5 @@
 """
-Structural detectors — index format, section order.
+Structural detectors - index format, section order.
 
 (Page numbering lives in page_numbering.py.) The DECISION LOGIC is PORTED VERBATIM
 from the corpus-tuned engine: index "present-but-unparsed is not a defect",
@@ -63,7 +63,7 @@ class IndexFormatDetector(Detector):
         details["annexures_in_index"] = annexures
 
         # Index page-reference sanity check depends on listed folio numbers and is
-        # part of the pagination/folio family — suppressed while folio detection is
+        # part of the pagination/folio family - suppressed while folio detection is
         # unreliable (see feature_flags.PAGINATION_CHECKS_ENABLED).
         if PAGINATION_CHECKS_ENABLED:
             mismatches = self._validate_page_references(entries)

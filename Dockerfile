@@ -1,9 +1,9 @@
-# myfiling.ai — container for Hugging Face Spaces (Docker SDK).
+# myfiling.ai - container for Hugging Face Spaces (Docker SDK).
 # HF Spaces routes traffic to port 7860 by default; the server reads $PORT.
 FROM python:3.11-slim
 
 # System libs PyMuPDF / Pillow / numpy wheels rely on at runtime. (No Tesseract:
-# OCR stays off here — the detector skips it gracefully.)
+# OCR stays off here - the detector skips it gracefully.)
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libgl1 \
         libglib2.0-0 \

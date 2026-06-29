@@ -1,10 +1,10 @@
 """
-ChunkReader — Stage 1 of the rewrite brief.
+ChunkReader - Stage 1 of the rewrite brief.
 
 Opens the PDF EXACTLY ONCE (one pdfplumber handle) and yields pages in
 configurable chunks ([1-50], [51-100], ...) so that:
 
-  * memory stays bounded — we never hold every page's chars at once,
+  * memory stays bounded - we never hold every page's chars at once,
   * the processor can emit results for early pages before late pages are parsed
     (first-results latency / real-time streaming),
   * a single traversal feeds every detector (no duplicate parsing).
@@ -109,7 +109,7 @@ class ChunkReader:
         page = self._pdf.pages[index]
         try:
             chars = page.chars or []
-        except Exception:  # noqa: BLE001 — a malformed page must not kill the read
+        except Exception:  # noqa: BLE001 - a malformed page must not kill the read
             logger.exception("Reading chars on page %d failed", index)
             chars = []
         try:
